@@ -1,0 +1,62 @@
+{
+    "foodList": [
+        {
+            "id": 1,
+            "title": "Kimbap Heo Galbi",
+            "img": "/foods/kimbap-bo.jpg",
+            "price": "65.000",
+            "description": "Sản phẩm được đựng trong hộp giấy xinh xắn."
+        },
+        {
+            "id": 2,
+            "title": "Kimbap bò cay sốt BBQ",
+            "img": "/foods/kimbap-cay.jpg",
+            "price": "65.000",
+            "description": "BEST SELLER - Kimbap với nhân Thịt bò ba chỉ Mỹ thấm ướp gia vị kèm sốt BBQ thơm cay. Sản phẩm được đựng vào hộp giấy xinh xắn."
+        },
+        {
+            "id": 3,
+            "title": "Kimbap Phô Mai",
+            "img": "/foods/kimbap.jpg",
+            "price": "65.000",
+            "description": "Sản phẩm được đựng vào hộp giấy xinh xắn."
+        }
+    ],
+    "banner": [
+        {
+            "id": 1,
+            "alt": "Banner 1",
+            "img": "/foods/banner1.jpg"
+        },
+        {
+            "id": 2,
+            "alt": "Banner 2",
+            "img": "/foods/banner2.jpg"
+        },
+        {
+            "id": 3,
+            "alt": "Banner 3",
+            "img": "/foods/banner3.jpg"
+        }
+    ],
+    "feedbacks": [
+        {
+            "id": 1,
+            "comment": "bla bla...",
+            "name": "Nguyễn Văn A",
+            "avatar": "img.jpg"
+        },
+        {
+            "id": 2,
+            "comment": "bla bla...",
+            "name": "Nguyễn Văn B",
+            "avatar": "img.jpg"
+        },
+        {
+            "id": 3,
+            "comment": "bla bla...",
+            "name": "Trần C",
+            "avatar": "img.jpg"
+        }
+    ]
+}

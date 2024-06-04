@@ -1,41 +1,52 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Image } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Image, Button } from "@nextui-org/react";
+import { PiShoppingCartSimple } from "react-icons/pi";
+import { LuUser2 } from "react-icons/lu";
+import { MdOutlineDarkMode } from "react-icons/md";
 
 export default function App() {
     return (
-        <Navbar>
+        <Navbar >
             <NavbarBrand>
-                <Image
-                    width={60}
-                    alt="Brand logo"
-                    src="../../public/takeaway.png"
-                />
-                <p className="font-bold text-inherit">Delivery</p>
+                <Button disableAnimation >
+                    <Image
+                        width={32}
+                        alt="brand logo"
+                        src="/takeaway.png"
+                        radius="none"
+                    />
+                </Button>
             </NavbarBrand>
-            <NavbarContent className="hidden sm:flex " justify="start">
-                <NavbarItem>
-                    <Link color="foreground" href="#">
+            <NavbarContent className="w-[60rem] sm:flex" justify="start">
+                <NavbarItem className="me-5">
+                    <Link color="foreground" href="/home">
                         Home
                     </Link>
                 </NavbarItem>
-                <NavbarItem isActive>
-                    <Link href="#" aria-current="page">
+                <NavbarItem className="me-5">
+                    <Link href="/menu" color="foreground">
                         Menu
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" href="#">
-                        
+                <NavbarItem className="me-5">
+                    <Link color="foreground" href="/about">
+                        About
                     </Link>
                 </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem className="hidden lg:flex">
-                    <Link href="#">Login</Link>
+                <NavbarItem className="">
+                    <MdOutlineDarkMode />
+                    {/* <MdLightMode /> */}
                 </NavbarItem>
-                <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
-                        Sign Up
-                    </Button>
+                <NavbarItem className=" ms-5">
+                    <Link href="/cart-detail">
+                        <PiShoppingCartSimple color="black" />
+                    </Link>
+                </NavbarItem>
+                <NavbarItem className="ms-5 ">
+                    <Link href="/users">
+                        <LuUser2 color="black" />
+                    </Link>
                 </NavbarItem>
             </NavbarContent>
         </Navbar >
