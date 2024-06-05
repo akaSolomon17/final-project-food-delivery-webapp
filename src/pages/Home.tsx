@@ -1,9 +1,10 @@
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import Banner from "../components/Banner/Banner"
-import { Image } from "@nextui-org/image";
-import { Button } from "@nextui-org/button";
-import { Badge } from "@nextui-org/badge";
-import { Avatar } from "@nextui-org/avatar";
+import { Card, CardBody, CardFooter, Image, Button, Badge, Avatar } from "@nextui-org/react";
+
+import { FaSquareXTwitter, FaSquareFacebook, FaLinkedin, FaSquareInstagram } from "react-icons/fa6";
+import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+
+// import { Swiper, SwiperSlide } from 'swiper/react';
 
 const list = [
     {
@@ -20,7 +21,7 @@ const list = [
     },
     {
         title: "Kimbap Phô Mai",
-        img: "/foods/kimbap.jpg",
+        img: "/foods/kimbap-phomai.jpg",
         price: "65.000",
         description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
     }
@@ -33,7 +34,7 @@ const Home = () => {
             <Banner />
             <div className="most-popular h-[300px] mt-9">
                 <h3 className="text-center text-lg font-normal">Most Popular</h3>
-                <h3 className="text-center text-2xl font-semibold mt-3">Our Exclusive Cakes</h3>
+                <h3 className="text-center text-2xl font-semibold mt-3">Our Exclusive Kimbap</h3>
                 <div className="flex flex-rows justify-center mt-[4rem]">
                     {list.map((item, index) => (
                         <Card shadow="sm" className="mx-[30px] max-h-[750px]" key={index} isPressable onPress={() => console.log("item pressed")}>
@@ -68,7 +69,7 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/ga.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Gà</span>
@@ -79,7 +80,7 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/kimbap.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Kimbap</span>
@@ -90,7 +91,7 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/box-yummy.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Box Yummy</span>
@@ -101,7 +102,7 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/myhq.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Mỳ Hàn Quốc</span>
@@ -112,7 +113,7 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/lau.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Lẩu Tokbokki</span>
@@ -123,25 +124,17 @@ const Home = () => {
                                     isBordered
                                     size="lg"
                                     radius="md"
-                                    src="https://i.pravatar.cc/150?u=a042f81f4e29026024d"
+                                    src="../public/foods/nuoc-uong.jpg"
                                 />
                             </Badge>
                             <span className="font-sans font-medium mt-3">Thức uống</span>
                         </div>
                     </div>
-                    <div className="feedbacks">
+                    <div className="feedbacks flex flex-col relative justify-center">
                         <h3 className="text-center text-lg font-normal mt-40">Testimonials</h3>
                         <h3 className="text-center text-2xl font-semibold mt-3">What's our customer says?</h3>
-                        <div className="flex gap-11 justify-center mt-[4rem]">
-                            {/* <Card shadow="sm" className="mx-[30px] max-h-[550px]" isPressable onPress={() => console.log("item pressed")}>
-                                <CardBody className="overflow-visible p-0 cardbody h-[300px] w-[250px] max-h-[420px]">
-                                    This is body
-                                </CardBody>
-                                <CardFooter className="flex flex-col max-w-[30rem] items-start p-3">
-                                    This is footer
-                                </CardFooter>
-                            </Card> */}
-
+                        <div className="flex gap-12 justify-center mt-[4rem]">
+                            <button><FiArrowLeftCircle className="absolute align-center size-6" /></button>
                             <Card className="max-w-[340px]">
                                 <CardBody className="px-3 py-0 text-small text-default-400">
                                     <p>
@@ -184,10 +177,45 @@ const Home = () => {
                                     </div>
                                 </CardFooter>
                             </Card>
+                            <button><FiArrowRightCircle className="absolute align-center size-6" /></button>
                         </div>
                     </div>
-                    <div className="page-footer w-full h-[415px] mt-14 border-t-1 shadow-inner bg-[#f7fafc93]">
-
+                    <div className="page-footer w-full h-[20rem] mt-14 border-t-1 shadow-inner bg-[#f7fafc93] flex flex-col justify-center">
+                        <h1 className="font-semibold font-sans ms-[21rem] text-lg">Deok Sun Korean Food.</h1>
+                        <div className="flex footer-info self-center mt-[1rem] justify-center">
+                            <ul className="flex flex-col me-[8rem]  gap-3">
+                                <p className="font-sans font-semibold">Contact us</p>
+                                <li>doeksunkor@gmail.com</li>
+                                <li>+1-2345-6789</li>
+                                <li>123 Bach Dang, Da Nang, Vietnam</li>
+                                <li className="flex gap-3">
+                                    <FaSquareFacebook className="size-5" />
+                                    <FaSquareXTwitter className="size-5" />
+                                    <FaLinkedin className="size-5" />
+                                    <FaSquareInstagram className="size-5" />
+                                </li>
+                            </ul>
+                            <ul className="flex flex-col me-[8rem] gap-3">
+                                <p className="font-sans font-semibold">Product</p>
+                                <li>Korean foods</li>
+                                <li>Soju</li>
+                                <li>Ramen</li>
+                                <li>Tokbokki</li>
+                            </ul>
+                            <ul className="flex flex-col me-[8rem] gap-3">
+                                <p className="font-sans font-semibold">About</p>
+                                <li></li>
+                                <li>+1-2345-6789</li>
+                                <li>123 Bach Dang, Da Nang, Vietnam</li>
+                                <li></li>
+                            </ul>
+                            <ul className="flex flex-col gap-1">
+                                <p className="font-sans font-semibold">Get the app</p>
+                                <li><img src="public\badges\apple-badge.png" alt="Apple Badge" className="mt-3" /></li>
+                                <li><img src="public\badges\google-badge.png" alt="Google Badge" className="max-w-[45%] mt-3" /></li>
+                            </ul>
+                        </div>
+                        <span className="text-default w-full text-right pe-[30rem] mt-10">Copyright © 2020. All rights reserved.</span>
                     </div>
                 </div>
             </div>
