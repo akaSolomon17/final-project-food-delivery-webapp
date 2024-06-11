@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Button, Switch } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip } from "@nextui-org/react";
 import { Link, Outlet } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
@@ -9,15 +9,15 @@ export default function App() {
         <>
             <Navbar >
                 <NavbarBrand>
-                    <Button disableAnimation >
+                    <Chip>
                         <Image
-                            width={32}
+                            width={35}
                             alt="brand logo"
-                            src="/takeaway.png"
+                            src="/logo.png"
                             radius="none"
                         />
-                    </Button>
-                    <span className="ms-2 font-lg font-semibold font-sans">DEOK SUN FOOD.</span>
+                    </Chip>
+                    <span className="ms-2 font-lg font-semibold font-sans">CHÓI'S KITCHEN</span>
                 </NavbarBrand>
                 <NavbarContent className="w-[60rem] sm:flex" justify="start">
                     <NavbarItem className="me-5">

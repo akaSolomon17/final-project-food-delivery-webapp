@@ -1,0 +1,11 @@
+.apply-btn span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio-btn span.text-foreground {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}

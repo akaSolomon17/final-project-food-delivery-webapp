@@ -5,10 +5,12 @@ import { Route, Routes } from 'react-router-dom'
 
 import Nav from "./components/Nav/Nav"
 import Home from './pages/Home'
-import Products from './pages/Products'
+import Products from './pages/Products/Products'
 import CartDetails from './pages/CartDetails'
 import About from './pages/About'
-import SwiperComponent from './components/Swiper/SwiperComponent'
+import Footer from './components/Footer/Footer'
+import ProductDetails from './pages/Products/ProductDetails'
+import SliderUI from "./pages/SliderUI"
 
 
 function App() {
@@ -22,9 +24,11 @@ function App() {
           <Route path='/menu' element={<Products />} />
           <Route path='/cart-detail' element={<CartDetails />} />
           <Route path='/about' element={<About />} />
-          <Route path="/swiper" element={<SwiperComponent/>}/>
+          <Route path="/swiper" element={<SliderUI />} />
+          <Route path="/product-details" element={<ProductDetails />} />
         </Routes>
       </React.Suspense>
+      <Footer />
     </>
   )
 }
