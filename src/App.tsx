@@ -25,7 +25,7 @@ function App() {
           <Route path='/cart-detail' element={<CartDetails />} />
           <Route path='/about' element={<About />} />
           <Route path="/swiper" element={<SliderUI />} />
-          <Route path="/product-details" element={<ProductDetails />} />
+          <Route path="/product-details/:productId" element={<ProductDetails />} />
         </Routes>
       </React.Suspense>
       <Footer />

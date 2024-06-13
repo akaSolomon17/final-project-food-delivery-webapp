@@ -1,15 +1,44 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip } from "@nextui-org/react";
-import { Link, Outlet } from "react-router-dom"
+import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
 import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
 
+const link = [
+    {
+        name: "Home",
+        link: "/",
+        icon: null
+    },
+    {
+        name: "Menu",
+        link: "/menu",
+        icon: null
+    },
+    {
+        name: "About",
+        link: "/about",
+        icon: null
+    },
+    {
+        name: "Cart",
+        link: "/cart-detail",
+        icon: <PiShoppingCartSimple />
+    },
+    {
+        name: "Swiper",
+        link: "/swiper",
+        icon: <LuUser2 />
+    },
+]
+
 export default function App() {
+    const navigate = useNavigate();
     return (
         <>
             <Navbar >
-                <NavbarBrand>
-                    <Chip>
+                <NavbarBrand className="cursor-pointer" onClick={() => navigate('/')}>
+                    <Chip >
                         <Image
                             width={35}
                             alt="brand logo"
@@ -20,21 +49,15 @@ export default function App() {
                     <span className="ms-2 font-lg font-semibold font-sans">CHÓI'S KITCHEN</span>
                 </NavbarBrand>
                 <NavbarContent className="w-[60rem] sm:flex" justify="start">
-                    <NavbarItem className="me-5">
-                        <Link color="foreground" to="/">
-                            Home
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem className="me-5">
-                        <Link to="/menu" color="foreground">
-                            Menu
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem className="me-5">
-                        <Link color="foreground" to="/about">
-                            About
-                        </Link>
-                    </NavbarItem>
+                    {link.map((item, index) =>
+                    (item.icon === null ?
+                        <NavbarItem key={index} className="me-5">
+                            <NavLink className={({ isActive }) => (isActive ? "text-red-500" : "text-black")} to={item.link}>
+                                {item.name}
+                            </NavLink>
+                        </NavbarItem> :
+                        null
+                    ))}
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <NavbarItem>
@@ -52,16 +75,12 @@ export default function App() {
                         >
                         </Switch>
                     </NavbarItem>
-                    <NavbarItem >
-                        <Link to="/cart-detail">
-                            <PiShoppingCartSimple color="black" />
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link to="/swiper">
-                            <LuUser2 color="black" />
-                        </Link>
-                    </NavbarItem>
+                    {link.map((item, index) =>
+                    (<NavbarItem key={index}>
+                        <NavLink className={({ isActive }) => (isActive ? "text-red-500" : "text-black")} to={item.link}>
+                            {item.icon}
+                        </NavLink>
+                    </NavbarItem>))}
                 </NavbarContent>
             </Navbar >
             <Outlet />

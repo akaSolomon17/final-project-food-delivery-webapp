@@ -4,7 +4,7 @@ export interface Food {
     price: string,
     img: string,
     description: string,
-    categoryId: string,
+    category: string,
     avgRating: number, //calc by user rating
     isExclusive: string
 }

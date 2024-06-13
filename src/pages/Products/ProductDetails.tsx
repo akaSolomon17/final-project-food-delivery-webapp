@@ -1,7 +1,7 @@
 import React from 'react'
 import LoadMore from '../../components/LoadMore/LoadMore';
 import { Image, Button, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, Card, CardBody, CardFooter, Chip } from '@nextui-org/react'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { StarIcon } from '../../components/StarRating/Star';
 import { SearchBar } from '../../components/SearchBar/SearchBar'
@@ -12,6 +12,9 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";
 import { IoIosArrowDropdown } from "react-icons/io";
 import SwiperCustom from '../../components/Swiper/SwiperCustom';
+import { useGetFoodById } from '../../apis/getFoodById.api';
+
+// import { useGetFoodById } from '../../apis/getFoodById.api';
 
 const list = [
     {
@@ -87,8 +90,20 @@ const list = [
 ];
 const ProductDetails = () => {
     const [selectedKeys, setSelectedKeys] = React.useState<string>("Newest");
-
+    const { productId } = useParams();
     const navigate = useNavigate()
+
+    const { foodId } = useGetFoodById(productId || "0")
+    const foodIdData = foodId?.data || {
+        id: "4",
+        avgRate: 1,
+        categoryId: "",
+        description: "Description is not available!",
+        img: "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
+        isExclusive: "false",
+        price: "45.000",
+        title: "Kimbap chiên giòn"
+    }
 
     return (
         <div className='flex flex-col gap-28'>
@@ -98,12 +113,12 @@ const ProductDetails = () => {
                 </div>
             </div>
             <div className="dynamic-products flex gap-24 justify-center">
-                <Image alt='product-img' src='/foods/kimbap-cay.jpg' shadow='sm' width={541} height={496} />
+                <Image alt='product-img' src={foodIdData.img} shadow='sm' width={541} height={496} />
                 <div className="flex flex-col product-info gap-8">
-                    <h1 className='font-extrabold font-lato text-4xl'>Kimbap Cay</h1>
-                    <p className='font-lato font-extrabold text-2xl '>65.000 VND</p>
-                    <p className='font-lato font-normal text-lg'>Sản phẩm được đựng vào hộp giấy xinh xắn.</p>
-                    <p className='font-lato font-normal text-[#626264] text-lg flex items-center gap-2'><ImSpoonKnife />Kimbap</p>
+                    <h1 className='font-extrabold font-lato text-4xl'>{foodIdData.title}</h1>
+                    <p className='font-lato font-extrabold text-2xl '>{foodIdData.price + " VND"}</p>
+                    <p className='font-lato font-normal text-lg max-w-[450px]'>{foodIdData.description}</p>
+                    <p className='font-lato font-normal text-[#626264] text-lg flex items-center gap-2'><ImSpoonKnife />{foodIdData.category}</p>
                     <div className='flex items-center gap-4'>
                         <Button radius='full'><AiOutlineMinus /></Button>
                         <h1 className='font-lato font-semibold'>1</h1>
@@ -159,9 +174,9 @@ const ProductDetails = () => {
                                     selectedKeys={selectedKeys}
                                     onSelectionChange={() => (setSelectedKeys)}
                                 >
-                                    <DropdownItem key="Newest">Newest</DropdownItem>
-                                    <DropdownItem key="Oldest">Oldest</DropdownItem>
-                                    <DropdownItem key="Rate">Rating</DropdownItem>
+                                    <DropdownItem key="Newest" textValue='Newest'>Newest</DropdownItem>
+                                    <DropdownItem key="Oldest" textValue='Oldest'>Oldest</DropdownItem>
+                                    <DropdownItem key="Rate" textValue='Rating'>Rating</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
@@ -203,37 +218,10 @@ const ProductDetails = () => {
                     <LoadMore content='Loading comment' />
                 </div>
                 <div className="also-like max-h-[30rem] mb-20">
-                    {/* <h1 className='font-extrabold font-lato text-4xl'>You may also like</h1>
-                    <div className='flex flex-rows gap-9 mt-[4rem]'>
-                        {listFirst.map((item, index) => (
-                            <Card shadow="sm" className=" max-h-[26rem] min-w-[19rem] max-w-[19rem] h-[25rem]" key={index} isPressable onPressEnd={() => { navigate("/product-details") }}>
-                                <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
-                                    <Image
-                                        shadow="sm"
-                                        radius="lg"
-                                        width="100%"
-                                        alt={item.title}
-                                        className="w-full object-cover h-[15rem]"
-                                        src={item.img}
-                                    />
-                                </CardBody>
-                                <CardFooter className="flex flex-col max-w-[30rem] items-start ">
-                                    <div className="text-small flex  flex-col self-start text-left max-w-[25rem] h-[80px] max-h-[100px]">
-                                        <b>{item.title}</b>
-                                        <b className="font-normal max-w-[20rem]">{item.description}</b>
-                                    </div>
-                                    <p className="border-black text-default-700 text-right w-full">{item.price}₫</p>
-                                    <Chip className="bg-black text-white self-end mt-[0.5rem]">
-                                        <BsCartPlus className='size-4' />
-                                    </Chip>
-                                </CardFooter>
-                            </Card>
-                        ))}
-                    </div> */}
                     <h1 className='font-extrabold font-lato text-4xl ms-[18.3rem] mb-10'>You may also like</h1>
-                    <SwiperCustom slidePerView={4} className='w-[83rem] h-full mySwiper' isPagination={false} isBanner={false}>
+                    <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} isBanner={false}>
                         {list.map((item, index) => (
-                            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate('/product-details')}>
+                            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
                                 <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                                     <Image
                                         shadow="sm"

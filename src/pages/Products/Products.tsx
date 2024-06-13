@@ -84,7 +84,6 @@ const list = [
 
 const Products = () => {
   const navigate = useNavigate();
-
   return (
     <div className='flex flex-col gap-12'>
       <div className='flex justify-center mt-10'>
@@ -95,16 +94,16 @@ const Products = () => {
       <Banner />
       {/* RECOMMENDED */}
       <div className="recommended">
-        <SwiperCustom slidePerView={4} className='w-[83rem] h-full mySwiper' isPagination={false} headerContent='Recommended' isBanner={false}>
+        <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} headerContent='Recommended' isBanner={false}>
           {list.map((item, index) => (
-            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate('/product-details')}>
+            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
                   shadow="sm"
                   radius="lg"
                   width="100%"
                   alt={item.title}
-                  className="w-full object-cover h-[15rem]"
+                  className="w-full object-cover h-[15rem] select-none"
                   src={item.img}
                 />
               </CardBody>
@@ -124,16 +123,16 @@ const Products = () => {
       </div>
       {/* BEST SELLER */}
       <div className="best-seller">
-        <SwiperCustom slidePerView={4} className='w-[83rem] h-full mySwiper' isPagination={false} headerContent='Best Seller' isBanner={false}>
+        <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} headerContent='Best Seller' isBanner={false}>
           {list.map((item, index) => (
-            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate('/product-details')}>
+            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
                   shadow="sm"
                   radius="lg"
                   width="100%"
                   alt={item.title}
-                  className="w-full object-cover h-[15rem]"
+                  className="w-full object-cover h-[15rem] select-none"
                   src={item.img}
                 />
               </CardBody>
@@ -154,18 +153,18 @@ const Products = () => {
       {/* ALL PRODUCT */}
       <div className="all-products flex flex-col items-center">
         <div className="flex flex-row justify-evenly gap-x-[66rem] items-center">
-          <h1 className='font-sans font-bold text-4xl'>All Product</h1>
+          <h1 className='font-sans font-bold text-4xl select-none'>All Product</h1>
         </div>
         <div className="flex flex-rows gap-9 flex-wrap justify-center mt-[4rem] max-w-[96rem]">
           {list.map((item, index) => (
-            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem] items-start" key={index} isPressable onPressEnd={() => { navigate("/product-details") }}>
+            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem] items-start" key={index} isPressable onPressEnd={() => { navigate(`/product-details/${item.id}`) }}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
                   shadow="sm"
                   radius="lg"
                   width="100%"
                   alt={item.title}
-                  className="w-full object-cover h-[15rem]"
+                  className="w-full object-cover h-[15rem] select-none"
                   src={item.img}
                 />
               </CardBody>

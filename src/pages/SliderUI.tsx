@@ -83,7 +83,7 @@ const SliderUI = () => {
 
     return (
         <div>
-            <SwiperCustom slidePerView={4} className='w-[83rem] h-full mySwiper' isPagination={false} headerContent='Recommended'>
+            <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} headerContent='Recommended'>
                 {list.map((item, index) => (
                     <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable>
                         <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">

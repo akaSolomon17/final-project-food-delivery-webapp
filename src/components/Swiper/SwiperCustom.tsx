@@ -4,6 +4,7 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import './SwiperCustom.css';
 import SwiperNavigateBtn from './SwiperNavigateBtn';
 
 type SwiperComponentProps = {
@@ -30,10 +31,10 @@ const SwiperCustom: React.FC<SwiperComponentProps> = (props) => {
     return (
         <div className="mx-auto">
             <Swiper {...swiperProps}>
-                <SwiperNavigateBtn headerContent={props.headerContent}></SwiperNavigateBtn>
+                {props.isPagination && <SwiperNavigateBtn headerContent={props.headerContent}></SwiperNavigateBtn>}
                 {props.children.map((child, index) =>
                 (
-                    <SwiperSlide key={index} className='flex items-center justify-center text-center text-sm bg-white'>
+                    <SwiperSlide key={index} className='flex items-center justify-center text-center text-sm bg-white '>
                         {child}
                     </SwiperSlide>
                 )

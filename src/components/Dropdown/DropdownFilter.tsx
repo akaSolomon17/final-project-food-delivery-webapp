@@ -39,18 +39,16 @@ const DropdownFilter = () => {
           {/* FILTER */}
           <DropdownSection title="FILTER" showDivider >
             <DropdownItem key="option1" className={disableHover} textValue="Kimbap">
-              <div>
-                <Checkbox value="tokyo">Kimbap</Checkbox>
-              </div>
+              <Checkbox value="tokyo" radius='none'>Kimbap</Checkbox>
             </DropdownItem>
             <DropdownItem key="option2" className={disableHover} textValue="Tokbokki">
-              <Checkbox value="buenos-aires">Tokbokki</Checkbox>
+              <Checkbox value="buenos-aires" radius='none'>Tokbokki</Checkbox>
             </DropdownItem>
             <DropdownItem key="option3" className={disableHover} textValue="Gà">
-              <Checkbox value="sydney">Gà</Checkbox>
+              <Checkbox value="sydney" radius='none'>Gà</Checkbox>
             </DropdownItem>
             <DropdownItem key="option4" className={disableHover} textValue="Lẩu">
-              <Checkbox value="san-francisco">Lẩu</Checkbox>
+              <Checkbox value="san-francisco" radius='none'>Lẩu</Checkbox>
             </DropdownItem>
           </DropdownSection >
           {/* PRICE */}
@@ -97,14 +95,14 @@ const DropdownFilter = () => {
           <DropdownSection title="CUSTOMER REVIEW">
             <DropdownItem key="option1" className={disableHover} isReadOnly textValue="Any Rating">
               <RadioGroup >
-                <Radio value="any-thing">Any Rating</Radio>
-                <Radio value="four-stars" className="radio-btn"><StarIcon size={15} value={4} /> & Up</Radio>
-                <Radio value="three-stars" className="radio-btn"><StarIcon size={15} value={3} /> & Up</Radio>
-                <Radio value="two-stars" className="radio-btn"><StarIcon size={15} value={2} /> & Up</Radio>
+                <Radio value="any-rate">Any Rating</Radio>
+                <Radio value="4stars" className="radio-btn"><StarIcon size={15} value={4} /> & Up</Radio>
+                <Radio value="3stars" className="radio-btn"><StarIcon size={15} value={3} /> & Up</Radio>
+                <Radio value="2stars" className="radio-btn"><StarIcon size={15} value={2} /> & Up</Radio>
               </RadioGroup>
             </DropdownItem>
-            <DropdownItem className="apply-btn hover:bg-transparent cursor-default border-0 hover:bg-white" closeOnSelect>
-              <Button color="primary">
+            <DropdownItem className="apply-btn hover:bg-transparent cursor-default border-0 hover:bg-white" textValue='none' closeOnSelect>
+              <Button color="primary" radius='full' className='h-[30px]'>
                 Apply Filter
               </Button>
             </DropdownItem>

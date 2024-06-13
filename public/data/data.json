@@ -6,7 +6,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-bo_wingdd.jpg",
             "price": "65.000",
             "description": "Sản phẩm được đựng trong hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 5,
             "isExclusive": "true"
         },
@@ -16,7 +16,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-cay_lihfzr.jpg",
             "price": "65.000",
             "description": "BEST SELLER - Kimbap với nhân Thịt bò ba chỉ Mỹ thấm ướp gia vị kèm sốt BBQ thơm cay.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 2,
             "isExclusive": "true"
         },
@@ -26,7 +26,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-phomai_gmbenz.jpg",
             "price": "65.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 3,
             "isExclusive": "false"
         },
@@ -36,9 +36,9 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
             "price": "45.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
-            "isExclusive": "false"
+            "isExclusive": "true"
         },
         {
             "id": "5",
@@ -46,9 +46,9 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012571/Final_PRJ_LIFT/Foods/kimbap-truyenthong_x8xaup.jpg",
             "price": "65.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 4,
-            "isExclusive": "false"
+            "isExclusive": "true"
         },
         {
             "id": "6",
@@ -56,7 +56,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012570/Final_PRJ_LIFT/Foods/kimbap-gagion_kt5md3.jpg",
             "price": "65.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         },
@@ -66,7 +66,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012569/Final_PRJ_LIFT/Foods/kimbap-single-a_ilocub.jpg",
             "price": "45.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         },
@@ -76,7 +76,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012568/Final_PRJ_LIFT/Foods/kimbap-single-b_c2dev6.jpg",
             "price": "55.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         },
@@ -86,7 +86,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012567/Final_PRJ_LIFT/Foods/kimbap-single-c_iae8xx.jpg",
             "price": "55.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         },
@@ -96,7 +96,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-sotphomaituoi_yrar9v.jpg",
             "price": "69.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         },
@@ -106,7 +106,7 @@
             "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-bibimbap_s5mmxr.jpg",
             "price": "60.000",
             "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-            "categoryId": "2",
+            "category": "Kimbap",
             "avgRate": 1,
             "isExclusive": "false"
         }
@@ -165,8 +165,8 @@
             "id": "1",
             "name": "Trần Ngô Quốc H",
             "avatar": "https://nextui.org/avatars/avatar-8.png",
-            "feedbacks": "feedback blabla 1...",
-            "isFeedbackApproved": true,
+            "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+            "isFeedbackApproved": "true",
             "reviews": [
                 {
                     "id": "1",
@@ -186,8 +186,8 @@
             "id": "2",
             "name": "Thuỳ N",
             "avatar": "https://nextui.org/avatars/avatar-1.png",
-            "feedbacks": "feedback blabla2...",
-            "isFeedbackApproved": true,
+            "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+            "isFeedbackApproved": "true",
             "reviews": [
                 {
                     "id": "1",
@@ -207,8 +207,8 @@
             "id": "3",
             "name": "Trần Văn T",
             "avatar": "https://nextui.org/avatars/avatar-2.png",
-            "feedbacks": "feedback blabla2...",
-            "isFeedbackApproved": true,
+            "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+            "isFeedbackApproved": "true",
             "reviews": [
                 {
                     "id": "1",
@@ -228,8 +228,8 @@
             "id": "4",
             "name": "Lê Thị N",
             "avatar": "https://nextui.org/avatars/avatar-3.png",
-            "feedbacks": "feedback blabla4...",
-            "isFeedbackApproved": true,
+            "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+            "isFeedbackApproved": "true",
             "reviews": [
                 {
                     "id": "1",

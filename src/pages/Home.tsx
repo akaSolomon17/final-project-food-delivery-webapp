@@ -3,44 +3,22 @@ import { Card, CardBody, CardFooter, Image, Badge, Avatar, Chip } from "@nextui-
 
 import SwiperCustom from "../components/Swiper/SwiperCustom";
 import TestimonialsCards from "../components/Testimonials/TestimonialsCards";
-import { useGetFoodList } from "../apis/getFoodList.api";
+import { useGetExclusiveFoodList } from "../apis/getFoodList.api";
 import { Foods } from "../types/foods.type";
-
-// import { Swiper, SwiperSlide } from 'swiper/react';
-
-const feedbacks = [
-    {
-        id: 1,
-        username: "Zoey Lang",
-        img: "https://nextui.org/avatars/avatar-1.png",
-        description: "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!"
-    },
-    {
-        id: 2,
-        username: "Cha Ji-Hun",
-        img: "https://nextui.org/avatars/avatar-5.png",
-        description: "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!"
-    },
-    {
-        id: 3,
-        username: "Chan Canh-hub",
-        img: "https://nextui.org/avatars/avatar-6.png",
-        description: "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!"
-    },
-    {
-        id: 4,
-        username: "Kim Jung-Woo",
-        img: "https://nextui.org/avatars/avatar-7.png",
-        description: "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!"
-    },
-];
-
-
+import { useGetFeedbacksApprovedList } from "../apis/getFeedbacksList.api";
+import { Feedback } from "../types/feedbacks.type";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
-    const { foodList } = useGetFoodList()
-    const list = foodList?.data || []
+    // Exclusive food list data
+    const { exclusiveFoodList } = useGetExclusiveFoodList()
+    const exclusiveFoodListData = exclusiveFoodList?.data || []
 
+    // Feedbacks approved list data
+    const { feedbacksApprovedList } = useGetFeedbacksApprovedList()
+    const feedbacksApprovedListData = feedbacksApprovedList?.data || []
+
+    const navigate = useNavigate()
 
     return (
         <div>
@@ -49,15 +27,15 @@ const Home: React.FC = () => {
                 <h3 className="text-center text-lg font-normal">Most Popular</h3>
                 <h3 className="text-center text-2xl font-semibold mt-3">Our Exclusive Kimbap</h3>
                 <div className="flex flex-rows justify-center mt-[4rem]">
-                    {list.map((item: Foods, index: number) => (
-                        <Card shadow="sm" className="mx-[30px] max-h-[750px]" key={index} isPressable onPress={() => console.log("item pressed")}>
+                    {exclusiveFoodListData.map((item: Foods, index: number) => (
+                        <Card shadow="sm" className="mx-[30px] max-h-[750px]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
                             <CardBody className="overflow-visible p-0 cardbody h-[420px] max-h-[420px]">
                                 <Image
                                     shadow="sm"
                                     radius="lg"
                                     width="100%"
                                     alt={item.title}
-                                    className="w-full object-cover h-[400px]"
+                                    className="w-full object-cover h-[400px] select-none"
                                     src={item.img}
                                 />
                             </CardBody>
@@ -149,9 +127,9 @@ const Home: React.FC = () => {
                         <h3 className="text-center text-lg font-normal mt-20">Testimonials</h3>
                         <h3 className="text-center text-2xl font-semibold mt-3">What's our customer says?</h3>
                         <div className="flex gap-12 justify-center mt-[4rem]">
-                            <SwiperCustom slidePerView={1} className=" max-w-[25rem] h-[15rem] ">
-                                {feedbacks.map((feedback, index) => (
-                                    <TestimonialsCards key={index} feedbacks={feedback} />
+                            <SwiperCustom slidePerView={1} className=" max-w-[25rem] h-[20rem]">
+                                {feedbacksApprovedListData.map((item: Feedback, index: number) => (
+                                    <TestimonialsCards key={index} feedbacks={item} />
                                 ))}
                             </SwiperCustom>
                         </div>

@@ -1,14 +1,37 @@
 import {useQuery} from "@tanstack/react-query"
 import http from "../utils/http"
 
-export const getFoodList = () => http.get('foodList?_start=0&_limit=4')
 
-// Get all Food
+// Get all food list
+export const getFoodList = () => http.get('foodList')
 
-export const useGetFoodList = ()=>{
+export const useGetFoodList = () => {
     const {data: foodList, ...options} = useQuery({
         queryKey: ["foodList"],
         queryFn: () => getFoodList(),
     })
     return {foodList,...options}
+}
+        
+
+// Get exclusive food list
+export const getExclusiveFoodList = () => http.get('foodList?isExclusive=true')
+
+export const useGetExclusiveFoodList = ()=>{
+    const {data: exclusiveFoodList, ...options} = useQuery({
+        queryKey: ["exclusiveFoodList"],
+        queryFn: () => getExclusiveFoodList(),
+    })
+    return {exclusiveFoodList,...options}
+}
+
+// Get search value
+export const getSearch = (search: string | null) => http.get(`/foodList?title_like=${search}`)
+
+export const useGetSearch = (search: string | null)=>{
+    const {data: searchResult, ...options} = useQuery({
+        queryKey: ["search",search],
+        queryFn: () => getSearch(search),
+    })
+    return {searchResult,...options}
 }

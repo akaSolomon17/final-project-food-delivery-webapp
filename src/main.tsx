@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { NextUIProvider } from '@nextui-org/react'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-
+import ScrollOnTop from "./utils/ScrollOnTop.tsx"
 import App from './App.tsx'
 import './index.css'
 
@@ -16,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <NextUIProvider>
         <Router>
           <ReactQueryDevtools initialIsOpen={true} />
+          <ScrollOnTop />
           <App />
         </Router>
       </NextUIProvider>

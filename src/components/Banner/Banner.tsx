@@ -9,14 +9,14 @@ export const Banner = () => {
 
     return (
         <div>
-            <SwiperCustom slidePerView={1} className='max-h-[34rem]' isBanner={true}>
+            <SwiperCustom slidePerView={1} className='max-h-[34rem]' isBanner={true} isPagination={false}>
                 {bannerListed.map((item: Banners, index: number) =>
                     <Image
                         key={index}
                         alt={item.alt}
                         src={item.img}
                         radius="none"
-                        className='object-center w-full'
+                        className='object-center w-full select-none'
                     />)
                 }
             </SwiperCustom>
