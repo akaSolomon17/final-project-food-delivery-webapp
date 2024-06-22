@@ -1,0 +1,5 @@
+.swiper-wrapper {
+  display: flex;
+  order: 2;
+  height: 425px;
+}

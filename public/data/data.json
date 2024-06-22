@@ -1,0 +1,377 @@
+{
+  "foodList": [
+    {
+      "id": "1",
+      "title": "Kimbap heo galbibi",
+      "priceNumber": 65000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "price": "65.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-bo_wingdd.jpg",
+      "avgRate": 5,
+      "isExclusive": "true"
+    },
+    {
+      "id": "2",
+      "title": "Kimbap bò cay sốt BBQ",
+      "priceNumber": 65000,
+      "description": "Gồm Kimbap TruyềnThống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
+      "category": "Kimbap",
+      "price": "65.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-cay_lihfzr.jpg",
+      "avgRate": 2,
+      "isExclusive": "true"
+    },
+    {
+      "id": "3",
+      "title": "Kimbap Phô Mai",
+      "priceNumber": 65000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "price": "65.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-phomai_gmbenz.jpg",
+      "avgRate": 3,
+      "isExclusive": "false"
+    },
+    {
+      "id": "4",
+      "title": "Kimbap chiên giòn",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
+      "price": "45.000",
+      "priceNumber": 45000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 1,
+      "isExclusive": "true"
+    },
+    {
+      "id": "5",
+      "title": "Kimbap truyền thống",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012571/Final_PRJ_LIFT/Foods/kimbap-truyenthong_x8xaup.jpg",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 4,
+      "isExclusive": "true"
+    },
+    {
+      "id": "6",
+      "title": "Kimbap Gà Giòn",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012570/Final_PRJ_LIFT/Foods/kimbap-gagion_kt5md3.jpg",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "7",
+      "title": "Single Kimbap A",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012569/Final_PRJ_LIFT/Foods/kimbap-single-a_ilocub.jpg",
+      "price": "45.000",
+      "priceNumber": 45000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "8",
+      "title": "Single Kimbap B",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012568/Final_PRJ_LIFT/Foods/kimbap-single-b_c2dev6.jpg",
+      "price": "55.000",
+      "priceNumber": 55000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "9",
+      "title": "Single Kimbap C",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012567/Final_PRJ_LIFT/Foods/kimbap-single-c_iae8xx.jpg",
+      "price": "55.000",
+      "priceNumber": 55000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "10",
+      "title": "Kimbap Sốt Phô Mai Tươi",
+      "priceNumber": 55000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "price": "55.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-sotphomaituoi_yrar9v.jpg",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "11",
+      "title": "Kimbap Bibimbap",
+      "priceNumber": 60000,
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
+      "category": "Kimbap",
+      "price": "60.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-bibimbap_s5mmxr.jpg",
+      "avgRate": 1,
+      "isExclusive": "false"
+    },
+    {
+      "id": "12",
+      "title": "Busan Box",
+      "price": "95.000",
+      "priceNumber": 95000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718856005/Food%20App%20Media/sjx0bvzozfxgehwkslnj.jpg",
+      "description": "Gồm Kimbap Truyền Thống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
+      "category": "Box Yummy",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "13",
+      "title": "Seoul Box",
+      "priceNumber": 105000,
+      "description": "Gồm Kimbap Truyền Thống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
+      "category": "Box Yummy",
+      "price": "105.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718857106/Food%20App%20Media/bdhknpcomrynlqghorx9.jpg",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "14",
+      "title": "Jeju Box",
+      "price": "105.000",
+      "priceNumber": 105000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718940549/Food%20App%20Media/bih5xwo30kfom5d7dq1k.jpg",
+      "description": "Kimbap Heo Galbi + Gà Tẩm Mật Ong + Gimmari",
+      "category": "Box Yummy",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    }
+  ],
+  "foodCategories": [
+    {
+      "id": "1",
+      "name": "Gà",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/ga_ybrwwg.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Kimbap",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/kimbap_qipdxv.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Box Yummy",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/box-yummy_ws1vm0.jpg"
+    },
+    {
+      "id": "4",
+      "name": "Cơm-Canh",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/comcanh_zvylal.jpg"
+    },
+    {
+      "id": "5",
+      "name": "Mỳ Hàn Quốc",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/myhq_r319xg.jpg"
+    },
+    {
+      "id": "6",
+      "name": "Lẩu",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
+    }
+  ],
+  "bannerList": [
+    {
+      "id": "1",
+      "alt": "Banner 50% off",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012157/Final_PRJ_LIFT/Banners/thirdBanner_d2hos7.jpg"
+    },
+    {
+      "id": "2",
+      "alt": "Banner taste asian 15% off",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012157/Final_PRJ_LIFT/Banners/fourthBanner_eik8cw.jpg"
+    },
+    {
+      "id": "3",
+      "alt": "Banner special menu 19% off",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012156/Final_PRJ_LIFT/Banners/firstBanner_t8rzxc.jpg"
+    }
+  ],
+  "userReview": [
+    {
+      "id": "1",
+      "name": "Trần Ngô Quốc H",
+      "avatar": "https://nextui.org/avatars/avatar-8.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 3.5,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Thuỳ N",
+      "avatar": "https://nextui.org/avatars/avatar-1.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 1,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Trần Văn T",
+      "avatar": "https://nextui.org/avatars/avatar-2.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 2,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Lê Thị N",
+      "avatar": "https://nextui.org/avatars/avatar-3.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "false",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 4.5,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Trần NQH",
+      "avatar": "https://nextui.org/avatars/avatar-8.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 2,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Thuỳ NTC",
+      "avatar": "https://nextui.org/avatars/avatar-1.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 3.5,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Trần Văn BV",
+      "avatar": "https://nextui.org/avatars/avatar-2.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "true",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 3,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Lê Thị A",
+      "avatar": "https://nextui.org/avatars/avatar-3.png",
+      "feedback": "Frontend developer and UI/UX enthusiast. Join me on this coding adventure!",
+      "isFeedbackApproved": "false",
+      "reviews": [
+        {
+          "id": "1",
+          "comment": "comment bla bla 1...",
+          "rate": 2,
+          "food_id": "1"
+        },
+        {
+          "id": "2",
+          "comment": "comment bla bla 2...",
+          "rate": 2,
+          "food_id": "3"
+        }
+      ]
+    }
+  ]
+}
