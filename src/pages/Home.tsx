@@ -3,13 +3,13 @@ import { Card, CardBody, CardFooter, Image, Badge, Avatar, Chip } from "@nextui-
 
 import SwiperCustom from "../components/Swiper/SwiperCustom";
 import TestimonialsCards from "../components/Testimonials/TestimonialsCards";
-import { useGetExclusiveFoodList } from "../apis/getFoodList.api";
+import { useGetExclusiveFoodList } from "../apis/products/getFoodList.api";
 import { Foods } from "../types/foods.type";
-import { useGetFeedbacksApprovedList } from "../apis/getFeedbacksList.api";
+import { useGetFeedbacksApprovedList } from "../apis/feedbacks/getFeedbacksList.api";
 import { Feedback } from "../types/feedbacks.type";
 import { useNavigate } from "react-router-dom";
 
-const Home: React.FC = () => {
+const Home = () => {
     // Exclusive food list data
     const { exclusiveFoodList } = useGetExclusiveFoodList()
     const exclusiveFoodListData = exclusiveFoodList?.data || []
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
     return (
         <div>
             <Banner />
-            <div className="most-popular h-[300px] mt-9">
+            <div className="most-popular mt-9">
                 <h3 className="text-center text-lg font-normal">Most Popular</h3>
                 <h3 className="text-center text-2xl font-semibold mt-3">Our Exclusive Kimbap</h3>
                 <div className="flex flex-rows justify-center mt-[4rem]">

@@ -31,7 +31,7 @@ const SwiperCustom: React.FC<SwiperComponentProps> = (props) => {
     return (
         <div className="mx-auto">
             <Swiper {...swiperProps}>
-                {props.isPagination && <SwiperNavigateBtn headerContent={props.headerContent}></SwiperNavigateBtn>}
+                {!props.isPagination && <SwiperNavigateBtn headerContent={props.headerContent}></SwiperNavigateBtn>}
                 {props.children.map((child, index) =>
                 (
                     <SwiperSlide key={index} className='flex items-center justify-center text-center text-sm bg-white '>

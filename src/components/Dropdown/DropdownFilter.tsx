@@ -1,18 +1,44 @@
-import React from 'react'
-import { Radio, RadioGroup, Slider, Dropdown, DropdownSection, Checkbox, DropdownTrigger, Button, DropdownMenu, DropdownItem, Input, } from '@nextui-org/react'
+import React, { useState } from 'react'
+import { Radio, RadioGroup, Slider, Dropdown, DropdownSection, Checkbox, DropdownTrigger, Button, DropdownMenu, DropdownItem, Input, CheckboxGroup, } from '@nextui-org/react'
 import { IoFilterOutline, IoRemoveOutline } from "react-icons/io5";
 import { StarIcon } from "../StarRating/Star";
+// import { FilterValuesProps } from '../../types/filters.type';
+import './DropdownFilter.css'
+import { useGetFoodFiltered } from '../../apis/products/getFoodFiltered.api';
+const disableHover = "disable-hover border-0"
 
 const DropdownFilter = () => {
-  const [value, setValue] = React.useState<number[]>([100, 300]);
+  const [filterValue, setFilterValue] = useState([30000, 300000]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = React.useState<string[]>([]);
+  const [selectedRating, setSelectedRating] = useState('0');
+
+  const { foodFiltered } = useGetFoodFiltered(filterValue[0], filterValue[1], selectedCheckboxes, Number(selectedRating))
+
+
+  // HANDLE EVENT
+  const handlePriceChange = (value: number | number[]) => {
+    if (Array.isArray(value)) {
+      setFilterValue(value)
+    }
+  };
 
   const handleOnChangeValueSlider = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setValue(value);
+      setFilterValue(value)
     }
   }
 
-  const disableHover = "hover:bg-transparent cursor-default border-0 flex justify-center"
+  const handleCheckboxChange = (value: string[]) => {
+    setSelectedCheckboxes(value);
+  }
+
+  const handleRadioChange = (value: string) => {
+    setSelectedRating(value);
+  };
+  const handleApplyFilters = () => {
+    console.log("🚀 ~ foodFiltered:", foodFiltered?.data);
+
+  };
 
   return (
     <div>
@@ -35,74 +61,78 @@ const DropdownFilter = () => {
             <IoFilterOutline size={35} />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu variant="faded" >
+        <DropdownMenu variant="faded"
+        >
           {/* FILTER */}
           <DropdownSection title="FILTER" showDivider >
-            <DropdownItem key="option1" className={disableHover} textValue="Kimbap">
-              <Checkbox value="tokyo" radius='none'>Kimbap</Checkbox>
-            </DropdownItem>
-            <DropdownItem key="option2" className={disableHover} textValue="Tokbokki">
-              <Checkbox value="buenos-aires" radius='none'>Tokbokki</Checkbox>
-            </DropdownItem>
-            <DropdownItem key="option3" className={disableHover} textValue="Gà">
-              <Checkbox value="sydney" radius='none'>Gà</Checkbox>
-            </DropdownItem>
-            <DropdownItem key="option4" className={disableHover} textValue="Lẩu">
-              <Checkbox value="san-francisco" radius='none'>Lẩu</Checkbox>
+            <DropdownItem key="option1" className={disableHover} textValue="Kimbap" >
+              <CheckboxGroup value={selectedCheckboxes} onChange={handleCheckboxChange}>
+                <Checkbox value="Kimbap" radius='none' >Kimbap</Checkbox>
+                <Checkbox value="Tokbokki" radius='none'>Tokbokki</Checkbox>
+                <Checkbox value="Gà" radius='none'>Gà</Checkbox>
+                <Checkbox value="Lẩu" radius='none'>Lẩu</Checkbox>
+              </CheckboxGroup>
             </DropdownItem>
           </DropdownSection >
           {/* PRICE */}
           <DropdownSection title="PRICE" className="" showDivider>
-            <DropdownItem isReadOnly className="hover:bg-transparent cursor-default border-0" textValue={`Price Slider from ₫${value[0]} to ₫${value[1]}`}>
+            <DropdownItem className={disableHover} textValue="Price Slider" isReadOnly>
               <div className="flex flex-row items-center justify-between">
                 <Input
                   radius="sm"
                   type="number"
                   defaultValue="0"
-                  value="10000"
+                  value={`${filterValue[0]}`}
                   className="max-w-[10rem] w-[100px]"
                   endContent="₫"
+                  onChange={(e) => handlePriceChange([Number(e.target.value), filterValue[1]])}
                 />
                 <IoRemoveOutline className="" />
                 <Input
                   radius="sm"
                   type="number"
                   defaultValue="0"
-                  value="100000"
+                  value={`${filterValue[1]}`}
                   className="max-w-[10rem] w-[100px]"
                   endContent="₫"
+                  onChange={(e) => handlePriceChange([filterValue[0], Number(e.target.value)])}
                 />
               </div>
-              <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
+              <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center mt-2">
                 <Slider
                   label="Select a budget"
                   formatOptions={{ style: "currency", currency: "VND" }}
                   step={5000}
                   maxValue={300000}
                   minValue={30000}
-                  value={value}
+                  defaultValue={[30000, 300000]}
+                  value={filterValue}
                   onChange={handleOnChangeValueSlider}
                   className="max-w-md"
+                // color="foreground"
                 />
                 <p className="text-default-500 font-medium text-small">
-                  Selected budget: {Array.isArray(value) && value.map((b) => `₫${b}`).join(" – ")}
-                  {/* ... products found */}
+                  {/* Selected budget: {Array.isArray(filterValue) && filterValue.map((b) => `₫${b}`).join(" – ")} */}
+                  0 products found
                 </p>
               </div>
             </DropdownItem>
           </DropdownSection>
           {/* CUSTOMER REVIEW */}
           <DropdownSection title="CUSTOMER REVIEW">
-            <DropdownItem key="option1" className={disableHover} isReadOnly textValue="Any Rating">
-              <RadioGroup >
-                <Radio value="any-rate">Any Rating</Radio>
-                <Radio value="4stars" className="radio-btn"><StarIcon size={15} value={4} /> & Up</Radio>
-                <Radio value="3stars" className="radio-btn"><StarIcon size={15} value={3} /> & Up</Radio>
-                <Radio value="2stars" className="radio-btn"><StarIcon size={15} value={2} /> & Up</Radio>
+            <DropdownItem key="option1" className={disableHover} textValue="Any Rating" isReadOnly>
+              <RadioGroup
+                value={selectedRating}
+                onChange={(e) => handleRadioChange(e.target.value)}
+              >
+                <Radio value="0"> Any Rating</Radio>
+                <Radio value="4" className="radio-btn"  ><StarIcon size={15} value={4} /> & Up</Radio>
+                <Radio value="3" className="radio-btn"  ><StarIcon size={15} value={3} /> & Up</Radio>
+                <Radio value="2" className="radio-btn"  ><StarIcon size={15} value={2} /> & Up</Radio>
               </RadioGroup>
             </DropdownItem>
-            <DropdownItem className="apply-btn hover:bg-transparent cursor-default border-0 hover:bg-white" textValue='none' closeOnSelect>
-              <Button color="primary" radius='full' className='h-[30px]'>
+            <DropdownItem className="apply-btn border-0 disable-hover" textValue='none' closeOnSelect>
+              <Button color='primary' radius='full' className='h-[30px]' onClick={handleApplyFilters}>
                 Apply Filter
               </Button>
             </DropdownItem>

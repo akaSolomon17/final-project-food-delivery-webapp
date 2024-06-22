@@ -1,89 +1,71 @@
-import React from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { SearchBar } from '../../components/SearchBar/SearchBar'
 import { Banner } from '../../components/Banner/Banner';
 
 import { BsCartPlus } from "react-icons/bs";
 
-import { Card, CardBody, CardFooter, Chip, Image } from '@nextui-org/react';
+import { Button, Card, CardBody, CardFooter, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import LoadMore from '../../components/LoadMore/LoadMore';
 import SwiperCustom from '../../components/Swiper/SwiperCustom';
-
-const list = [
-  {
-    id: 1,
-    title: "Kimbap Heo Galbi",
-    img: "/foods/kimbap-bo.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng trong hộp giấy xinh xắn."
-  },
-  {
-    id: 2,
-    title: "Kimbap bò cay sốt BBQ",
-    img: "/foods/kimbap-cay.jpg",
-    price: "65.000",
-    description: `BEST SELLER - Kimbap với nhân Thịt bò ba chỉ Mỹ thấm ướp gia vị kèm sốt BBQ thơm cay. Sản phẩm được đựng vào hộp giấy xinh xắn.`
-  },
-  {
-    id: 3,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 4,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 5,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 6,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 5,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 7,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 8,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  },
-  {
-    id: 9,
-    title: "Kimbap Phô Mai",
-    img: "/foods/kimbap-phomai.jpg",
-    price: "65.000",
-    description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-  }
-];
+import { Food } from '../../types/foods.type';
+import { useGetFoodList } from '../../apis/products/getFoodList.api';
+import { useLoadMoreFetch } from '../../apis/loadMoreFetch.api';
+import { IoIosArrowDropdown } from 'react-icons/io';
 
 const Products = () => {
   const navigate = useNavigate();
+
+  // GET FOOD LIST
+  const { data: foodList, isLoading, isError } = useGetFoodList()
+
+  // GET FOOD LIST LOAD MORE BY PAGE
+  const [page, setPage] = useState(1)
+  const [data, setData] = useState<Food[]>([])
+  const [selectedKeys, setSelectedKeys] = useState<string>("Newest")
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", ").split("_").join(" "),
+    [selectedKeys]
+  );
+
+  // GET FOOD LIST LOAD MORE BY PAGE and SORT ORDER
+  const { data: foodLoadMore, totalPages, isLoading: isLoadingLoadMore, refetch } = useLoadMoreFetch(
+    'foodList',
+    page,
+    4,
+    selectedValue === "Newest" || selectedValue === "Oldest" ? 'id' : 'avgRate',
+    selectedValue === 'Newest' || selectedValue === 'RatingUp' ? 'desc' : 'asc'
+  )
+
+  useEffect(() => {
+    if (foodLoadMore) {
+      setData((prevData) => {
+        if (page === 1) {
+          return foodLoadMore;
+        }
+        const newData = foodLoadMore.filter((item: Food) => !prevData.some(prevItem => prevItem.id === item.id));
+        return [...prevData, ...newData];
+      });
+    }
+  }, [page, foodLoadMore])
+
+  useEffect(() => {
+    refetch()
+    setPage(1);
+  }, [refetch, selectedValue]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading food list.</div>;
+  }
+
+  const handleSelectionChange = (keys: Selection | string) => {
+    setSelectedKeys(keys);
+  }
   return (
     <div className='flex flex-col gap-12'>
       <div className='flex justify-center mt-10'>
@@ -95,8 +77,8 @@ const Products = () => {
       {/* RECOMMENDED */}
       <div className="recommended">
         <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} headerContent='Recommended' isBanner={false}>
-          {list.map((item, index) => (
-            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
+          {foodList?.data?.map((item: Food) => (
+            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={item.id} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
                   shadow="sm"
@@ -124,8 +106,8 @@ const Products = () => {
       {/* BEST SELLER */}
       <div className="best-seller">
         <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} headerContent='Best Seller' isBanner={false}>
-          {list.map((item, index) => (
-            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
+          {foodList?.data?.map((item: Food) => (
+            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={item.id} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
                   shadow="sm"
@@ -152,11 +134,32 @@ const Products = () => {
       </div>
       {/* ALL PRODUCT */}
       <div className="all-products flex flex-col items-center">
-        <div className="flex flex-row justify-evenly gap-x-[66rem] items-center">
+        <div className="flex flex-row justify-evenly gap-x-[64rem] items-center">
           <h1 className='font-sans font-bold text-4xl select-none'>All Product</h1>
+          <div className="dropdown">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="bordered" endContent={<IoIosArrowDropdown color='#777E90' size={20} />} disableAnimation>
+                  {selectedValue}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Static Actions"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={selectedKeys}
+                onSelectionChange={handleSelectionChange}
+              >
+                <DropdownItem key="Newest" textValue='Newest'>Newest</DropdownItem>
+                <DropdownItem key="Oldest" textValue='Oldest'>Oldest</DropdownItem>
+                <DropdownItem key="RatingUp" textValue='RatingUp'>Rating Up</DropdownItem>
+                <DropdownItem key="RatingDown" textValue='RatingDown'>Rating Down</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
         <div className="flex flex-rows gap-9 flex-wrap justify-center mt-[4rem] max-w-[96rem]">
-          {list.map((item, index) => (
+          {data?.map((item: Food, index: number) => (
             <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem] items-start" key={index} isPressable onPressEnd={() => { navigate(`/product-details/${item.id}`) }}>
               <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                 <Image
@@ -182,10 +185,9 @@ const Products = () => {
           ))}
         </div>
       </div>
-      {/* Load more, if the row are 3 then show button 
-      if click isLoading = true and show 3 more row
-      */}
-      <LoadMore content='Load more 100+' />
+      {totalPages && page < totalPages && (
+        <LoadMore content={isLoadingLoadMore ? 'Loading...' : 'Load more foods'} clickEvent={() => setPage(page + 1)} />
+      )}
     </div>
   )
 }

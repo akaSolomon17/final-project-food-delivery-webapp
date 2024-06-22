@@ -1,0 +1,10 @@
+.disable-hover[data-hover="true"],
+.disable-hover[data-focus="true"] {
+  background-color: transparent !important;
+  cursor: pointer !important;
+}
+.radio-btn span.text-foreground {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}

@@ -1,11 +1,12 @@
 export interface Food {
-    id: string,
+    id: string | undefined | null ,
     title: string,
     price: string,
-    img: string,
-    description: string,
+    priceNumber: number,
+    img: string | undefined,
+    description?: string,
     category: string,
-    avgRating: number, //calc by user rating
+    avgRate: number, //calc by user rating
     isExclusive: string
 }
 
@@ -19,4 +20,26 @@ export interface FoodPaginate {
     data: Food[]
 }
 
+export interface FoodCategory {
+    id: string,
+    name: string,
+    img: string
+}
+
+export interface FoodCreate {
+    id?: string | null,
+    title: string,
+    price?: string | null,
+    img: FileList,
+    priceNumber: number ,
+    description?: string,
+    category: string,
+    avgRate?: number | null, //calc by user rating
+    isExclusive?: string | null
+}
+
+export type FoodUpdate = Omit<FoodCreate,'price'|'img'| 'avgRate' | 'isExclusive'>
+
+
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
+

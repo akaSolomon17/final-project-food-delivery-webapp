@@ -3,7 +3,7 @@ import { FaSquareXTwitter, FaSquareFacebook, FaLinkedin, FaSquareInstagram } fro
 
 const Footer = () => {
     return (
-        <div>
+        <div className='footer'>
             <div className="page-footer w-full h-[20rem] mt-14 border-t-1 shadow-inner bg-[#f7fafc93] flex flex-col justify-center select-none">
                 <h1 className="font-semibold font-sans ms-[21rem] text-lg">Deok Sun Korean Food.</h1>
                 <div className="flex footer-info self-center mt-[1rem] justify-center">
@@ -35,8 +35,8 @@ const Footer = () => {
                     </ul>
                     <ul className="flex flex-col gap-1">
                         <p className="font-sans font-semibold">Get the app</p>
-                        <li><img src="badges\apple-badge.png" alt="Apple Badge" className="mt-3" /></li>
-                        <li><img src="badges\google-badge.png" alt="Google Badge" className="max-w-[45%] mt-3" /></li>
+                        <li><img src="./badges/apple-badge.png" alt="Apple Badge" className="mt-3" /></li>
+                        <li><img src="./badges/google-badge.png" alt="Google Badge" className="max-w-[45%] mt-3" /></li>
                     </ul>
                 </div>
                 <span className="text-default w-full font-normal text-right pe-[30rem] mt-10">Copyright © 2020. All rights reserved.</span>

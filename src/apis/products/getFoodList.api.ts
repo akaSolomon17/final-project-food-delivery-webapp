@@ -1,16 +1,17 @@
 import {useQuery} from "@tanstack/react-query"
-import http from "../utils/http"
+import http from "../../utils/http"
 
 
 // Get all food list
 export const getFoodList = () => http.get('foodList')
 
 export const useGetFoodList = () => {
-    const {data: foodList, ...options} = useQuery({
+    const queryResult = useQuery({
         queryKey: ["foodList"],
         queryFn: () => getFoodList(),
+        // enabled: foodList?.length > 0 
     })
-    return {foodList,...options}
+    return queryResult
 }
         
 

@@ -1,15 +1,15 @@
-import { Avatar, Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, } from "@nextui-org/react";
+import { Avatar, Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Spinner, } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 import { RiArrowDropDownFill, RiDiscountPercentFill } from "react-icons/ri";
 import React, { useRef, useState } from "react";
 
 import './SearchBar.css'
 import DropdownFilter from "../Dropdown/DropdownFilter";
-import { useGetSearch } from "../../apis/getFoodList.api";
+import { useGetSearch } from "../../apis/products/getFoodList.api";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "../../utils/debounce";
 
 export const SearchBar = () => {
-    const typingTimeoutRef = useRef<number | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate()
 
@@ -17,14 +17,23 @@ export const SearchBar = () => {
     const [searchKeyword, setSearchKeyword] = useState<string>('null');
     const [activeSearch, setActiveSearch] = useState<{ id: string, title: string, img: string }[]>([]);
 
-    const { searchResult } = useGetSearch(searchKeyword)
+    const { searchResult, isLoading } = useGetSearch(searchKeyword)
 
-    // Get only title and img from search result
+    // Get id, title and img from search result
     const foodListSearchData = searchResult?.data?.map(((item: { id: string, title: string, img: string }) => ({
         id: item.id,
         title: item.title,
         img: item.img
     })));
+
+    const debouncedSearch = debounce((value: string) => {
+        setSearchKeyword(value);
+        setActiveSearch(foodListSearchData &&
+            foodListSearchData.filter(
+                (item: { id: string, title: string, img: string }) => item.title.toLowerCase().includes(value.toLowerCase())
+            )
+        );
+    }, 500);
 
     // Handle search trigger
     const handleSearchTrigger = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,19 +44,8 @@ export const SearchBar = () => {
             setActiveSearch([])
             return false
         }
-
-        if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-        }
-
-        typingTimeoutRef.current = window.setTimeout(() => {
-            setSearchKeyword(value)
-            setActiveSearch(foodListSearchData &&
-                foodListSearchData.filter(
-                    (item: { id: string, title: string, img: string }) => item.title.toLowerCase().includes(value.toLowerCase())
-                )
-            )
-        }, 500);
+        //Debounce search
+        debouncedSearch(value)
     }
 
     // Handle item click
@@ -87,7 +85,6 @@ export const SearchBar = () => {
                     <div className="search-bar relative">
                         <div className="w-fit h-[3rem] flex justify-center items-center text-black">
                             <Input
-                                isClearable
                                 ref={inputRef}
                                 label="Search"
                                 size="sm"
@@ -118,17 +115,20 @@ export const SearchBar = () => {
                                 startContent={
                                     <IoIosSearch />
                                 }
+                                endContent={
+                                    isLoading && <Spinner color="primary" labelColor="foreground" size="sm" />
+                                }
                                 type="text"
                                 onChange={(e) => (handleSearchTrigger(e))}
                             // onFocusChange={() => this.value = ""}
                             />
                         </div>
-                        {activeSearch.length > 0 &&
+                        {activeSearch?.length > 0 &&
                             <div className="search-dropdown absolute top-14 p-4 shadow-lg border-1 bg-white text-black w-full rounded-xl left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50 overflow-y-scroll max-h-[300px]">
                                 {activeSearch.map((item, index) => (
                                     <div key={index}
                                         className='cursor-pointer w-full h-full text-left' onClick={() => handleItemClick(item?.id)}>
-                                        <div className="flex">
+                                        <div className="flex items-center">
                                             <Avatar
                                                 isBordered
                                                 size="lg"
@@ -136,9 +136,9 @@ export const SearchBar = () => {
                                                 src={item?.img || ""}
                                                 className="w-10 h-10 object-cover me-5"
                                             />
-                                            {item?.title}
+                                            <div className="">{item?.title}</div>
                                         </div>
-                                        <Divider className="mt-3" />
+                                        <Divider className=" mt-2" />
                                     </div>
                                 ))}
                             </div>

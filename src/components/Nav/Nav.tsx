@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip, Badge } from "@nextui-org/react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
@@ -16,19 +16,19 @@ const link = [
         icon: null
     },
     {
-        name: "About",
-        link: "/about",
+        name: "Your Order",
+        link: "/your-order",
         icon: null
     },
     {
         name: "Cart",
         link: "/cart-detail",
-        icon: <PiShoppingCartSimple />
+        icon: <Badge color="danger" content={1} size="sm" shape="circle"><PiShoppingCartSimple /></Badge>
     },
     {
-        name: "Swiper",
-        link: "/swiper",
-        icon: <LuUser2 />
+        name: "Managements",
+        link: "/managements",
+        icon: <Badge content="" size="sm" color="success" shape="circle" placement="bottom-right"><LuUser2 /></Badge>
     },
 ]
 
@@ -76,8 +76,8 @@ export default function App() {
                         </Switch>
                     </NavbarItem>
                     {link.map((item, index) =>
-                    (<NavbarItem key={index}>
-                        <NavLink className={({ isActive }) => (isActive ? "text-red-500" : "text-black")} to={item.link}>
+                    (<NavbarItem key={index} className="items-center justify-center">
+                        <NavLink className={({ isActive }) => (isActive ? "text-red-500 items-center" : "text-black items-center")} to={item.link}>
                             {item.icon}
                         </NavLink>
                     </NavbarItem>))}

@@ -1,5 +1,5 @@
 import { Image } from '@nextui-org/image'
-import { useGetBannerList } from '../../apis/getBannerList.api'
+import { useGetBannerList } from '../../apis/banners/getBannerList.api'
 import SwiperCustom from '../Swiper/SwiperCustom'
 import { Banners } from '../../types/banner.type'
 

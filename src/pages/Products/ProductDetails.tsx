@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LoadMore from '../../components/LoadMore/LoadMore';
 import { Image, Button, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, Card, CardBody, CardFooter, Chip } from '@nextui-org/react'
 import { useNavigate, useParams } from "react-router-dom"
@@ -11,98 +11,94 @@ import { ImSpoonKnife } from "react-icons/im";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";
 import { IoIosArrowDropdown } from "react-icons/io";
+
 import SwiperCustom from '../../components/Swiper/SwiperCustom';
-import { useGetFoodById } from '../../apis/getFoodById.api';
+import { useGetFoodById } from '../../apis/products/getFoodById.api';
+import { useGetFoodListRecommended } from '../../apis/products/getFoodListRecommended.api';
+import { Food } from '../../types/foods.type';
+import { useLoadMoreFetch } from '../../apis/loadMoreFetch.api';
+import { Feedback, Reviews } from '../../types/feedbacks.type';
+import { useGetReviewsList } from '../../apis/feedbacks/getReviewsList.api';
 
-// import { useGetFoodById } from '../../apis/getFoodById.api';
 
-const list = [
-    {
-        id: 1,
-        title: "Kimbap Heo Galbi",
-        img: "/foods/kimbap-bo.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng trong hộp giấy xinh xắn."
-    },
-    {
-        id: 2,
-        title: "Kimbap bò cay sốt BBQ",
-        img: "/foods/kimbap-cay.jpg",
-        price: "65.000",
-        description: `BEST SELLER - Kimbap với nhân Thịt bò ba chỉ Mỹ thấm ướp gia vị kèm sốt BBQ thơm cay. Sản phẩm được đựng vào hộp giấy xinh xắn.`
-    },
-    {
-        id: 3,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 4,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 5,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 6,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 5,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 7,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 8,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    },
-    {
-        id: 9,
-        title: "Kimbap Phô Mai",
-        img: "/foods/kimbap-phomai.jpg",
-        price: "65.000",
-        description: "Sản phẩm được đựng vào hộp giấy xinh xắn."
-    }
-];
 const ProductDetails = () => {
-    const [selectedKeys, setSelectedKeys] = React.useState<string>("Newest");
+    const [selectedKeys, setSelectedKeys] = useState(new Set(["Newest"]));
+    const [quantity, setQuantity] = useState<number>(1)
+
     const { productId } = useParams();
     const navigate = useNavigate()
 
     const { foodId } = useGetFoodById(productId || "0")
     const foodIdData = foodId?.data || {
-        id: "4",
+        id: "0",
         avgRate: 1,
         categoryId: "",
         description: "Description is not available!",
-        img: "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
+        img: "https://res.cloudinary.com/dooge27kv/image/upload/v1718340358/Error/unavailable-image_ndp6qa.jpg",
         isExclusive: "false",
-        price: "45.000",
-        title: "Kimbap chiên giòn"
+        price: "NaN",
+        title: "Title is not available!"
+    }
+
+    // GET Recommended food list and exclude the current food from list
+    const { recommendedResult } = useGetFoodListRecommended(foodIdData.category, foodIdData.id)
+    const foodListRecommended = recommendedResult?.data || []
+
+    // GET comment by page & limit
+    const [page, setPage] = useState<number>(1)
+    const [data, setData] = useState<Feedback[]>([])
+
+    const selectedValue = React.useMemo(
+        () => Array.from(selectedKeys).join(", ").split("_").join(" "),
+        [selectedKeys]
+    );
+
+    const { data: commentLoadMore, totalPages, isLoading, refetch } = useLoadMoreFetch(
+        'userReview',
+        page,
+        2,
+        'id',
+        selectedValue === 'Newest' ? 'desc' : 'asc')
+
+    useEffect(() => {
+        if (commentLoadMore) {
+            setData((prevData) => {
+                if (page === 1) {
+                    return commentLoadMore;
+                }
+                const newData = commentLoadMore.filter((item: Food) => !prevData.some(prevItem => prevItem.id === item.id));
+                return [...prevData, ...newData];
+            });
+        }
+    }, [page, commentLoadMore])
+
+    useEffect(() => {
+        refetch()
+        setPage(1); // Reset page về 1 khi thay đổi sắp xếp
+    }, [refetch, selectedValue]);
+
+    const handleAddToCart = (productId: string, productName: string) => {
+        const cart = JSON.parse(localStorage.getItem('cart') ?? "[]");
+        console.log("🚀 ~ cart:", cart);
+        const existingProduct = cart.find((item: { id: string }) => item.id === productId);
+
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
+        } else {
+            cart.push({ id: productId, quantity });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`Thêm ${productName} vào giỏ hàng thành công!`);
+    }
+
+    // HANDLE QUANTITY
+    const handleIncrementQuantity = () => {
+        setQuantity(prevQuantity => prevQuantity + 1);
+    }
+
+    const handleDecrementQuantity = () => {
+        setQuantity(prevQuantity => Math.max(1, prevQuantity - 1));
     }
 
     return (
@@ -115,18 +111,18 @@ const ProductDetails = () => {
             <div className="dynamic-products flex gap-24 justify-center">
                 <Image alt='product-img' src={foodIdData.img} shadow='sm' width={541} height={496} />
                 <div className="flex flex-col product-info gap-8">
-                    <h1 className='font-extrabold font-lato text-4xl'>{foodIdData.title}</h1>
+                    <h1 className='font-extrabold font-sans text-3xl'>{foodIdData.title}</h1>
                     <p className='font-lato font-extrabold text-2xl '>{foodIdData.price + " VND"}</p>
                     <p className='font-lato font-normal text-lg max-w-[450px]'>{foodIdData.description}</p>
                     <p className='font-lato font-normal text-[#626264] text-lg flex items-center gap-2'><ImSpoonKnife />{foodIdData.category}</p>
                     <div className='flex items-center gap-4'>
-                        <Button radius='full'><AiOutlineMinus /></Button>
-                        <h1 className='font-lato font-semibold'>1</h1>
-                        <Button radius='full'><AiOutlinePlus /></Button>
+                        <Button radius='full' onClick={handleDecrementQuantity}><AiOutlineMinus /></Button>
+                        <h1 className='font-lato font-semibold'>{quantity}</h1>
+                        <Button radius='full' onClick={handleIncrementQuantity}><AiOutlinePlus /></Button>
                     </div>
                     <div className="flex gap-4">
                         <Button className='bg-black text-white font-lato w-[15rem]' radius='full'>Order Now</Button>
-                        <Button className='bg-white font-lato w-[9rem] border-2' radius='full' startContent={<BiSolidCart color='#BCBFC2' size={18} />}>Add to Cart</Button>
+                        <Button className='bg-white font-lato w-[9rem] border-2' radius='full' onClick={() => handleAddToCart(foodIdData.id, foodIdData.title)} startContent={<BiSolidCart color='#BCBFC2' size={18} />}>Add to Cart</Button>
                     </div>
                 </div>
             </div>
@@ -164,7 +160,7 @@ const ProductDetails = () => {
                             <Dropdown>
                                 <DropdownTrigger>
                                     <Button variant="bordered" endContent={<IoIosArrowDropdown color='#777E90' size={20} />} disableAnimation>
-                                        {selectedKeys}
+                                        {selectedValue}
                                     </Button>
                                 </DropdownTrigger>
                                 <DropdownMenu
@@ -172,56 +168,45 @@ const ProductDetails = () => {
                                     disallowEmptySelection
                                     selectionMode="single"
                                     selectedKeys={selectedKeys}
-                                    onSelectionChange={() => (setSelectedKeys)}
+                                    onSelectionChange={setSelectedKeys}
                                 >
                                     <DropdownItem key="Newest" textValue='Newest'>Newest</DropdownItem>
                                     <DropdownItem key="Oldest" textValue='Oldest'>Oldest</DropdownItem>
-                                    <DropdownItem key="Rate" textValue='Rating'>Rating</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
                     </div>
-                    <div className="comments flex justify-between pb-7 border-b">
-                        <div>
-                            <Avatar src="https://nextui.org/avatars/avatar-5.png" />
-                        </div>
-                        <div className='max-w-[405px] gap-3'>
-                            <div className='flex justify-between '>
-                                <h1 className='text-xl font-bold'>Kim Jong Sik</h1>
-                                <StarIcon size={16} value={4} />
+                    {
+                        data.map((item: Feedback, index: number) => (
+                            <div className="comments flex justify-evenly pb-7 border-b" key={index}>
+                                <div>
+                                    <Avatar src={item.avatar} />
+                                </div>
+                                <div className='min-w-[405px] gap-3'>
+                                    <div className='flex justify-between '>
+                                        <h1 className='text-xl font-bold'>{item.name}</h1>
+                                        <StarIcon size={16} value={item.reviews?.[0].rate} />
+                                    </div>
+                                    <p className='text-lg'>{item.reviews?.[0].comment}</p>
+                                    <div className='font-lato flex gap-3'>
+                                        <h3 className='font-normal text-[#777E90]'>about 1 hour ago</h3>
+                                        <h2 className='font-semibold'>Like</h2>
+                                        <h2 className='font-semibold'>Reply</h2>
+                                    </div>
+                                </div>
                             </div>
-                            <p className='text-lg'>Frontend developer and UI/UX enthusiast. Join me on this coding adventure!</p>
-                            <div className='font-lato flex gap-3'>
-                                <h3 className='font-normal text-[#777E90]'>about 1 hour ago</h3>
-                                <h2 className='font-semibold'>Like</h2>
-                                <h2 className='font-semibold'>Reply</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="comments flex justify-between pb-7 border-b">
-                        <div>
-                            <Avatar src="https://nextui.org/avatars/avatar-6.png" />
-                        </div>
-                        <div className='max-w-[405px] gap-3 '>
-                            <div className='flex justify-between'>
-                                <h1 className='text-xl font-bold'>Kim Jong Sik</h1>
-                                <StarIcon size={16} value={2} />
-                            </div>
-                            <p className='text-lg'>Frontend developer and UI/UX enthusiast. Join me on this coding adventure!</p>
-                            <div className='font-lato flex gap-3'>
-                                <h3 className='font-normal text-[#777E90]'>about 1 hour ago</h3>
-                                <h2 className='font-semibold'>Like</h2>
-                                <h2 className='font-semibold'>Reply</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <LoadMore content='Loading comment' />
+                        ))
+                    }
+                    {
+                        totalPages && page < totalPages && (
+                            <LoadMore content={isLoading ? 'Loading...' : 'Load more comments'} clickEvent={() => setPage(page + 1)} />
+                        )
+                    }
                 </div>
                 <div className="also-like max-h-[30rem] mb-20">
-                    <h1 className='font-extrabold font-lato text-4xl ms-[18.3rem] mb-10'>You may also like</h1>
-                    <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} isBanner={false}>
-                        {list.map((item, index) => (
-                            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={index} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
+                    <SwiperCustom slidePerView={4} className='w-[83rem] h-full flex flex-col' isPagination={false} isBanner={false} headerContent='You may also like'>
+                        {foodListRecommended.map((item: Food) => (
+                            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem]" key={item.id} isPressable onPress={() => navigate(`/product-details/${item.id}`)}>
                                 <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
                                     <Image
                                         shadow="sm"

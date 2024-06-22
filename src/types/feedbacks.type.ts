@@ -4,7 +4,7 @@ export interface Feedback {
     "avatar": string,
     "feedback": string,
     "isFeedbackApproved": string,
-    "reviews": [Reviews]
+    "reviews": Reviews[]
 }
 
 export interface Reviews {

@@ -12,8 +12,27 @@ export default {
       fontFamily: {
         lato: ["Lato", "sans-serif"],
       },
+      light: {
+        // ...
+        color: {
+          black: "#000000",
+        },
+      },
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      theme: {
+        extend: {
+          light: {
+            // ...
+            colors: {
+              black: "#000000",
+            },
+          },
+        },
+      },
+    }),
+  ],
 };
