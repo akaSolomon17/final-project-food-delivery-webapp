@@ -16,9 +16,9 @@ const Products = () => {
   // GET FOOD LIST LOAD MORE BY PAGE
   const [page, setPage] = useState(1)
   const [data, setData] = useState<Food[]>([])
-  const [selectedKeys, setSelectedKeys] = useState<string>("Newest")
+  const [selectedKeys, setSelectedKeys] = useState<string | Set<string>>(new Set(["Newest"]))
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [filterValue, setFilterValue] = useState([30000, 300000]);
   const [selectedCheckboxes, setSelectedCheckboxes] = React.useState<string[]>([]);
   console.log("🚀 ~ selectedCheckboxes:", selectedCheckboxes);
@@ -43,23 +43,24 @@ const Products = () => {
       setSelectedRating(rating);
     }
   }, [searchParams]);
+
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").split("_").join(" "),
     [selectedKeys]
   );
 
+  // FETCH DATA WITH SEARCH PARAMS
   const { data: fetchFilterSort, totalPages, isLoading: isLoadingLoadMore, refetch } = useLoadMoreFetch(
     'foodList',
     page,
     4,
     true,
-    selectedValue === "Newest" || selectedValue === "Oldest" ? 'id' : 'avgRate',
-    selectedValue === 'Newest' || selectedValue === 'RatingUp' ? 'desc' : 'asc',
+    selectedValue === "Newest" || selectedValue === "Oldest" ? 'id' : 'avgRate', // SỬA LẠI VỚI TYPES ENUM
+    selectedValue === 'Newest' || selectedValue === 'RatingUp' ? 'desc' : 'asc', // SỬA LẠI VỚI TYPES ENUM
     filterValue[0],
     filterValue[1],
     selectedCheckboxes,
     Number(selectedRating))
-  console.log("🚀 ~ fetchFilterSort:", fetchFilterSort);
 
   useEffect(() => {
     if (fetchFilterSort) {
@@ -76,7 +77,7 @@ const Products = () => {
   useEffect(() => {
     refetch()
     setPage(1);
-  }, [refetch, selectedValue]);
+  }, [refetch, selectedValue, filterValue]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -87,14 +88,14 @@ const Products = () => {
   }
 
   const handleSelectionChange = (keys: Selection | string | Set<Key>) => {
-    setSelectedKeys(keys as SetStateAction<string>);
+    setSelectedKeys(keys as SetStateAction<string | Set<string>>);
   }
 
   return (
     <div className='flex flex-col gap-12'>
       <div className='flex justify-center mt-10'>
         <div className="flex gap-16">
-          <SearchBar />
+          <SearchBar isProductDetails={false} />
         </div>
       </div>
       <Banner />

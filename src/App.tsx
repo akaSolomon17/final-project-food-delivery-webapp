@@ -11,6 +11,7 @@ import YourOrder from './pages/YourOrder'
 import Footer from './components/Footer/Footer'
 import ProductsManagement from './pages/ProductsManagement'
 import ProductDetails from './pages/Products/ProductDetails'
+import SuccessOrders from './pages/SuccessOrders'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path='/your-order' element={<YourOrder />} />
           <Route path="/product-details/:productId" element={<ProductDetails />} />
           <Route path="/managements" element={<ProductsManagement />} />
+          <Route path='/success-payment' element={<SuccessOrders />} />
         </Routes>
       </React.Suspense>
       <Footer />

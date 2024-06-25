@@ -12,31 +12,27 @@ const useVoucher = () => {
             return false
         }
 
-        const voucher = vouchers?.data?.filter((voucher: IVouchers) => voucher.code === code.trim());
+        const voucher = vouchers?.data?.filter((voucher: IVouchers) =>  voucher.code === code.trim());
         
-        console.log("🚀 ~ voucher:", voucher.discount);
-        
-        if (voucher) {
+        if (voucher && voucher!= undefined && voucher.length > 0) {
             setAppliedVouchers(voucher);
             return true
         } else {
             setAppliedVouchers(null)
-            console.log('Invalid food item');
             return false
         }
 
     };
 
     const getDiscountedPrice = (totalPrice: number) => {
-        
         let priceReduce = 0
-        if (appliedVouchers) {
-            const totalPriceDiscount = totalPrice - (totalPrice * appliedVouchers?.[0]?.discount / 100)
-            priceReduce = totalPrice - totalPriceDiscount
-        return {priceReduce, totalPriceDiscount};
+        let totalPriceDiscount = totalPrice;
+        if (appliedVouchers && appliedVouchers.length > 0) {
+            totalPriceDiscount = totalPrice - (totalPrice * appliedVouchers[0].discount / 100);
+            priceReduce = totalPrice - totalPriceDiscount;
         }
 
-        return {priceReduce, totalPrice}
+        return { priceReduce, totalPriceDiscount };
     };
 
     return { appliedVouchers, applyVoucher, getDiscountedPrice };

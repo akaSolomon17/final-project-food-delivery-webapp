@@ -4,7 +4,6 @@ import { FoodCategory } from '../../types/foods.type'
 
 const MainService = () => {
     const { data: foodCategories } = useGetFoodCategories()
-    console.log("🚀 ~ foodCategories:", foodCategories?.data);
     const foodCategoriesData = foodCategories?.data ?? []
 
     return (

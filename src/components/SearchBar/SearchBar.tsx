@@ -8,7 +8,7 @@ import { useGetSearch } from "../../apis/products/getFoodList.api";
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../utils/debounce";
 
-export const SearchBar = () => {
+export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDetails }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate()
 
@@ -124,7 +124,7 @@ export const SearchBar = () => {
                         }
                     </div>
                     <div>
-                        <DropdownFilter />
+                        {!isProductDetails && <DropdownFilter />}
                     </div>
                 </div>
             </div>

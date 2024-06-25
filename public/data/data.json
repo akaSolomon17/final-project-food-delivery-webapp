@@ -3,13 +3,12 @@
     {
       "id": "1",
       "title": "Kimbap heo galbibi",
-      "priceNumber": 110000,
+      "priceNumber": 65000,
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
-      "price": "110.000",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-bo_wingdd.jpg",
-      "avgRate": 5,
-      "isExclusive": "true"
+      "price": "65.000",
+      "avgRate": 2,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719296675/Food%20App%20Media/kounqjjivag6gnnc7hii.jpg"
     },
     {
       "id": "2",
@@ -291,6 +290,17 @@
     },
     {
       "id": "51739",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "2",
+          "title": "Kimbap bò cay sốt BBQ",
+          "priceNumber": 65000
+        }
+      ]
+    },
+    {
+      "id": "01110",
       "status": "completed",
       "orders": [
         {

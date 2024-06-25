@@ -20,7 +20,7 @@ import { useLoadMoreFetch } from '../../apis/loadMoreFetch.api';
 import { Feedback } from '../../types/feedbacks.type';
 
 const ProductDetails = () => {
-    const [selectedKeys, setSelectedKeys] = useState("Newest");
+    const [selectedKeys, setSelectedKeys] = useState<string | Set<string>>(new Set(["Newest"]))
     const [quantity, setQuantity] = useState<number>(1)
 
     const { productId } = useParams();
@@ -55,6 +55,7 @@ const ProductDetails = () => {
         'userReview',
         page,
         2,
+        false,
         'id',
         selectedValue === 'Newest' ? 'desc' : 'asc')
 
@@ -75,7 +76,7 @@ const ProductDetails = () => {
         setPage(1); // Reset page về 1 khi thay đổi sắp xếp
     }, [refetch, selectedValue]);
 
-    const handleAddToCart = (productId: string, productName: string) => {
+    const handleAddToCart = (productId: string, productName: string, isOrderNow: boolean) => {
         const cart = JSON.parse(localStorage.getItem('cart') ?? "[]");
         const existingProduct = cart.find((item: { id: string }) => item.id === productId);
 
@@ -86,7 +87,7 @@ const ProductDetails = () => {
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`Thêm ${productName} vào giỏ hàng thành công!`);
+        alert(isOrderNow ? `Thêm ${productName} vào giỏ hàng thành công!` : `Đặt ${productName} thành công!`);
     }
 
     // HANDLE QUANTITY
@@ -99,14 +100,29 @@ const ProductDetails = () => {
     }
 
     const handleSelectionChange = (keys: Selection | string | Set<Key>) => {
-        setSelectedKeys(keys as SetStateAction<string>);
+        setSelectedKeys(keys as SetStateAction<string | Set<string>>);
+    }
+
+    const handleOrderNow = () => {
+        const cart = JSON.parse(localStorage.getItem('cart') ?? "[]");
+        const isOrderNow = true;
+
+        const agreeClearCart = window.confirm(`Nếu đặt ${foodIdData.title} sẽ xoá các sản phẩm hiện tại ở giỏ hàng! Bạn chắc chứ?`);
+        if (agreeClearCart) {
+            cart.length = 0;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            handleAddToCart(foodIdData.id, foodIdData.title, isOrderNow);
+        }
+        else {
+            return
+        }
     }
 
     return (
         <div className='flex flex-col gap-28'>
             <div className='flex justify-center mt-10'>
                 <div className="flex gap-16">
-                    <SearchBar />
+                    <SearchBar isProductDetails={true} />
                 </div>
             </div>
             <div className="dynamic-products flex gap-24 justify-center">
@@ -122,8 +138,8 @@ const ProductDetails = () => {
                         <Button radius='full' onClick={handleIncrementQuantity}><AiOutlinePlus /></Button>
                     </div>
                     <div className="flex gap-4">
-                        <Button className='bg-black text-white font-lato w-[15rem]' radius='full'>Order Now</Button>
-                        <Button className='bg-white font-lato w-[9rem] border-2' radius='full' onClick={() => handleAddToCart(foodIdData.id, foodIdData.title)} startContent={<BiSolidCart color='#BCBFC2' size={18} />}>Add to Cart</Button>
+                        <Button className='bg-black text-white font-lato w-[15rem]' radius='full' onClick={handleOrderNow}>Order Now</Button>
+                        <Button className='bg-white font-lato w-[9rem] border-2' radius='full' onClick={() => handleAddToCart(foodIdData.id, foodIdData.title, false)} startContent={<BiSolidCart color='#BCBFC2' size={18} />}>Add to Cart</Button>
                     </div>
                 </div>
             </div>

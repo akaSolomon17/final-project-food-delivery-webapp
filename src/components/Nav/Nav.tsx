@@ -1,20 +1,20 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip, Badge } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Chip, Badge } from "@nextui-org/react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
-import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { ICart } from "../../types/carts.type";
+// import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
+// import { useEffect, useState } from "react";
+// import { ICart } from "../../types/carts.type";
 
 export default function Nav() {
     const navigate = useNavigate();
-    const [cart, setCart] = useState<ICart[]>([]);
+    // const [cart, setCart] = useState<ICart[]>([]);
 
-    useEffect(() => {
-        const cartItems = JSON.parse(localStorage.getItem('cart') ?? '[]');
-        console.log("🚀 ~ cartItems:", cartItems);
-        setCart(cartItems);
-    }, [])
+    // useEffect(() => {
+    //     const cartItems = JSON.parse(localStorage.getItem('cart') ?? '[]');
+    //     console.log("🚀 ~ cartItems:", cartItems);
+    //     setCart(cartItems);
+    // }, [])
 
     const link = [
         {
@@ -35,7 +35,14 @@ export default function Nav() {
         {
             name: "Cart",
             link: "/cart-detail",
-            icon: <Badge content={cart.length > 0 ? cart.length : ""} color={cart.length > 0 ? 'danger' : 'default'} size="sm" shape="circle" > <PiShoppingCartSimple /></Badge >
+            icon: <PiShoppingCartSimple />
+            // icon: <Badge
+            //     content={
+            //         // cart.length > 0 ? cart.length : ""
+            //     }
+            //     color={cart.length > 0 ? 'danger' : 'default'}
+            //     size="sm"
+            //     shape="circle" > <PiShoppingCartSimple /></Badge >
         },
         {
             name: "Managements",
@@ -69,7 +76,7 @@ export default function Nav() {
                     ))}
                 </NavbarContent>
                 <NavbarContent justify="end">
-                    <NavbarItem>
+                    {/* <NavbarItem>
                         <Switch
                             defaultSelected
                             size="sm"
@@ -83,7 +90,7 @@ export default function Nav() {
                             }
                         >
                         </Switch>
-                    </NavbarItem>
+                    </NavbarItem> */}
                     {link.map((item, index) =>
                     (<NavbarItem key={index} className="items-center justify-center">
                         <NavLink className={({ isActive }) => (isActive ? "text-red-500 items-center" : "text-black items-center")} to={item.link}>

@@ -1,5 +1,5 @@
 import { Button, Divider, Image, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // react-icons
 import { FaCheck } from "react-icons/fa6";
@@ -21,11 +21,11 @@ const CartDetails = () => {
     const [totalPrice, setTotalPrice] = useState(0);
     const { data: foodsId, isLoading, isError } = useGetFoodByIds(cart.map((item: ICart) => item.id))
 
-    console.log("🚀 ~ cart:", cart);
-
     // VOUCHER
     const [voucherCode, setVoucherCode] = useState("");
     const [voucherCheck, setVoucherCheck] = useState(false);
+    const [discountInfo, setDiscountInfo] = useState({ priceReduce: 0, totalPriceDiscount: totalPrice });
+    const [voucherError, setVoucherError] = useState("");
 
     // GET HOOKS VOUCHER
     const { appliedVouchers, applyVoucher, getDiscountedPrice } = useVoucher()
@@ -62,6 +62,7 @@ const CartDetails = () => {
             setTotalPrice(total);
         }
     }, [foodsId, quantities]);
+
 
     // HANDLE CART CHANGE
     const handleCartChange = (itemId: string, change: number) => {
@@ -132,19 +133,36 @@ const CartDetails = () => {
 
         setCart([]);
         localStorage.removeItem('cart');
-        navigate('/your-order');
+        navigate('/success-payment');
     };
 
     const handleApplyVoucher = () => {
-        if (applyVoucher(voucherCode)) {
+        if (cart.length === 0) {
+            setVoucherError("Giỏ hàng trống! Không thể áp dụng mã giảm giá!");
+            setVoucherCheck(false);
+            return;
+        }
+
+        const isApplied = applyVoucher(voucherCode);
+
+        if (isApplied) {
             setVoucherCheck(true);
         }
         else {
             setVoucherCheck(false);
+            setDiscountInfo({ priceReduce: 0, totalPriceDiscount: totalPrice });
+            setVoucherError("Mã giảm giá không hợp lệ!")
         }
     }
 
-    const discountedTotalPrice = getDiscountedPrice(totalPrice);
+    // UPDATE DISCOUNT INFO WHEN APPLIED VOUCHERS CHANGE
+    useEffect(() => {
+        if (voucherCheck) {
+            const discount = getDiscountedPrice(totalPrice);
+            setDiscountInfo(discount);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [appliedVouchers]);
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -248,10 +266,10 @@ const CartDetails = () => {
 
                 </div>
                 <Button onClick={handleApplyVoucher}>Áp dụng</Button>
-                <span className='text-sm'>{appliedVouchers?.[0]?.description}</span>
+                <span className='text-sm'>{appliedVouchers?.[0]?.description ? appliedVouchers?.[0]?.description : voucherError}</span>
                 <div className='flex gap-1 items-end'>
                     <span>Giảm: </span>
-                    <span className='font-semibold'>{formatVnCurrency(discountedTotalPrice.priceReduce)}</span>
+                    <span className='font-semibold'>{formatVnCurrency(discountInfo.priceReduce)}</span>
                 </div>
             </div>
             <Divider className=' w-[750px]'></Divider>
@@ -265,7 +283,7 @@ const CartDetails = () => {
                 <div className='flex items-center gap-3'>
                     <div className='flex gap-2 select-none'>
                         <span>Tổng giá:</span>
-                        <span className='font-semibold'>{voucherCheck ? formatVnCurrency(discountedTotalPrice.totalPriceDiscount) : formatVnCurrency(discountedTotalPrice.totalPrice)}</span>
+                        <span className='font-semibold'>{voucherCheck ? formatVnCurrency(discountInfo.totalPriceDiscount || 0) : formatVnCurrency(totalPrice)}</span>
                     </div>
                     <Button className='bg-black text-bold text-[#fff]' onClick={handleCheckout}>
                         Thanh toán

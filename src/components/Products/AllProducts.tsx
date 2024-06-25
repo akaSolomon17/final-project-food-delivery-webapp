@@ -11,7 +11,7 @@ const AllProducts: React.FC<{
     isLoading: boolean,
     isError: boolean,
     selectedValue: string,
-    selectedKeys: string,
+    selectedKeys: string | Set<string>,
     handleSelectionChange: (keys: Selection | string | Set<Key>) => void,
     page: number,
     totalPages: number | undefined,
@@ -42,7 +42,7 @@ const AllProducts: React.FC<{
         return (
             <div>
                 <div className="all-products flex flex-col items-center">
-                    <div className="flex flex-row justify-evenly gap-x-[64rem] items-center">
+                    <div className="flex flex-row justify-evenly gap-x-[62rem] items-center">
                         <h1 className='font-sans font-bold text-4xl select-none'>All Product</h1>
                         <div className="dropdown">
                             <Dropdown>

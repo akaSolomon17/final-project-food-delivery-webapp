@@ -137,9 +137,9 @@ const ProductsManagement = () => {
 
         // UPDATE FOOD IF !DIFF
         if (checkDiff && currentFood) {
-            const { img, avgRate, isExclusive, voucherCode } = currentFood
+            const { img, avgRate, isExclusive } = currentFood
 
-            updateProductMutate({ id: id, foodUpdated: { ...foodEdited, price: formattedPrice, img: img, avgRate: avgRate, isExclusive: isExclusive, voucherCode: voucherCode } },
+            updateProductMutate({ id: id, foodUpdated: { ...foodEdited, price: formattedPrice, img: img, avgRate: avgRate, isExclusive: isExclusive } },
                 {
                     onSuccess: () => {
                         setEditableById(null)
@@ -253,7 +253,6 @@ const ProductsManagement = () => {
                                         className='min-w-[200px] max-h-[40px] h-[40px]'
                                         value={foodEdited.category}
                                         onChange={(e) => handleCategoryChange(e, item)}>
-                                        {/* console.log("🚀 ~ e.target.value:", e.target.value); */}
                                         {foodCategoriesName.map((category: FoodCategory) => (
                                             <SelectItem className='w-full' key={category.id} value={category.name}>
                                                 {category.name}

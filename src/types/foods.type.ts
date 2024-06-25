@@ -1,5 +1,5 @@
 export interface Food {
-    id?: string | undefined | null,
+    id?: string | null,
     title: string,
     price: string,
     priceNumber: number,
@@ -7,8 +7,7 @@ export interface Food {
     description?: string,
     category: string,
     avgRate: number,
-    isExclusive: string,
-    voucherCode: string
+    isExclusive: string
 }
 
 export interface FoodPaginate {
@@ -39,7 +38,9 @@ export interface FoodCreate {
     isExclusive?: string | null
 }
 
-export type FoodUpdate = Omit<FoodCreate,'price'|'img'| 'avgRate' | 'isExclusive'|'voucherCode'>
+export type FoodUpdate = Omit<FoodCreate, 'price' | 'img' | 'avgRate' | 'isExclusive'|'voucherCode'> & {
+    img?: string | FileList
+}
 
 
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
