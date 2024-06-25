@@ -138,7 +138,6 @@ const ModalAddProduct: React.FC<{ isOpen: boolean, onOpenChange: () => void }> =
                     avgRate: 0,
                     isExclusive: "Không",
                 }
-                console.log("New food: ", newFood);
 
                 addProductMutate(newFood, {
                     onSuccess: () => {

@@ -1,30 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Radio, RadioGroup, Slider, Dropdown, DropdownSection, Checkbox, DropdownTrigger, Button, DropdownMenu, DropdownItem, Input, CheckboxGroup, } from '@nextui-org/react'
 import { IoFilterOutline, IoRemoveOutline } from "react-icons/io5";
 import { StarIcon } from "../StarRating/Star";
-// import { FilterValuesProps } from '../../types/filters.type';
 import './DropdownFilter.css'
-import { useGetFoodFiltered } from '../../apis/products/getFoodFiltered.api';
+import { useSearchParams } from 'react-router-dom';
 const disableHover = "disable-hover border-0"
 
 const DropdownFilter = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filterValue, setFilterValue] = useState([30000, 300000]);
   const [selectedCheckboxes, setSelectedCheckboxes] = React.useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState('0');
 
-  const { foodFiltered } = useGetFoodFiltered(filterValue[0], filterValue[1], selectedCheckboxes, Number(selectedRating))
+  // Initialize state from URL search parameters
+  useEffect(() => {
+    const priceMin = searchParams.get('priceMin');
+    const priceMax = searchParams.get('priceMax');
+    const categories = searchParams.get('categories');
+    const rating = searchParams.get('rating');
 
+    if (priceMin && priceMax) {
+      setFilterValue([Number(priceMin), Number(priceMax)]);
+    }
+
+    if (categories) {
+      setSelectedCheckboxes(categories.split(','));
+    }
+
+    if (rating) {
+      setSelectedRating(rating);
+    }
+  }, [searchParams]);
 
   // HANDLE EVENT
   const handlePriceChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setFilterValue(value)
+      setFilterValue(value as [number, number])
     }
   };
 
   const handleOnChangeValueSlider = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setFilterValue(value)
+      setFilterValue(value as [number, number])
     }
   }
 
@@ -36,12 +53,21 @@ const DropdownFilter = () => {
     setSelectedRating(value);
   };
   const handleApplyFilters = () => {
-    console.log("🚀 ~ foodFiltered:", foodFiltered?.data);
+    // setApplyingFilters(true); // Đang áp dụng filter
 
+    //  SET FILTER VALUE TO SEARCH PARAMS
+    searchParams.set('priceMin', filterValue[0].toString());
+    searchParams.set('priceMax', filterValue[1].toString());
+    searchParams.set('categories', selectedCheckboxes.join(','));
+    searchParams.set('rating', selectedRating);
+    setSearchParams(searchParams);
+
+    // Thực hiện gọi API hoặc hook ở đây
+    // Sử dụng useGetFoodFiltered khi áp dụng filter
   };
 
   return (
-    <div>
+    <div className='flex items-center h-[48px]'>
       {/* DROPDOWN */}
       <Dropdown
         closeOnSelect={false}
@@ -74,6 +100,7 @@ const DropdownFilter = () => {
               </CheckboxGroup>
             </DropdownItem>
           </DropdownSection >
+
           {/* PRICE */}
           <DropdownSection title="PRICE" className="" showDivider>
             <DropdownItem className={disableHover} textValue="Price Slider" isReadOnly>
@@ -118,6 +145,7 @@ const DropdownFilter = () => {
               </div>
             </DropdownItem>
           </DropdownSection>
+
           {/* CUSTOMER REVIEW */}
           <DropdownSection title="CUSTOMER REVIEW">
             <DropdownItem key="option1" className={disableHover} textValue="Any Rating" isReadOnly>

@@ -3,37 +3,46 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
 import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { ICart } from "../../types/carts.type";
 
-const link = [
-    {
-        name: "Home",
-        link: "/",
-        icon: null
-    },
-    {
-        name: "Menu",
-        link: "/menu",
-        icon: null
-    },
-    {
-        name: "Your Order",
-        link: "/your-order",
-        icon: null
-    },
-    {
-        name: "Cart",
-        link: "/cart-detail",
-        icon: <Badge color="danger" content={1} size="sm" shape="circle"><PiShoppingCartSimple /></Badge>
-    },
-    {
-        name: "Managements",
-        link: "/managements",
-        icon: <Badge content="" size="sm" color="success" shape="circle" placement="bottom-right"><LuUser2 /></Badge>
-    },
-]
-
-export default function App() {
+export default function Nav() {
     const navigate = useNavigate();
+    const [cart, setCart] = useState<ICart[]>([]);
+
+    useEffect(() => {
+        const cartItems = JSON.parse(localStorage.getItem('cart') ?? '[]');
+        console.log("🚀 ~ cartItems:", cartItems);
+        setCart(cartItems);
+    }, [])
+
+    const link = [
+        {
+            name: "Home",
+            link: "/",
+            icon: null
+        },
+        {
+            name: "Menu",
+            link: "/menu",
+            icon: null
+        },
+        {
+            name: "Your Order",
+            link: "/your-order",
+            icon: null
+        },
+        {
+            name: "Cart",
+            link: "/cart-detail",
+            icon: <Badge content={cart.length > 0 ? cart.length : ""} color={cart.length > 0 ? 'danger' : 'default'} size="sm" shape="circle" > <PiShoppingCartSimple /></Badge >
+        },
+        {
+            name: "Managements",
+            link: "/managements",
+            icon: <Badge content="" size="sm" color="success" shape="circle" placement="bottom-right"><LuUser2 /></Badge>
+        },
+    ]
     return (
         <>
             <Navbar >

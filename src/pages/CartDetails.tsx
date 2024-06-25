@@ -1,19 +1,18 @@
 import { Button, Divider, Image, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
+
+// react-icons
+import { FaCheck } from "react-icons/fa6";
+import { IoMdClose } from "react-icons/io";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi2";
+
 import { useGetFoodByIds } from '../apis/products/getFoodById.api';
 import { useNavigate } from 'react-router-dom';
 import { Food } from '../types/foods.type';
-
-interface ICart {
-    id: string;
-    quantity: number;
-}
-
-interface IQuantities {
-    [key: string]: number;
-}
+import { ICart, IQuantities } from '../types/carts.type';
+import { IOrder } from '../types/historyOrders.type';
+import useVoucher from '../hooks/useVouchers';
 
 const CartDetails = () => {
     const navigate = useNavigate()
@@ -21,30 +20,39 @@ const CartDetails = () => {
     const [quantities, setQuantities] = useState<IQuantities>({} as IQuantities);
     const [totalPrice, setTotalPrice] = useState(0);
     const { data: foodsId, isLoading, isError } = useGetFoodByIds(cart.map((item: ICart) => item.id))
-    console.log(cart.map((item: ICart) => item.id));
+
+    console.log("🚀 ~ cart:", cart);
+
+    // VOUCHER
+    const [voucherCode, setVoucherCode] = useState("");
+    const [voucherCheck, setVoucherCheck] = useState(false);
+
+    // GET HOOKS VOUCHER
+    const { appliedVouchers, applyVoucher, getDiscountedPrice } = useVoucher()
 
     // FORMAT VND CURRENCY
     const formatVnCurrency = (price: number) => {
         return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
     }
 
-    // GET LocalStorage
+    // GET LOCAL STORAGE
     useEffect(() => {
         const cartItems = JSON.parse(localStorage.getItem('cart') ?? '[]');
         setCart(cartItems);
     }, [])
 
-    // Quantity state
+    // QUANTITY CHANGE
     useEffect(() => {
         if (foodsId) {
             const initialQuantities: IQuantities = {};
             cart.forEach((item) => {
-                initialQuantities[item.id] = item.quantity; // Initialize quantity to 1 for each item
+                initialQuantities[item.id] = item.quantity; // Initial quantity from quantity in cart(local storage)
             });
             setQuantities(initialQuantities);
         }
     }, [foodsId, cart]);
 
+    // CALC TOTAL PRICE
     useEffect(() => {
         if (foodsId) {
             let total = 0;
@@ -55,17 +63,19 @@ const CartDetails = () => {
         }
     }, [foodsId, quantities]);
 
+    // HANDLE CART CHANGE
     const handleCartChange = (itemId: string, change: number) => {
+        // CHỈNH SỬA CÁC SET()
         setQuantities((prevQuantities) => {
             const newQuantities = { ...prevQuantities };
-            const newQuantity = newQuantities[itemId] + change // validate quantity >= 1
+            const newQuantity = newQuantities[itemId] + change
 
             if (newQuantity < 1) {
                 if (window.confirm("Bạn có muốn xoá sản phẩm này không?")) {
                     handleDeleteFromCart(itemId);
                     return prevQuantities;
                 } else {
-                    newQuantities[itemId] = 1; // Reset to 1 if user does not confirm deletion
+                    newQuantities[itemId] = 1; // Reset to 1 if not confirm delete
                 }
             } else {
                 newQuantities[itemId] = newQuantity;
@@ -77,6 +87,7 @@ const CartDetails = () => {
         });
     };
 
+    // CALCULATE TOTAL PRICE EACH ITEM
     const calcTotalPriceEachItem = (price: number, id: string) => {
         let totalPrice = 0;
         if (quantities[id]) {
@@ -85,6 +96,7 @@ const CartDetails = () => {
         return formatVnCurrency(totalPrice);
     }
 
+    // HANDLE DELETE FROM CART
     const handleDeleteFromCart = (id: string) => {
         setCart((prevCart) => {
             const newCart = prevCart.filter((item: ICart) => item.id !== id);
@@ -99,6 +111,41 @@ const CartDetails = () => {
         });
     }
 
+    // HANDLE CHECKOUT
+    const handleCheckout = () => {
+        if (cart.length === 0) {
+            alert("Giỏ hàng trống! Không thể thanh toán!");
+            return;
+        }
+
+        const orderId = Date.now().toString().slice(-5);
+        const newOrder: IOrder = {
+            id: orderId,
+            items: cart,
+            status: 'ordering',
+            estimateTime: Date.now() + 1 * 60 * 1000, // 1 minutes from now
+        };
+
+        const existingOrders = JSON.parse(localStorage.getItem('orders') ?? '[]');
+        existingOrders.push(newOrder);
+        localStorage.setItem('orders', JSON.stringify(existingOrders));
+
+        setCart([]);
+        localStorage.removeItem('cart');
+        navigate('/your-order');
+    };
+
+    const handleApplyVoucher = () => {
+        if (applyVoucher(voucherCode)) {
+            setVoucherCheck(true);
+        }
+        else {
+            setVoucherCheck(false);
+        }
+    }
+
+    const discountedTotalPrice = getDiscountedPrice(totalPrice);
+
     if (isLoading) {
         return <div>Loading...</div>
     }
@@ -106,7 +153,10 @@ const CartDetails = () => {
     if (isError) {
         return <div>Error...</div>
     }
+
+    // NEXTUI UNDEFINED ROWS REQUIRED
     const rows = foodsId ?? [];
+
     return (
         <div className='flex flex-col items-center gap-7'>
             <div className='flex gap-1 text-left w-[750px] font-lato text-lg'>
@@ -182,17 +232,26 @@ const CartDetails = () => {
                     </TableBody>
                 </Table>
             </div>
-            <div className='flex items-center gap-5 w-[750px] text-left text-default-600'>
+            <div className='flex items-center gap-5 w-[750px] text-left text-default-600 justify-evenly'>
                 <span>Voucher</span>
-                <Button
-                    className='w-[140px] bg-white flex-col border border-black font-semibold'
-                    radius='full'>
-                    HAPPY
-                </Button>
-                <span>Chúc mừng! Bạn vừa giảm 10% tổng giá trị giỏ hàng!</span>
-                <div className='flex gap-1'>
+                <div>
+                    <Input
+                        className='w-[180px] bg-white flex-col font-semibold'
+                        radius='full'
+                        placeholder='Nhập mã giảm giá'
+                        value={voucherCode}
+                        onChange={(e) =>
+                            setVoucherCode(e.target.value)
+                        }
+                        endContent={voucherCheck ? <FaCheck color='green'></FaCheck> : <IoMdClose color='red'></IoMdClose>}
+                    />
+
+                </div>
+                <Button onClick={handleApplyVoucher}>Áp dụng</Button>
+                <span className='text-sm'>{appliedVouchers?.[0]?.description}</span>
+                <div className='flex gap-1 items-end'>
                     <span>Giảm: </span>
-                    <span className='font-semibold'>15.000đ</span>
+                    <span className='font-semibold'>{formatVnCurrency(discountedTotalPrice.priceReduce)}</span>
                 </div>
             </div>
             <Divider className=' w-[750px]'></Divider>
@@ -206,9 +265,9 @@ const CartDetails = () => {
                 <div className='flex items-center gap-3'>
                     <div className='flex gap-2 select-none'>
                         <span>Tổng giá:</span>
-                        <span className='font-semibold'>{formatVnCurrency(totalPrice)}</span>
+                        <span className='font-semibold'>{voucherCheck ? formatVnCurrency(discountedTotalPrice.totalPriceDiscount) : formatVnCurrency(discountedTotalPrice.totalPrice)}</span>
                     </div>
-                    <Button className='bg-black text-bold text-[#fff]'>
+                    <Button className='bg-black text-bold text-[#fff]' onClick={handleCheckout}>
                         Thanh toán
                     </Button>
                 </div>

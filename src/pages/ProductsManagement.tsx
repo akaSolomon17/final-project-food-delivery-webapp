@@ -27,16 +27,12 @@ const ProductsManagement = () => {
     // UPDATE FOOD MUTATE
     const { mutate: updateProductMutate } = useUpdateFoodById()
     const [editableById, setEditableById] = useState<string | null | undefined>(null);
-    const [foodEdited, setFoodEdited] = useState<Omit<Food, 'price' | 'img' | 'avgRate' | 'isExclusive'>>({
+    const [foodEdited, setFoodEdited] = useState<FoodUpdate>({
         id: "",
         title: "",
         priceNumber: 0,
         description: "",
-        category: "",
-        // price: "",
-        // img: "",
-        // avgRate: 0,
-        // isExclusive: "false",
+        category: ""
     })
 
     // DELETE FOOD MUTATE
@@ -141,15 +137,18 @@ const ProductsManagement = () => {
 
         // UPDATE FOOD IF !DIFF
         if (checkDiff && currentFood) {
-            updateProductMutate({ id: id, foodUpdated: { ...foodEdited, price: formattedPrice, img: currentFood.img, avgRate: currentFood.avgRate, isExclusive: currentFood.isExclusive } }, {
-                onSuccess: () => {
-                    setEditableById(null)
-                    alert("Update product successfully!");
-                },
-                onError: () => {
-                    alert("Update product failed!");
-                }
-            })
+            const { img, avgRate, isExclusive, voucherCode } = currentFood
+
+            updateProductMutate({ id: id, foodUpdated: { ...foodEdited, price: formattedPrice, img: img, avgRate: avgRate, isExclusive: isExclusive, voucherCode: voucherCode } },
+                {
+                    onSuccess: () => {
+                        setEditableById(null)
+                        alert("Update product successfully!");
+                    },
+                    onError: () => {
+                        alert("Update product failed!");
+                    }
+                })
         }
         else setEditableById(null)
     }

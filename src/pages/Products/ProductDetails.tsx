@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Key, SetStateAction, useEffect, useState } from 'react'
 import LoadMore from '../../components/LoadMore/LoadMore';
 import { Image, Button, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, Card, CardBody, CardFooter, Chip } from '@nextui-org/react'
 import { useNavigate, useParams } from "react-router-dom"
@@ -17,12 +17,10 @@ import { useGetFoodById } from '../../apis/products/getFoodById.api';
 import { useGetFoodListRecommended } from '../../apis/products/getFoodListRecommended.api';
 import { Food } from '../../types/foods.type';
 import { useLoadMoreFetch } from '../../apis/loadMoreFetch.api';
-import { Feedback, Reviews } from '../../types/feedbacks.type';
-import { useGetReviewsList } from '../../apis/feedbacks/getReviewsList.api';
-
+import { Feedback } from '../../types/feedbacks.type';
 
 const ProductDetails = () => {
-    const [selectedKeys, setSelectedKeys] = useState(new Set(["Newest"]));
+    const [selectedKeys, setSelectedKeys] = useState("Newest");
     const [quantity, setQuantity] = useState<number>(1)
 
     const { productId } = useParams();
@@ -30,7 +28,7 @@ const ProductDetails = () => {
 
     const { foodId } = useGetFoodById(productId || "0")
     const foodIdData = foodId?.data || {
-        id: "0",
+        id: "1",
         avgRate: 1,
         categoryId: "",
         description: "Description is not available!",
@@ -79,7 +77,6 @@ const ProductDetails = () => {
 
     const handleAddToCart = (productId: string, productName: string) => {
         const cart = JSON.parse(localStorage.getItem('cart') ?? "[]");
-        console.log("🚀 ~ cart:", cart);
         const existingProduct = cart.find((item: { id: string }) => item.id === productId);
 
         if (existingProduct) {
@@ -99,6 +96,10 @@ const ProductDetails = () => {
 
     const handleDecrementQuantity = () => {
         setQuantity(prevQuantity => Math.max(1, prevQuantity - 1));
+    }
+
+    const handleSelectionChange = (keys: Selection | string | Set<Key>) => {
+        setSelectedKeys(keys as SetStateAction<string>);
     }
 
     return (
@@ -168,7 +169,7 @@ const ProductDetails = () => {
                                     disallowEmptySelection
                                     selectionMode="single"
                                     selectedKeys={selectedKeys}
-                                    onSelectionChange={setSelectedKeys}
+                                    onSelectionChange={handleSelectionChange}
                                 >
                                     <DropdownItem key="Newest" textValue='Newest'>Newest</DropdownItem>
                                     <DropdownItem key="Oldest" textValue='Oldest'>Oldest</DropdownItem>

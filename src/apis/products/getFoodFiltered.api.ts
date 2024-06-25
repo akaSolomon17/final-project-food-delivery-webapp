@@ -1,5 +1,3 @@
-// http://localhost:3000/foodList?priceNumber_gte=45000&priceNumber_lte=65000&category_like=kimbap&avgRate_gte=2
-
 import {useQuery} from "@tanstack/react-query"
 import http from "../../utils/http"
 
@@ -19,10 +17,11 @@ export const useGetFoodFiltered = (
     priceNumber_gte: number, 
     priceNumber_lte: number, 
     categories: string[], 
-    avgRate: number) => {
+    avgRate: number, applyingFilters: boolean) => {
     const {data: foodFiltered, ...options} = useQuery({
         queryKey: ["foodFiltered", priceNumber_gte, priceNumber_lte, categories, avgRate],
         queryFn: () => getFoodFiltered(priceNumber_gte, priceNumber_lte, categories, avgRate),
+        enabled: applyingFilters
     })
     return {foodFiltered,...options}
 }

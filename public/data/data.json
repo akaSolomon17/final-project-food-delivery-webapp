@@ -3,10 +3,10 @@
     {
       "id": "1",
       "title": "Kimbap heo galbibi",
-      "priceNumber": 65000,
+      "priceNumber": 110000,
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
-      "price": "65.000",
+      "price": "110.000",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-bo_wingdd.jpg",
       "avgRate": 5,
       "isExclusive": "true"
@@ -58,11 +58,11 @@
     {
       "id": "6",
       "title": "Kimbap Gà Giòn",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012570/Final_PRJ_LIFT/Foods/kimbap-gagion_kt5md3.jpg",
-      "price": "65.000",
       "priceNumber": 65000,
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-      "category": "Kimbap",
+      "category": "Gà",
+      "price": "65.000",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012570/Final_PRJ_LIFT/Foods/kimbap-gagion_kt5md3.jpg",
       "avgRate": 1,
       "isExclusive": "false"
     },
@@ -137,7 +137,7 @@
       "title": "Seoul Box",
       "priceNumber": 105000,
       "description": "Gồm Kimbap Truyền Thống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
-      "category": "Box Yummy",
+      "category": "Kimbap",
       "price": "105.000",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718857106/Food%20App%20Media/bdhknpcomrynlqghorx9.jpg",
       "avgRate": 0,
@@ -153,6 +153,26 @@
       "category": "Box Yummy",
       "avgRate": 0,
       "isExclusive": "Không"
+    }
+  ],
+  "vouchers": [
+    {
+      "id": "1",
+      "code": "DISCOUNT20",
+      "discount": 20,
+      "description": "Chúc mừng! Bạn vừa giảm 20% tổng giá trị giỏ hàng!"
+    },
+    {
+      "id": "2",
+      "code": "DISCOUNT10",
+      "discount": 10,
+      "description": "Chúc mừng! Bạn vừa giảm 10% tổng giá trị giỏ hàng!"
+    },
+    {
+      "id": "3",
+      "code": "DISCOUNT15",
+      "discount": 15,
+      "description": "Chúc mừng! Bạn vừa giảm 15% tổng giá trị giỏ hàng!"
     }
   ],
   "foodCategories": [
@@ -202,6 +222,83 @@
       "id": "3",
       "alt": "Banner special menu 19% off",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012156/Final_PRJ_LIFT/Banners/firstBanner_t8rzxc.jpg"
+    }
+  ],
+  "historyOrders": [
+    {
+      "id": "1",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "11",
+          "title": "Kimbap Bibimbap",
+          "priceNumber": 60000
+        },
+        {
+          "id": "12",
+          "title": "Kimbap Bibimbap",
+          "priceNumber": 60000
+        }
+      ]
+    },
+    {
+      "id": "17191",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "1",
+          "title": "Kimbap heo galbibi",
+          "priceNumber": 65000
+        },
+        {
+          "id": "12",
+          "title": "Busan Box",
+          "priceNumber": 95000
+        }
+      ]
+    },
+    {
+      "id": "17192",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "3",
+          "title": "Kimbap Phô Mai",
+          "priceNumber": 65000
+        },
+        {
+          "id": "5",
+          "title": "Kimbap truyền thống",
+          "priceNumber": 65000
+        }
+      ]
+    },
+    {
+      "id": "69604",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "1",
+          "title": "Kimbap heo galbibi",
+          "priceNumber": 65000
+        },
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": 105000
+        }
+      ]
+    },
+    {
+      "id": "51739",
+      "status": "completed",
+      "orders": [
+        {
+          "id": "2",
+          "title": "Kimbap bò cay sốt BBQ",
+          "priceNumber": 65000
+        }
+      ]
     }
   ],
   "userReview": [

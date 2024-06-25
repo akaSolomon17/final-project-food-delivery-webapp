@@ -1,13 +1,14 @@
 export interface Food {
-    id: string | undefined | null ,
+    id?: string | undefined | null,
     title: string,
     price: string,
     priceNumber: number,
     img: string | undefined,
     description?: string,
     category: string,
-    avgRate: number, //calc by user rating
-    isExclusive: string
+    avgRate: number,
+    isExclusive: string,
+    voucherCode: string
 }
 
 export interface FoodPaginate {
@@ -34,12 +35,13 @@ export interface FoodCreate {
     priceNumber: number ,
     description?: string,
     category: string,
-    avgRate?: number | null, //calc by user rating
+    avgRate?: number | null,
     isExclusive?: string | null
 }
 
-export type FoodUpdate = Omit<FoodCreate,'price'|'img'| 'avgRate' | 'isExclusive'>
+export type FoodUpdate = Omit<FoodCreate,'price'|'img'| 'avgRate' | 'isExclusive'|'voucherCode'>
 
 
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
 
+export type FoodHistory = Pick<Food,'id'|'title'|'priceNumber'>

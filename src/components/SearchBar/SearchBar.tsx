@@ -1,6 +1,5 @@
-import { Avatar, Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Spinner, } from "@nextui-org/react";
+import { Avatar, Divider, Input, Spinner, } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
-import { RiArrowDropDownFill, RiDiscountPercentFill } from "react-icons/ri";
 import React, { useRef, useState } from "react";
 
 import './SearchBar.css'
@@ -17,7 +16,7 @@ export const SearchBar = () => {
     const [searchKeyword, setSearchKeyword] = useState<string>('null');
     const [activeSearch, setActiveSearch] = useState<{ id: string, title: string, img: string }[]>([]);
 
-    const { searchResult, isLoading } = useGetSearch(searchKeyword)
+    const { data: searchResult, isLoading } = useGetSearch(searchKeyword)
 
     // Get id, title and img from search result
     const foodListSearchData = searchResult?.data?.map(((item: { id: string, title: string, img: string }) => ({
@@ -61,27 +60,7 @@ export const SearchBar = () => {
     return (
         <div>
             <div className='flex justify-center mt-10'>
-                <div className="flex gap-16 items-center">
-                    <div className="flex gap-2 items-center">
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button
-                                    disableAnimation
-                                    radius="full"
-                                    className="w-full h-[50px] bg-white"
-                                >
-                                    <RiDiscountPercentFill className='size-6' />
-                                    <p className='font-sans font-semibold'>Best deals</p>
-                                    <RiArrowDropDownFill className='size-6' />
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="Static Actions">
-                                <DropdownItem key="new" textValue="10">10% Discount</DropdownItem>
-                                <DropdownItem key="copy" textValue="20">20% Discount</DropdownItem>
-                                <DropdownItem key="edit" textValue="30">30% Discount</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
+                <div className="flex items-center">
                     <div className="search-bar relative">
                         <div className="w-fit h-[3rem] flex justify-center items-center text-black">
                             <Input
