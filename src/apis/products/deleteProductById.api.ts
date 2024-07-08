@@ -10,8 +10,6 @@ export const useDeleteProductById = () => {
         mutationFn: (id: string) => {
             return deleteProductById(id);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey:["foodList"] });
-        }
+        onSuccess: () => queryClient.invalidateQueries({ queryKey:["foodList"] })
     })
 }

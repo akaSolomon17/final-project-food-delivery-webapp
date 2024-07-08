@@ -1,24 +1,18 @@
 import { Avatar, Divider, Input, Spinner, } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 import React, { useRef, useState } from "react";
-
 import './SearchBar.css'
-import DropdownFilter from "../Dropdown/DropdownFilter";
 import { useGetSearch } from "../../apis/products/getFoodList.api";
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../utils/debounce";
 
-export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDetails }) => {
+export const SearchBar = () => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate()
-
-    // State => Zustand later
     const [searchKeyword, setSearchKeyword] = useState<string>('null');
     const [activeSearch, setActiveSearch] = useState<{ id: string, title: string, img: string }[]>([]);
-
     const { data: searchResult, isLoading } = useGetSearch(searchKeyword)
 
-    // Get id, title and img from search result
     const foodListSearchData = searchResult?.data?.map(((item: { id: string, title: string, img: string }) => ({
         id: item.id,
         title: item.title,
@@ -34,7 +28,6 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
         );
     }, 500);
 
-    // Handle search trigger
     const handleSearchTrigger = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.trim()
 
@@ -43,11 +36,9 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
             setActiveSearch([])
             return false
         }
-        //Debounce search
         debouncedSearch(value)
     }
 
-    // Handle item click
     const handleItemClick = (id: string) => {
         navigate(`/product-details/${id}`);
         setActiveSearch([])
@@ -67,7 +58,7 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
                                 ref={inputRef}
                                 label="Search"
                                 size="sm"
-                                radius="lg"
+                                radius="sm"
                                 classNames={{
                                     label: "text-black/50 dark:text-white/90",
                                     input: [
@@ -77,7 +68,7 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
                                     ],
                                     innerWrapper: "bg-transparent",
                                     inputWrapper: [
-                                        "w-[29rem]",
+                                        "w-[14.7rem]",
                                         "border-1",
                                         "bg-default-200/50",
                                         "dark:bg-default/60",
@@ -99,7 +90,6 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
                                 }
                                 type="text"
                                 onChange={(e) => (handleSearchTrigger(e))}
-                            // onFocusChange={() => this.value = ""}
                             />
                         </div>
                         {activeSearch?.length > 0 &&
@@ -122,9 +112,6 @@ export const SearchBar: React.FC<{ isProductDetails: boolean }> = ({ isProductDe
                                 ))}
                             </div>
                         }
-                    </div>
-                    <div>
-                        {!isProductDetails && <DropdownFilter />}
                     </div>
                 </div>
             </div>

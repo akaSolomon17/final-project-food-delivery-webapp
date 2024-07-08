@@ -7,7 +7,7 @@ export const getReviewsList = () => http.get('userReview')
 export const useGetReviewsList = ()=>{
     const {data: reviewsList, ...options} = useQuery({
         queryKey: ["reviewsList"],
-        queryFn: () => getReviewsList(),
+        queryFn: getReviewsList,
     })
     return {reviewsList,...options}
 }

@@ -3,7 +3,7 @@ export interface Food {
     title: string,
     price: string,
     priceNumber: number,
-    img: string | undefined,
+    img: string | null,
     description?: string,
     category: string,
     avgRate: number,
@@ -30,8 +30,8 @@ export interface FoodCreate {
     id?: string | null,
     title: string,
     price?: string | null,
-    img: FileList,
-    priceNumber: number ,
+    img?: string | FileList | File | null,
+    priceNumber?: number ,
     description?: string,
     category: string,
     avgRate?: number | null,
@@ -39,10 +39,8 @@ export interface FoodCreate {
 }
 
 export type FoodUpdate = Omit<FoodCreate, 'price' | 'img' | 'avgRate' | 'isExclusive'|'voucherCode'> & {
-    img?: string | FileList
+    img?: string | FileList | File
 }
-
 
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
 
-export type FoodHistory = Pick<Food,'id'|'title'|'priceNumber'>

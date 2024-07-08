@@ -7,12 +7,10 @@ const Home = () => {
     return (
         <div>
             <Banner />
-            <div className="most-popular mt-9">
+            <div className="mt-9">
                 <MostPopular />
-                <div className="main-services">
-                    <MainService />
-                    <FeedBacks />
-                </div>
+                <MainService />
+                <FeedBacks />
             </div>
         </div >
     )

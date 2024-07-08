@@ -24,7 +24,7 @@ const MostPopular = () => {
                                 width="100%"
                                 alt={item.title}
                                 className="w-full object-cover h-[400px] select-none"
-                                src={item.img}
+                                src={item.img as string}
                             />
                         </CardBody>
                         <CardFooter className="flex flex-col max-w-[30rem] items-start p-3">

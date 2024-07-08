@@ -1,103 +1,113 @@
-import React, { Key } from 'react'
-import { Button, Card, CardBody, CardFooter, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from '@nextui-org/react'
-import { BsCartPlus } from 'react-icons/bs'
+import { useEffect } from 'react'
 import { Food } from '../../types/foods.type'
-import { useNavigate } from 'react-router-dom'
-import { IoIosArrowDropdown } from 'react-icons/io'
-import LoadMore from '../LoadMore/LoadMore'
+import { useDataFoodList, usePage, useProductActions, useSelectedKeys } from '../../zustand/productStore'
+import SortByDropdown from './SortByDropdown'
+import { EFilterSort } from '../../types/enums.type'
+import { useFilterActions, useFilterValue, useIsApplyingFilters, useSelectedCheckboxes, useSelectedRating } from '../../zustand/filteredStore'
+import useSelectedValue from '../../utils/reformatSelection'
+import { useSearchParams } from 'react-router-dom'
+import { useGetFoodFiltered } from '../../apis/products/getFoodFiltered.api'
+import ProductsList from './ProductsList'
+import Loading from '../Loading/Loading'
 
-const AllProducts: React.FC<{
-    foodData: Food[],
-    isLoading: boolean,
-    isError: boolean,
-    selectedValue: string,
-    selectedKeys: string | Set<string>,
-    handleSelectionChange: (keys: Selection | string | Set<Key>) => void,
-    page: number,
-    totalPages: number | undefined,
-    setPage: React.Dispatch<React.SetStateAction<number>>,
-    isLoadingLoadMore: boolean
-}> = (
-    {
-        foodData,
+const { NEWEST, ACS, AVG_RATE, DESC, RATING_UP, ID, OLDEST, } = EFilterSort
+
+const AllProducts = () => {
+    const isApplyingFilters = useIsApplyingFilters()
+    const filterValue = useFilterValue()
+    const selectedCheckboxes = useSelectedCheckboxes()
+    const checkboxesLength = selectedCheckboxes?.length ?? 0
+    const selectedRating = useSelectedRating()
+    const dataFoodList = useDataFoodList()
+    const SelectedKeys = useSelectedKeys()
+    const page = usePage()
+    const { setPage, setDataFoodList } = useProductActions()
+    const { setFilterValue, setSelectedCheckboxes, setSelectedRating } = useFilterActions()
+
+    const selectedValue = useSelectedValue(SelectedKeys)
+    const [searchParams] = useSearchParams();
+
+    const {
+        data: fetchFilter,
         isLoading,
-        isError,
-        selectedValue,
-        selectedKeys,
-        handleSelectionChange,
-        page,
-        totalPages,
-        setPage,
-        isLoadingLoadMore
-    }) => {
-        const navigate = useNavigate();
+        refetch
+    } = useGetFoodFiltered(
+        selectedValue === NEWEST || selectedValue === OLDEST ? ID : AVG_RATE,
+        selectedValue === NEWEST || selectedValue === RATING_UP ? DESC : ACS,
+        filterValue[0],
+        filterValue[1],
+        selectedCheckboxes,
+        Number(selectedRating),
+        isApplyingFilters
+    )
+    console.log("🚀 ~ isApplyingFilters:", isApplyingFilters);
+    const fetchFilterData = fetchFilter?.data
 
-        if (isLoading) {
-            return <div>Loading...</div>;
+    useEffect(() => {
+        const priceMin = searchParams.get('priceMin');
+        const priceMax = searchParams.get('priceMax');
+        const categories = searchParams.get('categories');
+        const rating = searchParams.get('rating');
+
+        if (priceMin && priceMax) {
+            setFilterValue([Number(priceMin), Number(priceMax)]);
         }
 
-        if (isError) {
-            return <div>Error loading food list.</div>;
+        if (categories) {
+            setSelectedCheckboxes(categories.split(','));
         }
-        return (
-            <div>
-                <div className="all-products flex flex-col items-center">
-                    <div className="flex flex-row justify-evenly gap-x-[62rem] items-center">
-                        <h1 className='font-sans font-bold text-4xl select-none'>All Product</h1>
-                        <div className="dropdown">
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <Button variant="bordered" endContent={<IoIosArrowDropdown color='#777E90' size={20} />} disableAnimation>
-                                        {selectedValue}
-                                    </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu
-                                    aria-label="Static Actions"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                    selectedKeys={selectedKeys}
-                                    onSelectionChange={handleSelectionChange}
-                                >
-                                    <DropdownItem key="Newest" textValue='Newest'>Newest</DropdownItem>
-                                    <DropdownItem key="Oldest" textValue='Oldest'>Oldest</DropdownItem>
-                                    <DropdownItem key="RatingUp" textValue='RatingUp'>Rating Up</DropdownItem>
-                                    <DropdownItem key="RatingDown" textValue='RatingDown'>Rating Down</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
-                    </div>
-                    <div className="flex flex-rows gap-9 flex-wrap justify-center mt-[4rem] max-w-[96rem]">
-                        {foodData?.map((item: Food, index: number) => (
-                            <Card shadow="sm" className=" max-h-[27rem] min-w-[19rem] max-w-[19rem] items-start" key={index} isPressable onPressEnd={() => { navigate(`/product-details/${item.id}`) }}>
-                                <CardBody className="overflow-visible p-0 h-[15rem] max-h-[420px]">
-                                    <Image
-                                        shadow="sm"
-                                        radius="lg"
-                                        width="100%"
-                                        alt={item.title}
-                                        className="w-full object-cover h-[15rem] select-none"
-                                        src={item.img}
-                                    />
-                                </CardBody>
-                                <CardFooter className="flex flex-col max-w-[30rem] items-start ">
-                                    <div className="text-small flex  flex-col self-start text-left max-w-[25rem] h-[80px] max-h-[100px]">
-                                        <b>{item.title}</b>
-                                        <b className="font-normal max-w-[20rem]">{item.description}</b>
-                                    </div>
-                                    <p className="border-black text-default-700 text-right w-full">{item.price}₫</p>
-                                    <Chip className="bg-black text-white self-end mt-[0.5rem]">
-                                        <BsCartPlus className='size-4' />
-                                    </Chip>
-                                </CardFooter>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-                {totalPages && page < totalPages && (
-                    <LoadMore content={isLoadingLoadMore ? 'Loading...' : 'Load more foods'} clickEvent={() => setPage(page + 1)} />
-                )}
-            </div>
-        )
-    }
+
+        if (rating) {
+            setSelectedRating(rating);
+        }
+    }, [searchParams, setFilterValue, setSelectedCheckboxes, setSelectedRating]);
+
+    useEffect(() => {
+        if (fetchFilterData) {
+            const updateFoodListData = ((prevData: Food[]): Food[] => {
+                if (page === 1) return fetchFilterData;
+
+                const newData = fetchFilterData.filter((item: Food) => !prevData.some(prevItem => prevItem.id === item.id));
+
+                return [...prevData, ...newData];
+            });
+            setDataFoodList(updateFoodListData(dataFoodList))
+        }
+    }, [page, fetchFilterData, setDataFoodList])
+
+    // refetch sau khi thay đổi filter/sort
+    // useEffect(() => {
+    //     refetch()
+    //     setPage(1);
+    // }, [refetch, selectedValue, setPage]);
+
+    useEffect(() => {
+        if (selectedValue || filterValue.length > 0 || checkboxesLength > 0 || selectedRating || isApplyingFilters) {
+            refetch();
+            setPage(1);
+        }
+    }, [selectedValue, filterValue, selectedCheckboxes, selectedRating, isApplyingFilters, refetch, setPage]);
+
+    return (
+        <div className='mb-20 flex flex-col items-center'>
+            <SortByDropdown />
+            {
+                <>
+                    {
+                        isLoading ?
+                            <div className='flex justify-center items-center w-[50rem] h-[35rem]'>
+                                <Loading />
+                            </div> :
+                            <ProductsList
+                                foodData={dataFoodList}
+                                isLoading={isLoading}
+                            />
+                    }
+                </>
+
+            }
+        </div>
+    )
+}
 
 export default AllProducts

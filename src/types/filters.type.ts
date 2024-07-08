@@ -1,6 +1,5 @@
 export interface FilterValuesProps {
-    filterValue?: number[] | undefined,
-    selectedCheckboxes?: string[] | undefined,
+    filterValue?: number[],
+    selectedCheckboxes?: string[],
     selectedRating: string
 }
-

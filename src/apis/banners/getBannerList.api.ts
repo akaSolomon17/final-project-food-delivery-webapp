@@ -7,7 +7,7 @@ export const getBannerList = () => http.get('bannerList')
 export const useGetBannerList = ()=>{
     const {data: bannerList, ...options} = useQuery({
         queryKey: ["bannerList"],
-        queryFn: () => getBannerList(),
+        queryFn: getBannerList,
     })
     return {bannerList,...options}
 }

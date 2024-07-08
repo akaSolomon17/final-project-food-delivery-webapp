@@ -1,7 +1,7 @@
 import { HiOutlineArrowLeft, HiOutlineArrowRight } from 'react-icons/hi2';
 import { useSwiper } from 'swiper/react';
 
-const SwiperNavigateBtn: React.FC<{ headerContent?: string }> = ({ headerContent }) => {
+const NavigateSwiper: React.FC<{ headerContent?: string }> = ({ headerContent }) => {
     const swiper = useSwiper();
     return (
         <div className="flex flex-row justify-between items-center gap-x-[60rem] mb-10 order-1">
@@ -18,4 +18,4 @@ const SwiperNavigateBtn: React.FC<{ headerContent?: string }> = ({ headerContent
     )
 }
 
-export default SwiperNavigateBtn
+export default NavigateSwiper

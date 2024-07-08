@@ -1,252 +1,287 @@
-import React, { useState } from 'react'
-
-import { Button, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react"
-import { useForm } from 'react-hook-form'
-import * as yup from "yup";
+import React, { useEffect, useState } from 'react'
+import { Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react"
+import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAddProduct } from '../../apis/products/addProduct.api';
 import { uploadImageCloud } from '../../apis/cloudinary/uploadImageCloud.api';
 import { Food, FoodCategory, FoodCreate } from '../../types/foods.type';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { useGetFoodList } from '../../apis/products/getFoodList.api';
+import { modalValidationSchema } from '../../utils/schemaValidation';
+import { useUpdateFoodById } from '../../apis/products/updateProductById.api';
+import { EFood, EToastifyStatus } from '../../types/enums.type';
+import { notify } from '../../hooks/Toastify/notify';
+import InputValidation from '../InputValidation/InputValidation';
+import SelectValidation from '../SelectValidation/SelectValidation';
+import CurrencySymbol from '../CurrencySymbol/CurrencySymbol';
+import InputFileValidation from '../InputFileValidation/InputFileValidation';
 import { useGetFoodCategories } from '../../apis/products/getFoodCategories.api';
+import { CTooltip } from '../CTooltip/CTooltip';
+import ImagePreview from './ImagePreview';
 
-// SCHEMA
-// YUP SCHEMA
-const schema: yup.ObjectSchema<FoodCreate> =
-    yup
-        .object()
-        .shape({
-            id: yup.string().nullable(),
-            price: yup.string().nullable(),
-            avgRate: yup.number().nullable(),
-            isExclusive: yup.string().nullable(),
-            title: yup
-                .string()
-                .required("Title is required!"),
+const { DEFAULT_IS_EXCLUSIVES } = EFood
+const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus
 
-            priceNumber: yup
-                .number()
-                .required("Price is required!")
-                .typeError("Price must be a number!")
-                .positive("Price must be a positive number!")
-                .min(15000, "Price must be greater than 15000")
-                .max(300000, "Price must be less than 300000"),
+interface IModalAddProps {
+    isOpen: boolean,
+    onOpenChange: () => void,
+    isEdit: boolean,
+    currentFood: Food
+}
 
-            description: yup
-                .string()
-                .required("Description is required!"),
+const ModalAddProduct: React.FC<IModalAddProps> =
+    ({
+        isOpen,
+        onOpenChange,
+        isEdit,
+        currentFood
+    }) => {
+        const [imagePreview, setImagePreview] = useState<string>("");
+        const [imageFile, setImageFile] = useState<File | null>(null);
 
-            category: yup
-                .string()
-                .required("Please select a category!"),
-
-            img: yup
-                .mixed<FileList>()
-                .required("Please upload your image first!")
-                .test(
-                    "isValidFileName",
-                    "File name must be less than 16 characters",
-                    function (value) {
-                        // Validate name file
-                        if (value && value[0]) {
-                            const fileNameWithoutExtension = value[0].name
-                                .split(".")
-                                .slice(0, -1)
-                                .join(".");
-                            return fileNameWithoutExtension.length <= 16;
-                        }
-                        // else return this.createError({ message: "Please upload your image first!" })
-                        return false;
-                    }
-                )
-                .test(
-                    "isValidFileSize",
-                    "Image only accepts files under 550KB",
-                    (value) => {
-                        //Validate size image file
-                        return value && value[0] && value[0].size <= 550000;
-                    }
-                )
-        });
-
-const ModalAddProduct: React.FC<{ isOpen: boolean, onOpenChange: () => void }> = ({ isOpen, onOpenChange }) => {
-    // FORM HOOK
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset
-    } = useForm<FoodCreate>({
-        defaultValues: {
+        const emptyFoodValues: FoodCreate = {
             title: "",
             price: "",
+            priceNumber: 0,
             description: "",
-            category: "",
-            img: undefined,
-        },
-        mode: "onSubmit",
-        resolver: yupResolver(schema),
-    });
-
-    // DATA FOOD LIST
-    const { data: foodList } = useGetFoodList()
-    const foodListData = foodList?.data
-
-    // DATA FOOD CATEGORIES
-    const { data: foodCategories } = useGetFoodCategories()
-    const foodCategoriesName = foodCategories?.data;
-
-    // STATE IMAGE PREVIEW
-    const [imagePreview, setImagePreview] = useState<string>("");
-
-
-
-    // ADD FOOD MUTATE
-    const { mutate: addProductMutate } = useAddProduct()
-
-    // HANDLE IMAGE PREVIEW
-    const uploadImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                setImagePreview(reader.result as string);
-            };
+            category: ""
         }
-    }
 
-    // HANDLE ADD NEW PRODUCT
-    const submitHandler = async (data: FoodCreate) => {
-        try {
-            if (data.img && data.img[0]) {
-                const uploadResponse = await uploadImageCloud(data.img);
-                const imageUrl = uploadResponse?.data?.secure_url
+        const methods = useForm<FoodCreate>({
+            defaultValues: emptyFoodValues,
+            values: isEdit && currentFood ? {
+                title: currentFood.title,
+                price: currentFood.price,
+                description: currentFood.description,
+                category: currentFood.category,
+                priceNumber: currentFood.priceNumber
+            } : emptyFoodValues,
+            mode: "onSubmit",
+            resolver: yupResolver(modalValidationSchema),
+        });
 
-                const priceFormated = formatCurrency(data.priceNumber)
-                const categoryName = foodCategoriesName[Number(data.category) - 1]?.name
 
-                const newFood: Food = {
-                    id: (Number(foodListData?.length || 0) + 1).toString(),
+        const { handleSubmit, reset, formState: { isDirty } } = methods;
+
+        const { data: foodList } = useGetFoodList()
+        const currentFoodListData = foodList?.data
+
+        const { data: foodCategories } = useGetFoodCategories()
+        const foodCategoriesName = foodCategories?.data;
+
+        const { mutate: addProductMutate } = useAddProduct()
+
+        const { mutate: updateProductByIdMutate } = useUpdateFoodById()
+
+        useEffect(() => {
+            if (isEdit && currentFood) {
+                if (currentFood) {
+                    setImagePreview(currentFood.img as string)
+                }
+            }
+        }, [isEdit, currentFoodListData, currentFood])
+
+        const uploadImageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) {
+                setImageFile(file)
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    setImagePreview(reader.result as string);
+                };
+            }
+        }
+
+        const submitHandler = async (data: FoodCreate) => {
+            try {
+                const imageById = isEdit && currentFood ? currentFood : data
+                let imageUrl = imageById?.img as string;
+
+                const priceFormated = formatCurrency(data.priceNumber as number);
+                const categoryName = foodCategoriesName[Number(data.category) - 1]?.name;
+
+                if (imageFile) {
+                    const uploadResponse = await uploadImageCloud(imageFile);
+                    imageUrl = uploadResponse?.data?.secure_url
+                }
+
+                const updateFood: Food = {
+                    id: currentFood.id,
                     title: data.title,
                     price: priceFormated,
-                    priceNumber: data.priceNumber,
+                    priceNumber: data.priceNumber as number,
+                    img: imageUrl,
+                    description: data.description,
+                    category: categoryName,
+                    avgRate: currentFood.avgRate,
+                    isExclusive: DEFAULT_IS_EXCLUSIVES,
+                }
+
+                const newFood: Food = {
+                    id: String(Number(currentFoodListData?.length || 0) + 1),
+                    title: data.title,
+                    price: priceFormated,
+                    priceNumber: data.priceNumber as number,
                     img: imageUrl,
                     description: data.description,
                     category: categoryName,
                     avgRate: 0,
-                    isExclusive: "Không",
+                    isExclusive: DEFAULT_IS_EXCLUSIVES,
                 }
 
-                addProductMutate(newFood, {
-                    onSuccess: () => {
-                        reset();
-                        setImagePreview("");
-                        alert("Add product successfully!");
-                    },
-                    onError: () => {
-                        alert("Add product failed!");
-                    }
-                })
+                if (isEdit && currentFood) {
+                    updateProductByIdMutate({ id: currentFood.id as string, foodUpdated: updateFood }, {
+                        onSuccess: () => {
+                            reset();
+                            setImagePreview("");
+                            setImageFile(null);
+                            onOpenChange();
+                            notify("Update product successfully!", TOAST_SUCCESS);
+                        },
+                        onError: () => {
+                            notify("Update product failed!", TOAST_ERROR);
+                        }
+                    });
+                }
+                else {
+                    addProductMutate(newFood, {
+                        onSuccess: () => {
+                            reset();
+                            setImagePreview("");
+                            setImageFile(null);
+                            notify("Add product successfully!", TOAST_SUCCESS);
+                            onOpenChange()
+                        },
+                        onError: () => {
+                            notify("Add product failed!", TOAST_ERROR);
+                        }
+                    })
+                }
+
+            } catch (e) {
+                notify("Add product failed to upload Image!", TOAST_ERROR)
             }
-        } catch (e) {
-            console.log("🚀 ~ IMAGE UPLOAD ERROR:", e);
         }
-    }
 
-    return (
-        <div>
-            {/* MODAL FORM */}
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                placement='top-center'
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <form onSubmit={handleSubmit(submitHandler)}>
-                                <ModalHeader>Add Product</ModalHeader>
-                                <ModalBody className='flex flex-col gap-2'>
-                                    {/* TITLE INPUT */}
-                                    <Input isRequired autoFocus type='text' label='Title of product' variant='bordered' {...register("title")}></Input>
-                                    <p className='text-danger-400 text-sm'>{errors.title?.message}</p>
+        const handleModalClose = () => {
+            reset();
+            setImagePreview("");
+            setImageFile(null);
+            onOpenChange();
+        }
 
-                                    {/* IMAGE INPUT */}
-                                    <div className='flex gap-4 items-center'>
-                                        <input type="file" className="block w-full text-sm text-slate-500
-                                            file:mr-4 file:py-2 file:px-4
-                                            file:rounded-full file:border-0
-                                            file:text-sm file:font-semibold
-                                            file:bg-violet-50 file:text-violet-700
-                                            hover:file:bg-violet-100"
-                                            {...register("img")}
-                                            onChange={(e) => uploadImageHandler(e)} />
-                                        {imagePreview && <Image
-                                            width={115}
-                                            alt="NextUI hero Image"
-                                            src={imagePreview}
-                                            radius='sm'
-                                        />}
-                                    </div>
-                                    <p className='text-danger-400 text-sm'>{errors.img?.message}</p>
+        return (
+            <div>
+                <Modal
+                    isOpen={isOpen}
+                    onOpenChange={handleModalClose}
+                    placement='top-center'
+                >
+                    <ModalContent>
+                        {() => (
+                            <>
+                                <FormProvider {...methods}>
+                                    <form onSubmit={handleSubmit(submitHandler)}>
+                                        {isEdit ?
+                                            <ModalHeader>Edit Product</ModalHeader> :
+                                            <ModalHeader>Add Product</ModalHeader>}
 
-                                    {/* PRICE INPUT*/}
-                                    <Input
-                                        label="Price"
-                                        labelPlacement="inside"
-                                        variant='bordered'
-                                        startContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">₫</span>
+                                        <ModalBody className='flex flex-col gap-1'>
+                                            <InputValidation
+                                                id='title'
+                                                label='Title'
+                                                name='title'
+                                                placeholder='Title of Product'
+                                                type='text'
+                                            />
+
+                                            <div className='flex h-[70px] items-center justify-between'>
+                                                <InputFileValidation
+                                                    name='img'
+                                                    className="block text-sm text-slate-500
+                                                            file:mr-4 file:py-2 file:px-4
+                                                            file:rounded-full file:border-0
+                                                            file:text-sm file:font-semibold
+                                                            file:bg-violet-50 file:text-violet-700
+                                                            hover:file:bg-violet-100"
+                                                    onChange={(e) => uploadImageHandler(e)}
+                                                />
+                                                {imagePreview &&
+                                                    <CTooltip
+                                                        content={
+                                                            <div>
+                                                                <ImagePreview width={400} imagePreview={imagePreview} />
+                                                            </div>}
+                                                        placement='right'>
+                                                        <Image
+                                                            width={70}
+                                                            alt="NextUI hero Image"
+                                                            src={imagePreview}
+                                                            radius='sm'
+                                                        />
+                                                    </CTooltip>
+                                                }
                                             </div>
-                                        }
-                                        type="number"
-                                        {...register("priceNumber")}
-                                    />
-                                    <p className='text-danger-400 text-sm'>{errors.priceNumber?.message}</p>
 
-                                    {/* DESCRIPTION INPUT */}
-                                    <Input type='text' label='Description' variant='bordered' {...register("description")}></Input>
-                                    {/* <p>{errors.description?.message}</p> */}
+                                            <InputValidation
+                                                label="Price"
+                                                id='price'
+                                                name='priceNumber'
+                                                labelPlacement="inside"
+                                                variant='bordered'
+                                                startContent={<CurrencySymbol />}
+                                                type="number"
+                                            />
 
-                                    {/* CATEGORY INPUT */}
-                                    <Select
-                                        aria-label='Select kind of food'
-                                        label="Kind of food"
-                                        className='mt-4'
-                                        {...register("category")}
-                                    >
-                                        {foodCategoriesName.map((item: FoodCategory) => (
-                                            <SelectItem className='w-full' key={item.id} value={item.name}>
-                                                {item.name}
-                                            </SelectItem>
-                                        ))}
-                                    </Select>
-                                    <p className='text-danger-400 text-sm'>{errors.category?.message}</p>
+                                            <InputValidation
+                                                id='description'
+                                                name='description'
+                                                type='text'
+                                                label='Description'
+                                                variant='bordered'
+                                            />
 
-                                    {/* EXCLUSIVES */}
-                                    <Input type='text' label='Exclusives' variant='flat' value={"Không"} isReadOnly></Input>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color='danger' variant='flat' onPress={onClose}>
-                                        Close
-                                    </Button>
-                                    <Button color='success' type='submit'
-                                    // onPress={onClose}
-                                    >
-                                        Add
-                                    </Button>
-                                </ModalFooter>
-                            </form>
-                        </>
-                    )}
+                                            <SelectValidation
+                                                label='Choose product category'
+                                                name='category'
+                                                options={foodCategoriesName.map((item: FoodCategory) => ({ value: item.id.toString(), label: item.name }))}
+                                            />
 
-                </ModalContent>
-            </Modal>
-        </div>
-    )
-}
+                                            <InputValidation
+                                                type='text'
+                                                name='isExclusive'
+                                                label='Exclusives'
+                                                variant='flat'
+                                                value={DEFAULT_IS_EXCLUSIVES}
+                                                isReadOnly
+                                            />
+                                        </ModalBody>
+
+                                        <ModalFooter>
+                                            <Button
+                                                color='default'
+                                                variant='flat'
+                                                onPress={handleModalClose}
+                                            >
+                                                Close
+                                            </Button>
+                                            <Button
+                                                className='bg-black text-white disabled:bg-[#00000080]'
+                                                type='submit'
+                                                disabled={!isDirty}
+                                            >
+                                                {isEdit ? 'Update' : 'Add'}
+                                            </Button>
+                                        </ModalFooter>
+                                    </form>
+                                </FormProvider>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+            </div>
+        )
+    }
 
 export default ModalAddProduct
