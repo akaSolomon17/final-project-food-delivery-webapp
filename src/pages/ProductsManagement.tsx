@@ -1,55 +1,36 @@
-import React, { useState } from 'react'
-
-import { Button, Image, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from '@nextui-org/react'
-
+import React, { useEffect, useState } from 'react'
+import { Button, Image, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from '@nextui-org/react'
 import { useGetFoodList } from '../apis/products/getFoodList.api'
-import { FoodCategory, Food, FoodUpdate } from '../types/foods.type'
-import { useGetFoodCategories } from '../apis/products/getFoodCategories.api'
-
-import { formatCurrency } from '../utils/formatCurrency';
-import { useUpdateFoodById } from '../apis/products/updateProductById.api';
+import { Food } from '../types/foods.type'
 import ModalAddProduct from '../components/ModalAddProduct/ModalAddProduct'
 import { useDeleteProductById } from '../apis/products/deleteProductById.api'
+import { useSearchParams } from 'react-router-dom'
+import { CTooltip } from '../components/CTooltip/CTooltip'
+import { notify } from '../hooks/Toastify/notify'
+import { EToastifyStatus } from '../types/enums.type'
 
+import { IoMdAdd } from "react-icons/io";
+import { IoTrashOutline } from "react-icons/io5";
+import { MdOutlineEdit } from "react-icons/md";
+
+import EmptyTable from '../components/ProductManagements/EmptyTable'
+import Loading from '../components/Loading/Loading'
 
 const ProductsManagement = () => {
-    // MODAL HANDLE
+    const [currentFood, setCurrentFood] = useState<Food>({} as Food);
+    const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [hoveredRow, setHoveredRow] = useState<number | null>(null);
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-    // DATA FOOD LIST
-    const { data: foodList } = useGetFoodList()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { data: foodList, isLoading: foodListLoading } = useGetFoodList()
     const foodListData = foodList?.data
 
-    // DATA FOOD CATEGORIES
-    const { data: foodCategories } = useGetFoodCategories()
-    const foodCategoriesName = foodCategories?.data;
-
-    // UPDATE FOOD MUTATE
-    const { mutate: updateProductMutate } = useUpdateFoodById()
-    const [editableById, setEditableById] = useState<string | null | undefined>(null);
-    const [foodEdited, setFoodEdited] = useState<Omit<Food, 'price' | 'img' | 'avgRate' | 'isExclusive'>>({
-        id: "",
-        title: "",
-        priceNumber: 0,
-        description: "",
-        category: "",
-        // price: "",
-        // img: "",
-        // avgRate: 0,
-        // isExclusive: "false",
-    })
-
-    // DELETE FOOD MUTATE
     const { mutate: deleteProductMutate } = useDeleteProductById()
 
-    const [errorPrice, setErrorPrice] = useState<string | null>("")
-    const [tooltipOpen, setTooltipOpen] = useState<boolean>(false)
-
-    // SET PAGINATION STATE
     const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const rowsPerPage = 5;
-
-    const pages = Math.ceil(foodListData?.length / rowsPerPage);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -58,219 +39,164 @@ const ProductsManagement = () => {
         return foodListData?.slice(start, end);
     }, [page, foodListData]);
 
-    const editableHandler = (FoodEdited: FoodUpdate) => {
-        setEditableById(FoodEdited.id)
+    const calcTotalPages = Math.ceil(foodListData?.length / rowsPerPage);
 
-        setFoodEdited({
-            id: FoodEdited.id,
-            title: FoodEdited.title,
-            priceNumber: FoodEdited.priceNumber,
-            description: FoodEdited.description,
-            category: FoodEdited.category,
-        })
+    useEffect(() => {
+        if (!isNaN(calcTotalPages)) {
+            setTotalPages(calcTotalPages);
+            searchParams.set('totalPages', (calcTotalPages.toString()));
+            setSearchParams(searchParams);
+        }
+    }, [foodListData])
+
+    useEffect(() => {
+        const totalPages = searchParams.get('totalPages');
+        const page = searchParams.get('page');
+        if (page && totalPages) {
+            setTotalPages(parseInt(totalPages));
+            setPage(parseInt(page));
+        }
+    }, [searchParams])
+
+    const handleActivePage = (page: number) => {
+        searchParams.set('page', page.toString());
+        setSearchParams(searchParams);
     }
 
-    // onChange handler title
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>, item: Food) => {
-        const titleValue = e.target.value.trim();
 
-        setFoodEdited(prevFoodEdited => ({
-            ...prevFoodEdited,
-            title: titleValue !== '' ? titleValue : item.title
-        }));
+    const handleAddProduct = () => {
+        setIsEdit(false);
+        setCurrentFood({} as Food);
+        onOpen();
     };
 
-    // onChange handler description
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>, item: Food) => {
-        const desciptionValue = e.target.value.trim();
-        setFoodEdited(prevFoodEdited => ({
-            ...prevFoodEdited,
-            description: desciptionValue !== '' ? desciptionValue : item.description
-        }));
+    const handleEditProduct = (food: Food) => {
+        setIsEdit(true);
+        setCurrentFood(food);
+        onOpen();
     };
 
-    // onChange handler price
-    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, item: Food) => {
-        const priceValue = e.target.value.trim();
-
-        if (priceValue === '') {
-            setFoodEdited(prevFoodEdited => ({
-                ...prevFoodEdited,
-                priceNumber: item.priceNumber
-            }));
-            setTooltipOpen(false);
-            setErrorPrice(null);
-        } else {
-            const priceNumber = Number(priceValue);
-
-            if (priceNumber >= 30000 && priceNumber <= 300000) {
-                setFoodEdited(prevFoodEdited => ({
-                    ...prevFoodEdited,
-                    priceNumber: priceNumber
-                }));
-                setTooltipOpen(false);
-                setErrorPrice(null);
-            } else {
-                setTooltipOpen(true);
-                setErrorPrice('Price must be between 30000 and 300000');
-            }
-        }
-    };
-
-    // onChange handler category
-    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>, item: Food) => {
-        const categoryValue = e.target.value.trim();
-        const categoryName = foodCategoriesName[Number(categoryValue) - 1]?.name
-        setFoodEdited(prevFoodEdited => ({
-            ...prevFoodEdited,
-            category: categoryName !== '' ? categoryName : item.category
-        }));
-    };
-
-    const EditSubmitHandler = (id: string) => {
-        const currentFood = foodListData?.find((item: Food) => item.id === id)
-
-        const formattedPrice = formatCurrency(foodEdited.priceNumber);
-
-        // CHECK DIFFERENCE OLD & NEW FOOD INFO
-        const checkDiff =
-            currentFood?.title !== foodEdited.title ||
-            currentFood?.priceNumber !== foodEdited.priceNumber ||
-            currentFood?.description !== foodEdited.description ||
-            currentFood?.category !== foodEdited?.category
-
-        // UPDATE FOOD IF !DIFF
-        if (checkDiff && currentFood) {
-            updateProductMutate({ id: id, foodUpdated: { ...foodEdited, price: formattedPrice, img: currentFood.img, avgRate: currentFood.avgRate, isExclusive: currentFood.isExclusive } }, {
+    const handleDeleteProduct = (id: string) => {
+        const deleteConfirm = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
+        if (deleteConfirm) {
+            deleteProductMutate(id, {
                 onSuccess: () => {
-                    setEditableById(null)
-                    alert("Update product successfully!");
+                    notify('Xóa sản phẩm thành công', TOAST_SUCCESS);
                 },
                 onError: () => {
-                    alert("Update product failed!");
+                    notify('Xóa sản phẩm thất bại', TOAST_ERROR);
                 }
-            })
+            });
         }
-        else setEditableById(null)
-    }
-
-    const deleteHandler = (id: string) => {
-        deleteProductMutate(id);
-    }
+    };
 
     return (
-        <div className='p-10'>
-            <div className='flex items-center justify-between'>
+        <div className='p-10 flex flex-col justify-center items-center h-[605px]'>
+            <ModalAddProduct
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                isEdit={isEdit}
+                currentFood={currentFood}
+            />
+            <div className='flex items-center justify-between w-2/3 '>
                 <h1 className='font-bold text-3xl my-10'>Products Management</h1>
-                <Button onPress={onOpen} color='success'>Add Product</Button>
+                <Button
+                    onPress={handleAddProduct}
+                    className='bg-black text-white'
+                    size='sm'
+                >
+                    <IoMdAdd size={18} />
+                </Button>
             </div>
-            <ModalAddProduct isOpen={isOpen} onOpenChange={onOpenChange} />
-            {/* TABLE */}
             <Table
                 bottomContent={
-                    <div className="flex w-full justify-center">
+                    <div className="flex w-full justify-center ">
                         <Pagination
-                            isCompact
-                            showControls
                             showShadow
-                            color="secondary"
+                            color="default"
+                            radius='sm'
                             page={page}
-                            total={pages}
-                            onChange={(page) => setPage(page)}
+                            total={totalPages}
+                            onChange={handleActivePage}
                         />
                     </div>
                 }
                 aria-labelledby='Table of products'
-                className='min-w-[500px]'
+                className='min-w-[409px] w-2/3'
             >
                 <TableHeader >
-                    <TableColumn align="start">
-                        ID
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Image
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Title
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Description
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Price
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Category
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Average Rating
-                    </TableColumn>
-                    <TableColumn align="center">
-                        Actions
-                    </TableColumn>
+                    <TableColumn align="start">ID</TableColumn>
+                    <TableColumn align="center">Image</TableColumn>
+                    <TableColumn align="center">Title</TableColumn>
+                    <TableColumn align="center">Description</TableColumn>
+                    <TableColumn align="center">Price</TableColumn>
+                    <TableColumn align="center">Category</TableColumn>
+                    <TableColumn align="center">Average Rating</TableColumn>
+                    <TableColumn children={null}></TableColumn>
                 </TableHeader>
-                <TableBody items={items} >
-                    {items?.map((item: Food) => (
-                        <TableRow key={item.id}>
+                <TableBody
+                    isLoading={foodListLoading}
+                    loadingContent={<Loading />}
+                    items={items}
+                    emptyContent={<EmptyTable />}
+                    className='min-h-[206px]'
+                >
+                    {items?.map((item: Food, index: number) => (
+                        <TableRow
+                            className='items-center hover:bg-gray-100'
+                            key={index}
+                            onMouseEnter={() => setHoveredRow(index)}
+                            onMouseLeave={() => setHoveredRow(null)}
+                        >
                             <TableCell>{item.id}</TableCell>
-                            <TableCell>
-                                <Image alt='Product img' width={40} className='select-none' src={item.img} />
+                            <TableCell className='max-w-[50px] w-[50px]'>
+                                <Image
+                                    alt='Product img'
+                                    width={40}
+                                    radius='sm'
+                                    className='select-none'
+                                    src={item.img as string} />
                             </TableCell>
                             <TableCell>
-                                {editableById === item.id ?
-                                    <Input
-                                        type='text'
-                                        placeholder='Edit title here.'
-                                        onChange={(e) => handleTitleChange(e, item)} /> :
-                                    item.title
-                                }
-                            </TableCell>
-                            <TableCell className='max-w-[190px]'>
-                                {editableById === item.id ?
-                                    <Input
-                                        type='text'
-                                        placeholder='Edit description here.'
-                                        onChange={(e) => handleDescriptionChange(e, item)} /> :
-                                    <p>{item.description}</p>
-                                }
+                                <div className='max-w-[200px] w-[160px]'>
+                                    {item.title}
+                                </div>
                             </TableCell>
                             <TableCell>
-                                {editableById === item.id ?
-                                    <div>
-                                        <Tooltip isOpen={tooltipOpen} content={errorPrice}>
-                                            <Input
-                                                type='number'
-                                                placeholder='Edit price here.'
-                                                onChange={(e) => handlePriceChange(e, item)} />
-                                        </Tooltip>
-                                    </div> :
-                                    item.price
-                                }
+                                <CTooltip
+                                    content={item.description as string}
+                                    placement='top'
+                                >
+                                    <p className='text-ellipsis overflow-hidden max-w-[350px] w-[320px] whitespace-nowrap'>
+                                        {item.description}
+                                    </p>
+                                </CTooltip>
                             </TableCell>
+                            <TableCell>{item.price}</TableCell>
+                            <TableCell>{item.category}</TableCell>
                             <TableCell>
-                                {editableById === item.id ?
-                                    <Select
-                                        aria-label='Select kind of food'
-                                        className='min-w-[200px] max-h-[40px] h-[40px]'
-                                        value={foodEdited.category}
-                                        onChange={(e) => handleCategoryChange(e, item)}>
-                                        {/* console.log("🚀 ~ e.target.value:", e.target.value); */}
-                                        {foodCategoriesName.map((category: FoodCategory) => (
-                                            <SelectItem className='w-full' key={category.id} value={category.name}>
-                                                {category.name}
-                                            </SelectItem>
-                                        ))}
-                                    </Select> :
-                                    item.category
-                                }
+                                <div className='max-w-[50px] w-[50px]'>
+                                    {item.avgRate}
+                                </div>
                             </TableCell>
-                            <TableCell>{item.avgRate}</TableCell>
-                            <TableCell>
-                                {editableById === item.id ?
-                                    (<Button className='min-w-[80px]' color='success' onClick={() => EditSubmitHandler(item.id ?? '')}>Update</Button>) :
-                                    (<Button className='min-w-[80px]' color='warning' onClick={() => editableHandler(item)}>Edit</Button>)
+                            <TableCell className='flex items-center h-[56px] w-[80px] gap-2'>
+                                {
+                                    hoveredRow === index && (
+                                        <>
+
+                                            <MdOutlineEdit
+                                                className='cursor-pointer'
+                                                size={18}
+                                                onClick={() => handleEditProduct(item)}
+                                            />
+                                            <IoTrashOutline
+                                                className='cursor-pointer'
+                                                size={18}
+                                                onClick={() => handleDeleteProduct(item.id as string)}
+                                            />
+                                        </>
+                                    )
                                 }
-                                <Button className='min-w-[80px] ms-5' color='danger' onClick={() => deleteHandler(item.id ?? '')}>Delete</Button>
                             </TableCell>
                         </TableRow>
                     ))}

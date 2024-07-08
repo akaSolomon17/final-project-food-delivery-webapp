@@ -4,8 +4,8 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import './SwiperCustom.css';
-import SwiperNavigateBtn from './SwiperNavigateBtn';
+import './CSwiper.css';
+import NavigateSwiper from './NavigateSwiper';
 
 type SwiperComponentProps = {
     children: React.ReactNode[],
@@ -16,7 +16,7 @@ type SwiperComponentProps = {
     isBanner?: boolean
 }
 
-const SwiperCustom: React.FC<SwiperComponentProps> = (props) => {
+const CSwiper: React.FC<SwiperComponentProps> = (props) => {
     const modules = props.isPagination ? [Pagination] : [Navigation, Autoplay];
     const swiperProps = {
         slidesPerView: props.slidePerView,
@@ -31,7 +31,7 @@ const SwiperCustom: React.FC<SwiperComponentProps> = (props) => {
     return (
         <div className="mx-auto">
             <Swiper {...swiperProps}>
-                {!props.isPagination && <SwiperNavigateBtn headerContent={props.headerContent}></SwiperNavigateBtn>}
+                {!props.isPagination && <NavigateSwiper headerContent={props.headerContent}></NavigateSwiper>}
                 {props.children.map((child, index) =>
                 (
                     <SwiperSlide key={index} className='flex items-center justify-center text-center text-sm bg-white '>
@@ -43,4 +43,4 @@ const SwiperCustom: React.FC<SwiperComponentProps> = (props) => {
         </div>
     )
 }
-export default SwiperCustom
+export default CSwiper

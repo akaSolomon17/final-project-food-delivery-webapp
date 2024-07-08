@@ -1,42 +1,69 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Switch, Chip, Badge } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Chip, Badge } from "@nextui-org/react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { LuUser2 } from "react-icons/lu";
-import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
+import { useCart, useCartActions, useCartExpand } from "../../zustand/cartStore";
+import { useEffect } from "react";
 
-const link = [
-    {
-        name: "Home",
-        link: "/",
-        icon: null
-    },
-    {
-        name: "Menu",
-        link: "/menu",
-        icon: null
-    },
-    {
-        name: "Your Order",
-        link: "/your-order",
-        icon: null
-    },
-    {
-        name: "Cart",
-        link: "/cart-detail",
-        icon: <Badge color="danger" content={1} size="sm" shape="circle"><PiShoppingCartSimple /></Badge>
-    },
-    {
-        name: "Managements",
-        link: "/managements",
-        icon: <Badge content="" size="sm" color="success" shape="circle" placement="bottom-right"><LuUser2 /></Badge>
-    },
-]
-
-export default function App() {
+export const Nav: React.FC<{ isCheckoutPage: boolean }> = ({ isCheckoutPage }) => {
     const navigate = useNavigate();
+    const cart = useCart()
+    // const quantities = useQuantities()
+    const cartExpand = useCartExpand()
+    const { setCartExpand, setCart } = useCartActions()
+
+    const handleCartExpand = () => {
+        setCartExpand(!cartExpand)
+    }
+
+    useEffect(() => {
+        // Load cart from localStorage on initial load
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) {
+            setCart(JSON.parse(storedCart));
+        }
+    }, [setCart]);
+
+    const link = [
+        {
+            name: "Home",
+            link: "/",
+            icon: null
+        },
+        {
+            name: "Menu",
+            link: "/menu",
+            icon: null
+        },
+        {
+            name: "Your Order",
+            link: "/your-order",
+            icon: null
+        },
+        {
+            name: "Cart",
+            link: null,
+            icon:
+                <div className="cursor-pointer" onClick={handleCartExpand}>
+                    <Badge
+                        content={cart.length > 0 ? cart.length : ""}
+                        color={cart.length > 0 ? 'danger' : 'default'}
+                        size="sm"
+                        shape="circle"
+                    >
+                        <PiShoppingCartSimple color={cartExpand ? "red" : ""} />
+                    </Badge >
+                </div>
+        },
+        {
+            name: "Managements",
+            link: "/managements",
+            icon: <LuUser2 size={16} />
+        },
+    ]
     return (
         <>
-            <Navbar >
+            <Navbar className="shadow-[rgba(0,0,16,0.5)_6px_7px_4px_-8px]">
                 <NavbarBrand className="cursor-pointer" onClick={() => navigate('/')}>
                     <Chip >
                         <Image
@@ -48,40 +75,51 @@ export default function App() {
                     </Chip>
                     <span className="ms-2 font-lg font-semibold font-sans">CHÓI'S KITCHEN</span>
                 </NavbarBrand>
-                <NavbarContent className="w-[60rem] sm:flex" justify="start">
-                    {link.map((item, index) =>
-                    (item.icon === null ?
-                        <NavbarItem key={index} className="me-5">
-                            <NavLink className={({ isActive }) => (isActive ? "text-red-500" : "text-black")} to={item.link}>
-                                {item.name}
-                            </NavLink>
-                        </NavbarItem> :
-                        null
-                    ))}
-                </NavbarContent>
-                <NavbarContent justify="end">
-                    <NavbarItem>
-                        <Switch
-                            defaultSelected
-                            size="sm"
-                            color="default"
-                            thumbIcon={({ isSelected, className }) =>
-                                isSelected ? (
-                                    <MdOutlineDarkMode className={className} />
-                                ) : (
-                                    <MdLightMode className={className} />
-                                )
-                            }
+                {!isCheckoutPage ? (
+                    <>
+                        <NavbarContent
+                            className="w-[60rem] sm:flex"
+                            justify="start"
                         >
-                        </Switch>
-                    </NavbarItem>
-                    {link.map((item, index) =>
-                    (<NavbarItem key={index} className="items-center justify-center">
-                        <NavLink className={({ isActive }) => (isActive ? "text-red-500 items-center" : "text-black items-center")} to={item.link}>
-                            {item.icon}
-                        </NavLink>
-                    </NavbarItem>))}
-                </NavbarContent>
+                            {link.map((item, index) =>
+                            (item.icon === null ?
+                                <NavbarItem
+                                    key={index}
+                                    className="me-5"
+                                >
+                                    <NavLink
+                                        className={({ isActive }) =>
+                                        (isActive ?
+                                            "text-red-500" :
+                                            "text-black"
+                                        )}
+                                        to={item.link}
+                                    >
+                                        {item.name}
+                                    </NavLink>
+                                </NavbarItem> :
+                                null
+                            ))}
+                        </NavbarContent>
+                        <NavbarContent justify="end">
+                            {link.map((item, index) =>
+                            (<NavbarItem key={index} className="items-center justify-center">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                    (item.link !== null && isActive ?
+                                        "text-red-500 items-center" :
+                                        "text-black items-center"
+                                    )}
+                                    to={item.link ? item.link : "#"}
+                                >
+                                    <div className="h-[18px] items-center">
+                                        {item.icon}
+                                    </div>
+                                </NavLink>
+                            </NavbarItem>))}
+                        </NavbarContent>
+                    </>)
+                    : <></>}
             </Navbar >
             <Outlet />
         </>

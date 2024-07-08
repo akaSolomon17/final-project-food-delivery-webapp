@@ -17,7 +17,6 @@ const TestimonialsCards: React.FC<{ feedbacks: Feedback }> = ({ feedbacks }) => 
                 </CardBody>
                 <CardFooter className="px-4 text-small text-default-400 flex text-left">
                     <p>{feedbacks.feedback}</p>
-
                 </CardFooter>
             </Card>
         </div>

@@ -1,10 +1,9 @@
-import React from 'react'
 import { FaSquareXTwitter, FaSquareFacebook, FaLinkedin, FaSquareInstagram } from "react-icons/fa6";
 
 const Footer = () => {
     return (
         <div className='footer'>
-            <div className="page-footer w-full h-[20rem] mt-14 border-t-1 shadow-inner bg-[#f7fafc93] flex flex-col justify-center select-none">
+            <div className="page-footer w-full h-[20rem] pt-5 border-t-1 shadow-inner bg-[#f7fafc93] flex flex-col justify-center select-none">
                 <h1 className="font-semibold font-sans ms-[21rem] text-lg">Deok Sun Korean Food.</h1>
                 <div className="flex footer-info self-center mt-[1rem] justify-center">
                     <ul className="flex flex-col me-[8rem]  gap-3">

@@ -10,9 +10,6 @@ export const useUpdateFoodById = () => {
     // UPDATE Todo
     return useMutation({
         mutationFn: ({ id, foodUpdated }: { id: string, foodUpdated: Food }) => updateFoodById(id, foodUpdated),
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['foodList'] });
-        }
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['foodList'] })
     });
 };

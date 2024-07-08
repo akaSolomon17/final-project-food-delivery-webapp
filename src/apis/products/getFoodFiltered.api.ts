@@ -1,28 +1,35 @@
-// http://localhost:3000/foodList?priceNumber_gte=45000&priceNumber_lte=65000&category_like=kimbap&avgRate_gte=2
-
 import {useQuery} from "@tanstack/react-query"
 import http from "../../utils/http"
 
 const getFoodFiltered = (
+    sort: string,
+    order: string,
     priceNumber_gte: number, 
     priceNumber_lte: number, 
-    categories: string[], 
+    categories: string[] | undefined, 
     avgRate: number
     ) => {
-            const categoryArray = Array.isArray(categories) ? categories : [categories];
-            const categoryParams = categoryArray.map(category => `${category}`).join('&');
-            const url = `http://localhost:3000/foodList?priceNumber_gte=${priceNumber_gte}&priceNumber_lte=${priceNumber_lte}&category_like=${categoryParams}&avgRate_gte=${avgRate}`
-            return http.get(url)
+            let url = `http://localhost:3000/foodList?_sort=${sort || ""}&_order=${order || ""}&priceNumber_gte=${priceNumber_gte}&priceNumber_lte=${priceNumber_lte}&avgRate_gte=${avgRate}`;
+
+            if (categories && categories.length > 0) {
+                const categoryParams = categories.map(category => `category_like=${encodeURIComponent(category)}`).join('&');
+                url += `&${categoryParams}`;
+            }
+
+            return http.get(url);
         }
 
-export const useGetFoodFiltered = ( 
+export const useGetFoodFiltered = (
+    sortBy: string,
+    order: string,
     priceNumber_gte: number, 
     priceNumber_lte: number, 
-    categories: string[], 
-    avgRate: number) => {
-    const {data: foodFiltered, ...options} = useQuery({
-        queryKey: ["foodFiltered", priceNumber_gte, priceNumber_lte, categories, avgRate],
-        queryFn: () => getFoodFiltered(priceNumber_gte, priceNumber_lte, categories, avgRate),
+    categories: string[] | undefined, 
+    avgRate: number, 
+    applyingFilters: boolean) => {
+    return useQuery({
+        queryKey: ["foodFiltered",sortBy, order, priceNumber_gte, priceNumber_lte, categories, avgRate],
+        queryFn: () => getFoodFiltered(sortBy, order, priceNumber_gte, priceNumber_lte, categories, avgRate),
+        enabled: applyingFilters
     })
-    return {foodFiltered,...options}
 }

@@ -11,8 +11,7 @@ export const useAddProduct = () => {
         mutationFn: (body: Food) => {
             return addProduct(body);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey:["foodList"] });
-        }
+        onSuccess: () => queryClient.invalidateQueries({ queryKey:["foodList"] })
+        
     })
 }

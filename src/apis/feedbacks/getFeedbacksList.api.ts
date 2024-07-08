@@ -7,7 +7,7 @@ export const getFeedbacksApprovedList = () => http.get('userReview?isFeedbackApp
 export const useGetFeedbacksApprovedList = ()=>{
     const {data: feedbacksApprovedList, ...options} = useQuery({
         queryKey: ["feedbacksApprovedList"],
-        queryFn: () => getFeedbacksApprovedList(),
+        queryFn: getFeedbacksApprovedList,
     })
     return {feedbacksApprovedList,...options}
 }

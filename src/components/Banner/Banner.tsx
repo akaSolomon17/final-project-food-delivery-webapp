@@ -1,6 +1,6 @@
 import { Image } from '@nextui-org/image'
 import { useGetBannerList } from '../../apis/banners/getBannerList.api'
-import SwiperCustom from '../Swiper/SwiperCustom'
+import CSwiper from '../Swiper/CSwiper'
 import { Banners } from '../../types/banner.type'
 
 export const Banner = () => {
@@ -9,7 +9,7 @@ export const Banner = () => {
 
     return (
         <div>
-            <SwiperCustom slidePerView={1} className='max-h-[34rem]' isBanner={true} isPagination={false}>
+            <CSwiper slidePerView={1} className='max-h-[34rem]' isBanner={true} isPagination={false}>
                 {bannerListed.map((item: Banners, index: number) =>
                     <Image
                         key={index}
@@ -19,7 +19,7 @@ export const Banner = () => {
                         className='object-center w-full select-none'
                     />)
                 }
-            </SwiperCustom>
+            </CSwiper>
         </div>
     )
 }

@@ -1,12 +1,12 @@
 export interface Food {
-    id: string | undefined | null ,
+    id?: string | null,
     title: string,
     price: string,
     priceNumber: number,
-    img: string | undefined,
+    img: string | null,
     description?: string,
     category: string,
-    avgRate: number, //calc by user rating
+    avgRate: number,
     isExclusive: string
 }
 
@@ -30,16 +30,17 @@ export interface FoodCreate {
     id?: string | null,
     title: string,
     price?: string | null,
-    img: FileList,
-    priceNumber: number ,
+    img?: string | FileList | File | null,
+    priceNumber?: number ,
     description?: string,
     category: string,
-    avgRate?: number | null, //calc by user rating
+    avgRate?: number | null,
     isExclusive?: string | null
 }
 
-export type FoodUpdate = Omit<FoodCreate,'price'|'img'| 'avgRate' | 'isExclusive'>
-
+export type FoodUpdate = Omit<FoodCreate, 'price' | 'img' | 'avgRate' | 'isExclusive'|'voucherCode'> & {
+    img?: string | FileList | File
+}
 
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
 
