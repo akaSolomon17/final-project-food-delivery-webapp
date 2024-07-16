@@ -4,7 +4,7 @@ export interface Food {
     price: string,
     priceNumber: number,
     img: string | null,
-    description?: string,
+    description?: string | null,
     category: string,
     avgRate: number,
     isExclusive: string
@@ -32,10 +32,21 @@ export interface FoodCreate {
     price?: string | null,
     img?: string | FileList | File | null,
     priceNumber?: number ,
-    description?: string,
+    description?: string | null,
     category: string,
     avgRate?: number | null,
     isExclusive?: string | null
+}
+
+export interface IActiveSearch {
+  id: string;
+  title: string;
+  img: string;
+}
+
+export interface IProductContent {
+    foodIdData: Food,
+    foodLoading: boolean
 }
 
 export type FoodUpdate = Omit<FoodCreate, 'price' | 'img' | 'avgRate' | 'isExclusive'|'voucherCode'> & {
@@ -43,4 +54,3 @@ export type FoodUpdate = Omit<FoodCreate, 'price' | 'img' | 'avgRate' | 'isExclu
 }
 
 export type Foods = Omit<Food,'categoryId'|'isExclusive'|'avgRating'>
-

@@ -7,6 +7,7 @@ export const modalValidationSchema: yup.ObjectSchema<FoodCreate> = yup.object().
             price: yup.string().nullable(),
             avgRate: yup.number().nullable(),
             isExclusive: yup.string().nullable(),
+            description: yup.string().nullable(),
             title: yup
                 .string()
                 .required("Title is required!"),
@@ -18,10 +19,6 @@ export const modalValidationSchema: yup.ObjectSchema<FoodCreate> = yup.object().
                 .positive("Price must be a positive number!")
                 .min(15000, "Price must be greater than 15000")
                 .max(300000, "Price must be less than 300000"),
-
-            description: yup
-                .string()
-                .required("Description is required!"),
 
             category: yup
                 .string()

@@ -2,18 +2,19 @@ export enum EFilterSort {
     USER_REVIEW = 'userReview',
     FOOD_LIST = 'foodList',
     COMMENT_LIMIT = 2,
-    PRODUCT_LIMIT = 4,
-    NEWEST = 'Newest',
-    OLDEST = 'Oldest',
-    RATING_UP = 'RatingUp',
-    RATING_DOWN = 'RatingDown',
+    NEWEST = 'newest',
+    OLDEST = 'oldest',
+    RATING_UP = 'ratingUp',
+    RATING_DOWN = 'ratingDown',
     DESC = 'desc',
     ACS = 'asc',
     ID = 'id',
     AVG_RATE = 'avgRate',
+    PRICE_MIN = 30000,
+    PRICE_MAX = 300000,
 }
 
-export enum EFood{
+export enum EFood {
     DEFAULT_IS_EXCLUSIVES = 'Không'
 }
 
@@ -41,7 +42,8 @@ export enum EOrderHeaderColumn {
 export enum EOrderStatus {
     COMPLETED = 'Completed',
     DELIVERING = 'Delivering',
-    CANCELED = 'Canceled'
+    CANCELED = 'Canceled',
+    ALL = 'All'
 }
 
 export enum EDateRangeDefaultValue {
@@ -50,4 +52,8 @@ export enum EDateRangeDefaultValue {
 
 export enum EVoucher {
     VOUCHER_INVALID = '"Mã giảm giá không hợp lệ!"',
+}
+
+export enum ECartOrder {
+    MAX_QUANTITY_PER_BILL = 99,
 }

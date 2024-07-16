@@ -14,7 +14,7 @@ export const useGetFoodList = () => {
 }
 
 // Get exclusive food list
-export const getExclusiveFoodList = () => http.get('foodList?isExclusive=true')
+export const getExclusiveFoodList = () => http.get('foodList?isExclusive=exclusive')
 
 export const useGetExclusiveFoodList = ()=>{
     return useQuery({

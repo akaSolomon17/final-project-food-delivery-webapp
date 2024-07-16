@@ -1,9 +1,9 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Chip, Badge } from "@nextui-org/react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { PiShoppingCartSimple } from "react-icons/pi";
-import { LuUser2 } from "react-icons/lu";
 import { useCart, useCartActions, useCartExpand } from "../../zustand/cartStore";
 import { useEffect } from "react";
+import { AiOutlineProduct } from "react-icons/ai";
 
 export const Nav: React.FC<{ isCheckoutPage: boolean }> = ({ isCheckoutPage }) => {
     const navigate = useNavigate();
@@ -58,7 +58,7 @@ export const Nav: React.FC<{ isCheckoutPage: boolean }> = ({ isCheckoutPage }) =
         {
             name: "Managements",
             link: "/managements",
-            icon: <LuUser2 size={16} />
+            icon: <AiOutlineProduct size={17} />
         },
     ]
     return (

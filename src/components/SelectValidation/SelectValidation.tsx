@@ -1,19 +1,11 @@
 import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Select, SelectItem } from '@nextui-org/react';
-
-interface ISelectValidationProps {
-    label: string;
-    name: string;
-    className?: string;
-    options: { value: string; label: string }[];
-}
+import { ISelectValidationProps } from '../../types/input.type';
 
 const SelectValidation: FC<ISelectValidationProps> = ({
-    label,
     name,
-    options,
-    className,
+    label,
+    children,
     ...passProps
 }) => {
     const {
@@ -27,27 +19,34 @@ const SelectValidation: FC<ISelectValidationProps> = ({
                 control={control}
                 name={name}
                 render={({ field }) => (
-                    <div className='h-[80px]'>
-                        <Select
-                            aria-label={label}
-                            label={label}
-                            className={className}
-                            selectedKeys={options.find((option) => option.label === field.value)?.value ?? options[1].value}
+                    <div className='flex flex-col h-[80px]'>
+                        {label &&
+                            <label
+                                htmlFor={label}
+                                className='text-sm mb-2'
+                            >
+                                {label}
+                            </label>
+                        }
+                        <select
+                            id={label}
+                            className='w-full h-[55px] border-2 border-default-200 rounded-lg p-2'
                             {...field}
                             {...passProps}
                         >
-                            {options.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        {errors[name] && <p className='text-danger text-sm ms-2'>{errors[name]?.message as string}</p>}
+                            {children}
+                        </select>
+                        {errors[name] &&
+                            <p className='text-danger text-sm ms-2'>
+                                {errors[name]?.message as string}
+                            </p>
+                        }
                     </div>
-                )}
+                )
+                }
             />
 
-        </div>
+        </div >
     );
 };
 

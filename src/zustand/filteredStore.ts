@@ -1,34 +1,20 @@
 import { create } from "zustand";
+import { EOrderStatus } from "../types/enums.type";
 
 interface IFilterStore {
-    filterValue: number[] ;
-    selectedCheckboxes: string[] | undefined;
-    selectedRating: string;
-    isApplyingFilters: boolean;
+    OrderStatus: EOrderStatus;
     actions: {
-        setFilterValue: (filterValue: number[] | undefined) => void;
-        setSelectedCheckboxes: (selectedCheckboxes: string[] | undefined) => void;
-        setSelectedRating: (selectedRating: string) => void;
-        setApplyingFilters: (isApplyingFilters: boolean) => void;
+        setOrderStatus: (OrderStatus: EOrderStatus) => void;
     }
 }
 
 const useFilterStore = create<IFilterStore>((set) => ({
-    filterValue: [30000, 300000],
-    selectedCheckboxes: [],
-    selectedRating: '0',
-    isApplyingFilters: false,
+    OrderStatus: EOrderStatus.ALL,
     actions: {
-        setFilterValue: (filterValue) => set({ filterValue }),
-        setSelectedCheckboxes: (selectedCheckboxes) => set({ selectedCheckboxes }),
-        setSelectedRating: (selectedRating) => set({ selectedRating }),
-        setApplyingFilters: (isApplyingFilters) => set({ isApplyingFilters })
+        setOrderStatus: (OrderStatus) => set({ OrderStatus }),
     }
 }));
 
-export const useFilterValue = () => useFilterStore((state) => state.filterValue);
-export const useSelectedCheckboxes = () => useFilterStore((state) => state.selectedCheckboxes);
-export const useSelectedRating = () => useFilterStore((state) => state.selectedRating);
-export const useIsApplyingFilters = () => useFilterStore((state) => state.isApplyingFilters);
+export const useOrderStatus = () => useFilterStore((state) => state.OrderStatus);
 // ACTIONS
 export const useFilterActions = () => useFilterStore((state) => state.actions);

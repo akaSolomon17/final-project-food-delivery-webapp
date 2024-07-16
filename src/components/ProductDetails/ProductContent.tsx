@@ -1,20 +1,15 @@
 import React from 'react'
-import { Food } from '../../types/foods.type'
+import { IProductContent } from '../../types/foods.type'
 import { ImSpoonKnife } from 'react-icons/im'
 import { AiFillTags, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import { Button, Chip, Image } from '@nextui-org/react'
 import { BiSolidCart } from 'react-icons/bi'
 import { useProductDetailsActions, useQuantity } from '../../zustand/productDetailStore.ts'
-import { useCartActions, useQuantities } from '../../zustand/cartStore.ts'
+import { useCartActions, useQuantities, useTotalPrice } from '../../zustand/cartStore.ts'
 import { notify } from '../../hooks/Toastify/notify.ts'
 import { EToastifyStatus } from '../../types/enums.type.ts'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../Loading/Loading.tsx'
-// TYPES
-interface IProductContent {
-    foodIdData: Food,
-    foodLoading: boolean
-}
 
 const ProductContent: React.FC<IProductContent> = ({ foodIdData, foodLoading }) => {
     const { TOAST_SUCCESS } = EToastifyStatus
@@ -22,6 +17,7 @@ const ProductContent: React.FC<IProductContent> = ({ foodIdData, foodLoading }) 
     const [isOrderNow, setIsOrderNow] = React.useState<boolean>(false)
     const quantity = useQuantity()
     const quantities = useQuantities()
+    const totalPrice = useTotalPrice();
     const { setQuantity } = useProductDetailsActions()
     const { setCart, setQuantities } = useCartActions()
 
@@ -36,6 +32,10 @@ const ProductContent: React.FC<IProductContent> = ({ foodIdData, foodLoading }) 
     const handleAddToCart = (productId: string, productName: string) => {
         const cart = JSON.parse(localStorage.getItem('cart') ?? "[]");
         const existingProduct = cart.find((item: { id: string }) => item.id === productId);
+
+        if (totalPrice + (quantity * foodIdData.priceNumber) > 2000000) {
+            return;
+        }
 
         if (existingProduct) {
             existingProduct.quantity += quantity;

@@ -1,11 +1,6 @@
-import { Tooltip, TooltipPlacement } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { FC } from "react";
-
-interface ITooltipProps {
-    content: React.ReactNode,
-    children: React.ReactNode,
-    placement: TooltipPlacement
-}
+import { ITooltipProps } from "../../types/commons.type";
 
 export const CTooltip: FC<ITooltipProps> = ({ content, children, placement }) => {
     return (

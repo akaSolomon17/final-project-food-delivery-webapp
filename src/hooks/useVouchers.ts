@@ -22,7 +22,6 @@ const useVoucher = () => {
         }
 
         const voucher = vouchers?.data?.filter((voucher: IVouchers) => voucher.code === code.trim());
-        console.log("🚀 ~ voucher:", voucher);
 
         if (voucher && voucher.length > 0) {
             setAppliedVouchers(voucher);
