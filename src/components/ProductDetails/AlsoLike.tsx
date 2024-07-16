@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import CSwiper from '../Swiper/CSwiper'
 import { useNavigate } from 'react-router-dom'
 import { Food } from '../../types/foods.type'
@@ -6,11 +6,7 @@ import { Card, CardBody, CardFooter, Chip, Image } from '@nextui-org/react'
 import { BsCartPlus } from 'react-icons/bs'
 import { AiFillTags } from 'react-icons/ai'
 
-interface IAlsoLike {
-    foodListRecommended: Food[]
-}
-
-const AlsoLike: React.FC<IAlsoLike> = ({ foodListRecommended }) => {
+const AlsoLike: FC<{ foodListRecommended: Food[] }> = ({ foodListRecommended }) => {
     const navigate = useNavigate()
 
     return (
@@ -42,8 +38,8 @@ const AlsoLike: React.FC<IAlsoLike> = ({ foodListRecommended }) => {
                         </CardBody>
                         <CardFooter className="flex flex-col max-w-[30rem] items-start ">
                             <div className="text-small flex  flex-col self-start text-left max-w-[25rem] h-[80px] max-h-[100px] mb-[1rem]">
-                                <b>{item.title}</b>
-                                <b className="font-normal max-w-[20rem]">{item.description}</b>
+                                <p>{item.title}</p>
+                                <p className="font-normal max-w-[20rem]">{item.description}</p>
                             </div>
                             <div className='flex justify-between items-center w-full'>
                                 <div>

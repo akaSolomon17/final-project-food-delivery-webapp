@@ -1,11 +1,43 @@
 import React from 'react'
-import { useGetHistoryOrdersList } from '../apis/orders/getHistoryOrdersList.api';
+import { Slider } from '@nextui-org/react';
 
 const TestComp = () => {
-    const { data } = useGetHistoryOrdersList()
-    console.log("🚀 ~ data:", data);
+
     return (
-        <div>test</div>
+        <>
+            <div className='max-w-xs h-[200px]'>
+                <div className='flex justify-between'>
+                    <p>Estimate time:</p>
+                    <p>3:13</p>
+                </div>
+                <Slider
+                    aria-label='delivery progress'
+                    color="foreground"
+                    size="sm"
+                    step={10}
+                    // hideThumb
+                    marks={[
+                        {
+                            value: 10,
+                            label: "Ordering",
+                        },
+                        {
+                            value: 40,
+                            label: "Preparing",
+                        },
+                        {
+                            value: 70,
+                            label: "Delivering",
+                        },
+                        {
+                            value: 100,
+                            label: "Completed",
+                        },
+                    ]}
+                    defaultValue={20}
+                />
+            </div>
+        </>
     )
 }
 

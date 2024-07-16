@@ -29,7 +29,7 @@ const ProductsManagement = () => {
     const { mutate: deleteProductMutate } = useDeleteProductById()
 
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    // const [totalPages, setTotalPages] = useState(1);
     const rowsPerPage = 5;
 
     const items = React.useMemo(() => {
@@ -39,22 +39,21 @@ const ProductsManagement = () => {
         return foodListData?.slice(start, end);
     }, [page, foodListData]);
 
-    const calcTotalPages = Math.ceil(foodListData?.length / rowsPerPage);
+    const totalPages = foodListData ? Math.ceil(foodListData.length / rowsPerPage) : 1;
+    console.log("🚀 ~ totalPages:", totalPages);
+
+    // useEffect(() => {
+    //     if (!isNaN(calcTotalPages)) {
+    //         setTotalPages(calcTotalPages);
+    //         searchParams.set('totalPages', (calcTotalPages.toString()));
+    //         setSearchParams(searchParams);
+    //     }
+    // }, [foodListData])
 
     useEffect(() => {
-        if (!isNaN(calcTotalPages)) {
-            setTotalPages(calcTotalPages);
-            searchParams.set('totalPages', (calcTotalPages.toString()));
-            setSearchParams(searchParams);
-        }
-    }, [foodListData])
-
-    useEffect(() => {
-        const totalPages = searchParams.get('totalPages');
         const page = searchParams.get('page');
-        if (page && totalPages) {
-            setTotalPages(parseInt(totalPages));
-            setPage(parseInt(page));
+        if (page && !isNaN(totalPages)) {
+            setPage(Number(page));
         }
     }, [searchParams])
 
@@ -115,8 +114,8 @@ const ProductsManagement = () => {
                             showShadow
                             color="default"
                             radius='sm'
-                            page={page}
-                            total={totalPages}
+                            page={Number(page)}
+                            total={Number(totalPages)}
                             onChange={handleActivePage}
                         />
                     </div>
@@ -124,7 +123,7 @@ const ProductsManagement = () => {
                 aria-labelledby='Table of products'
                 className='min-w-[409px] w-2/3'
             >
-                <TableHeader >
+                <TableHeader>
                     <TableColumn align="start">ID</TableColumn>
                     <TableColumn align="center">Image</TableColumn>
                     <TableColumn align="center">Title</TableColumn>
@@ -173,7 +172,7 @@ const ProductsManagement = () => {
                                 </CTooltip>
                             </TableCell>
                             <TableCell>{item.price}</TableCell>
-                            <TableCell>{item.category}</TableCell>
+                            <TableCell className='w-[120px]'>{item.category}</TableCell>
                             <TableCell>
                                 <div className='max-w-[50px] w-[50px]'>
                                     {item.avgRate}

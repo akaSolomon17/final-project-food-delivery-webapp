@@ -6,7 +6,6 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { Nav } from "./components/Nav/Nav"
 import Home from './pages/Home'
 import Products from './pages/Products/Products'
-import CartDetails from './pages/CartDetails'
 import Footer from './components/Footer/Footer'
 import ProductsManagement from './pages/ProductsManagement'
 import ProductDetails from './pages/Products/ProductDetails'
@@ -30,7 +29,6 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/menu' element={<Products />} />
-          <Route path='/cart-detail' element={<CartDetails />} />
           <Route path='/your-order' element={<YourOrder />} />
           <Route path="/product-details/:productId" element={<ProductDetails />} />
           <Route path="/managements" element={<ProductsManagement />} />

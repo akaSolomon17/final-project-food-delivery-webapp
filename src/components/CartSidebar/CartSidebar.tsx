@@ -9,6 +9,8 @@ import { randomDistanceTimeEstimate } from '../../utils/calcTimeEstimate'
 import { useNavigate } from 'react-router-dom'
 import CartEmpty from './CartEmpty'
 import Loading from '../Loading/Loading'
+import ModalNotification from '../ModalNotification.tsx/ModalNotification'
+import { useDisclosure } from '@nextui-org/react'
 
 const CartSidebar = () => {
     const cartDistance = useCartDistance()
@@ -23,6 +25,7 @@ const CartSidebar = () => {
     const { distanceRandom, timeEstimate } = randomDistanceTimeEstimate()
     const cartSidebarRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
+    const { isOpen, onOpenChange, onOpen } = useDisclosure()
 
     useEffect(() => {
         if (cart.length > 0 && !isDistanceAndTimeSet) {
@@ -58,9 +61,26 @@ const CartSidebar = () => {
         setCartExpand(false)
     }
 
+    useEffect(() => {
+        if (totalPrice > 2000000) {
+            onOpen()
+        }
+    }, [totalPrice])
+
     return (
         <div>
             {cartExpand && <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setCartExpand(false)} />}
+            {
+                <div className='z-999 absolute '>
+                    <ModalNotification
+                        title='Bạn đã vượt quá giới hạn của hoá đơn!'
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                    >
+                        Tổng giá trị mỗi hoá đơn chỉ dưới 2.000.000 VNĐ.
+                    </ModalNotification>
+                </div>
+            }
             {cart.length > 0 ? (
                 <>
                     <div ref={cartSidebarRef} className={`fixed transition-all ${cartExpand ? '' : 'translate-x-full'} right-0 z-50 flex h-full items-center `}>

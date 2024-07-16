@@ -2,12 +2,7 @@ import React from 'react'
 import AddReview from './AddReview'
 import SortBy from './SortBy'
 import Comments from './Comments'
-
-interface IReviews {
-    selectedValue: string,
-    isLoading: boolean,
-    totalPages: number | undefined
-}
+import { IReviews } from '../../../types/review.type'
 
 const Reviews: React.FC<IReviews> = ({ selectedValue, isLoading, totalPages }) => {
     return (

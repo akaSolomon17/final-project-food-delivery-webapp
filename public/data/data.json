@@ -3,56 +3,57 @@
     {
       "id": "1",
       "title": "Kimbap heo galbibi",
+      "price": "65.000",
       "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720752462/Food%20App%20Media/yufxxvtvpsyxsyhjfv8t.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
-      "price": "65.000",
       "avgRate": 2,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719296675/Food%20App%20Media/kounqjjivag6gnnc7hii.jpg"
+      "isExclusive": "Không"
     },
     {
       "id": "2",
       "title": "Kimbap bò cay sốt BBQ",
+      "price": "65.000",
       "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-cay_lihfzr.jpg",
       "description": "Gồm Kimbap TruyềnThống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
       "category": "Kimbap",
-      "price": "65.000",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012107/Final_PRJ_LIFT/Foods/kimbap-cay_lihfzr.jpg",
       "avgRate": 2,
-      "isExclusive": "true"
+      "isExclusive": "Không"
     },
     {
       "id": "3",
-      "title": "Kimbap Phoo Mei",
+      "title": "Kimbap Phoo Mai",
       "price": "65.000",
       "priceNumber": 65000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719576534/Food%20App%20Media/shdqwzlfv712hyixtutl.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 3,
-      "isExclusive": "true"
+      "isExclusive": "exclusive"
     },
     {
       "id": "4",
       "title": "Kimbap chiên giòn",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
       "price": "45.000",
       "priceNumber": 45000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012565/Final_PRJ_LIFT/Foods/kimbap-chiengion_mwhui7.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-      "category": "Kimbap",
+      "category": "Box Yummy",
       "avgRate": 1,
-      "isExclusive": "true"
+      "isExclusive": "Không"
     },
     {
       "id": "5",
       "title": "Kimbap truyền thống",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012571/Final_PRJ_LIFT/Foods/kimbap-truyenthong_x8xaup.jpg",
       "price": "65.000",
       "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720759082/Food%20App%20Media/d7yuodqubs7calh0clfw.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 4,
-      "isExclusive": "true"
+      "isExclusive": "exclusive"
     },
     {
       "id": "6",
@@ -63,7 +64,7 @@
       "price": "65.000",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012570/Final_PRJ_LIFT/Foods/kimbap-gagion_kt5md3.jpg",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "exclusive"
     },
     {
       "id": "7",
@@ -74,7 +75,7 @@
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "Không"
     },
     {
       "id": "8",
@@ -85,7 +86,7 @@
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "Không"
     },
     {
       "id": "9",
@@ -96,7 +97,7 @@
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "Không"
     },
     {
       "id": "10",
@@ -107,18 +108,18 @@
       "price": "55.000",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-sotphomaituoi_yrar9v.jpg",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "Không"
     },
     {
       "id": "11",
       "title": "Kimbap Bibimbap",
-      "priceNumber": 60000,
-      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
-      "category": "Kimbap",
       "price": "60.000",
+      "priceNumber": 60000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012566/Final_PRJ_LIFT/Foods/kimbap-bibimbap_s5mmxr.jpg",
+      "category": "Kimbap",
+      "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "avgRate": 1,
-      "isExclusive": "false"
+      "isExclusive": "Không"
     },
     {
       "id": "12",
@@ -133,12 +134,166 @@
     },
     {
       "id": "13",
-      "title": "Seoul Box",
-      "price": "105.000",
-      "priceNumber": 105000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720369135/Food%20App%20Media/zcgpmbui7btqtbmngbvu.jpg",
-      "description": "Gồm Kimbap Truyền Thống + Gà rán popcorn + Khoai tây chiên Các món trên đều không cay, phù hợp với các bạn nhỏ",
-      "category": "Box Yummy",
+      "title": "Canh Rong Biển Bò",
+      "price": "75.000",
+      "priceNumber": 75000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774374/Food%20App%20Media/mdlff4izglvhgz2rsyuc.jpg",
+      "description": "*KÈM CƠM TRẮNG Súp kim chi cay cay nấu kèm thịt bò ba chỉ Mỹ với gia vị Hàn Quốc 100% đậm đà.",
+      "category": "Cơm-Canh",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "14",
+      "title": "Súp Kim Chi Bò",
+      "price": "75.000",
+      "priceNumber": 75000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720770048/Food%20App%20Media/n3ublygkvgrnqcg1cjnb.jpg",
+      "description": "*KÈM CƠM TRẮNG Súp kim chi cay cay nấu kèm thịt bò ba chỉ Mỹ với gia vị Hàn Quốc 100% đậm đà.",
+      "category": "Cơm-Canh",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "15",
+      "title": " Cơm Bò Mỹ Phô Mai",
+      "price": "109.000",
+      "priceNumber": 109000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774467/Food%20App%20Media/gxg88ngliyp0goqyijqe.jpg",
+      "description": "Khách ghi chú “Trộn sẵn” / “Tự làm” *Team “tự làm”: Cơm ngon nhất khi ăn nóng hổi nên Bếp đã chuẩn bị sẵn đầy đủ cơm, topping & nước sốt. Bạn chỉ cần cho tất cả vào chảo và đảo đều là ăn ngon nhé ^^",
+      "category": "Cơm-Canh",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "16",
+      "title": " Mỳ tương đen Jajangmyeon",
+      "price": "69.000",
+      "priceNumber": 69000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774635/Food%20App%20Media/zfy31xaq44yokhdilvkr.jpg",
+      "description": "SỢI MỲ TƯƠI HÀN QUỐC. Bạn dùng món này vui lòng chan ít nước sốt để vừa với khẩu vị cá nhân, hạn chế cho hết túi sốt vì món sẽ bị mặn nhé ạ ^^",
+      "category": "Mỳ Hàn Quốc",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "17",
+      "title": "Mỳ Lạnh Trộn Cay",
+      "price": "69.000",
+      "priceNumber": 69000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774677/Food%20App%20Media/sbylwb3pivilmc5wv4to.jpg",
+      "description": "Mỳ trộn khô. Món có kèm đá viên. Khách khi nhận món vui lòng cho thêm 2-3 viên đá vào, mì sẽ dễ trộn hơn và ngon hơn ^^",
+      "category": "Mỳ Hàn Quốc",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "18",
+      "title": "Mỳ bò cay kim chi Hàn Quốc",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774731/Food%20App%20Media/vio2ldpmuybjlhmqx5gx.jpg",
+      "description": "Mỳ bò ba chỉ Mỹ kim chi cay cấp độ vừa phù hợp với thực khách có thể ăn được cay nhé ^^",
+      "category": "Mỳ Hàn Quốc",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "19",
+      "title": "Mỳ Trộn Gà Cay",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774949/Food%20App%20Media/qmy2ifv0b2yryexqe0yk.jpg",
+      "description": "Hộp đựng có thể dùng trong lò vi sóng.",
+      "category": "Mỳ Hàn Quốc",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "20",
+      "title": "Lẩu tokbokki",
+      "price": "150.000",
+      "priceNumber": 150000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720774983/Food%20App%20Media/qiaaa6ykzizahp6oqydz.jpg",
+      "description": "Có sẵn nước lẩu, Rau & Topping ăn kèm",
+      "category": "Lẩu",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "21",
+      "title": "Gà Tẩm Mật Ong",
+      "price": "75.000",
+      "priceNumber": 75000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720775374/Food%20App%20Media/fhpjl87fzh0efoznvgsw.jpg",
+      "description": "Hộp đựng có thể dùng trong lò vi sóng",
+      "category": "Gà",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "22",
+      "title": "Gà Lắc Phô Mai",
+      "price": "60.000",
+      "priceNumber": 60000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720775875/Food%20App%20Media/kiompwfsiqh1olcsb2ge.jpg",
+      "description": "",
+      "category": "Gà",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "23",
+      "title": "Gà Sốt Cay Ngọt",
+      "price": "75.000",
+      "priceNumber": 75000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720775943/Food%20App%20Media/eycf3nxq7bcffkkrvpaf.jpg",
+      "description": "",
+      "category": "Gà",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "24",
+      "title": "Gà Sốt Hành Tuyết",
+      "price": "85.000",
+      "priceNumber": 85000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720775961/Food%20App%20Media/bmrsdkul6nmuihufnd19.jpg",
+      "description": "",
+      "category": "Gà",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "25",
+      "title": "Tokbokki Chả cá",
+      "price": "50.000",
+      "priceNumber": 50000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777568/Food%20App%20Media/yxjx18qyvencxubdkhvk.jpg",
+      "description": "",
+      "category": "Tokbokki",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "26",
+      "title": "Tokbokki Rose",
+      "price": "85.000",
+      "priceNumber": 85000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777605/Food%20App%20Media/cu66j9fwwpiaj7ccor8e.jpg",
+      "description": "Tokbokki full topping: chả viên, chả Hàn, trứng, thanh cua và phô mai mozza phủ",
+      "category": "Tokbokki",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "27",
+      "title": "Set Tokbokki",
+      "price": "95.000",
+      "priceNumber": 95000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777631/Food%20App%20Media/t4qfnsw3lff0mnrwzilt.jpg",
+      "description": "Set bánh gạo đầy đủ hơn với Gimmari (Miến cuộn rong biển) & Mandu (Bánh xếp chiên giòn) * Bạn nhớ chấm chung với sốt tokbokki để cảm nhận vị ngon trọn vẹn nhé ^^",
+      "category": "Tokbokki",
       "avgRate": 0,
       "isExclusive": "Không"
     }
@@ -192,6 +347,16 @@
     {
       "id": "6",
       "name": "Lẩu",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
+    },
+    {
+      "id": "7",
+      "name": "Tokbokki",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
+    },
+    {
+      "id": "8",
+      "name": "Khác",
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
     }
   ],
@@ -627,6 +792,236 @@
           "id": "4",
           "title": "Kimbap chiên giòn",
           "priceNumber": "45000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "status": "Canceled",
+      "orderDate": 1720409942478,
+      "totalPrice": 105000,
+      "discountPrice": 84000,
+      "note": "tesst tessttt",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": "105000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "status": "Canceled",
+      "orderDate": 1720409996658,
+      "totalPrice": 105000,
+      "discountPrice": 105000,
+      "note": "dasd",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": "105000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "status": "Completed",
+      "orderDate": 1720410071615,
+      "totalPrice": 270000,
+      "discountPrice": 270000,
+      "note": "sdasdasdasd",
+      "orderDetails": [
+        {
+          "id": "4",
+          "title": "Kimbap chiên giòn",
+          "priceNumber": "45000",
+          "quantity": "6"
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "status": "Completed",
+      "orderDate": 1720410911561,
+      "totalPrice": 95000,
+      "discountPrice": 95000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "12",
+          "title": "Busan Box",
+          "priceNumber": "95000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "status": "Completed",
+      "orderDate": 1720410917084,
+      "totalPrice": 105000,
+      "discountPrice": 105000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": "105000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "status": "Completed",
+      "orderDate": 1720422341608,
+      "totalPrice": 105000,
+      "discountPrice": 84000,
+      "note": "asdasd",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": "105000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "status": "Canceled",
+      "orderDate": 1720423438191,
+      "totalPrice": 105000,
+      "discountPrice": 94500,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Seoul Box",
+          "priceNumber": "105000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "33",
+      "status": "Completed",
+      "orderDate": 1720926697867,
+      "totalPrice": 110000,
+      "discountPrice": 88000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "10",
+          "title": "Kimbap Sốt Phô Mai Tươi",
+          "priceNumber": "55000",
+          "quantity": "2"
+        }
+      ]
+    },
+    {
+      "id": "34",
+      "status": "Completed",
+      "orderDate": 1720970043629,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "Ít cơm",
+      "orderDetails": [
+        {
+          "id": "14",
+          "title": "Súp Kim Chi Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "35",
+      "status": "Completed",
+      "orderDate": 1721009971551,
+      "totalPrice": 2025000,
+      "discountPrice": 1620000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "20"
+        },
+        {
+          "id": "14",
+          "title": "Súp Kim Chi Bò",
+          "priceNumber": "75000",
+          "quantity": "7"
+        }
+      ]
+    },
+    {
+      "id": "36",
+      "status": "Completed",
+      "orderDate": 1721010259489,
+      "totalPrice": 2025000,
+      "discountPrice": 2025000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "27"
+        }
+      ]
+    },
+    {
+      "id": "37",
+      "status": "Canceled",
+      "orderDate": 1721010726339,
+      "totalPrice": 2025000,
+      "discountPrice": 2025000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "21",
+          "title": "Gà Tẩm Mật Ong",
+          "priceNumber": "75000",
+          "quantity": "27"
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "status": "Canceled",
+      "orderDate": 1721010849265,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "Them it ot",
+      "orderDetails": [
+        {
+          "id": "21",
+          "title": "Gà Tẩm Mật Ong",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "status": "Completed",
+      "orderDate": 1721012128677,
+      "totalPrice": 65000,
+      "discountPrice": 65000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "28",
+          "title": "asdkjasld",
+          "priceNumber": "65000",
           "quantity": "1"
         }
       ]

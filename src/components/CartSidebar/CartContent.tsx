@@ -2,15 +2,19 @@ import { Image } from '@nextui-org/react'
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import { useGetFoodByIds } from '../../apis/products/getFoodById.api'
 import { ICart, IQuantities } from '../../types/carts.type'
-import { useCart, useCartActions, useQuantities } from '../../zustand/cartStore'
+import { useCart, useCartActions, useQuantities, useTotalPrice } from '../../zustand/cartStore'
 import { Food } from '../../types/foods.type'
 import { useEffect, useState } from 'react'
 import { formatCurrency } from '../../utils/formatCurrency'
+import { ECartOrder } from '../../types/enums.type'
+
+const { MAX_QUANTITY_PER_BILL } = ECartOrder
 
 const CartContent = () => {
     const [isRemove, setIsRemove] = useState<string | null>(null)
     const cart = useCart()
     const quantities = useQuantities()
+    const totalPrice = useTotalPrice()
     const { setQuantities, setCart, setTotalPrice, loadFromLocalStorage } = useCartActions()
 
     const { data: foodsId } = useGetFoodByIds(cart.map((item: ICart) => item.id))
@@ -20,7 +24,7 @@ const CartContent = () => {
         loadFromLocalStorage();
     }, [loadFromLocalStorage]);
 
-    // QUANTITY CHANGE
+    // QUANTITY INITIAL
     useEffect(() => {
         if (foodsId) {
             const initialQuantities: IQuantities = {};
@@ -46,7 +50,11 @@ const CartContent = () => {
 
             if (newQuantity <= 0) {
                 setIsRemove(itemId);
-            } else {
+            }
+            else if (newQuantity > MAX_QUANTITY_PER_BILL) {
+                newQuantities[itemId] = MAX_QUANTITY_PER_BILL;
+            }
+            else {
                 newQuantities[itemId] = newQuantity;
                 setIsRemove(null);
             }
@@ -92,18 +100,31 @@ const CartContent = () => {
                         <div className='flex gap-3 items-center'>
                             <div className="flex justify-center items-center">
                                 {/* MINUS BUTTON */}
-                                <button className='cursor-pointer min-w-[1rem]' onClick={() => handleCartChange(item.id as string, -1)}>
+                                <button
+                                    className='cursor-pointer min-w-[1rem]'
+                                    onClick={() => handleCartChange(item.id as string, -1)}
+                                >
                                     <AiOutlineMinus size={13} color='#00A5CF' />
                                 </button>
 
                                 <span className='w-6 text-center select-none'>{(quantities[item.id ?? ''] || "") as string}</span>
 
                                 {/* PLUS BUTTON */}
-                                <button className='cursor-pointer min-w-[1rem]' onClick={() => handleCartChange(item.id as string, 1)}>
+                                <button
+                                    className='cursor-pointer min-w-[1rem]'
+                                    onClick={() => handleCartChange(item.id as string, 1)}
+                                    disabled={!(totalPrice < 2000000)}
+                                >
                                     <AiOutlinePlus size={13} color='#00A5CF' />
                                 </button>
                             </div>
-                            <Image width={60} radius='none' src={item.img as string} alt="Food cover" className='select-none' />
+                            <Image
+                                width={60}
+                                radius='none'
+                                src={item.img as string}
+                                alt="Food cover"
+                                className='select-none'
+                            />
                             <div>
                                 <h1 className='text-sm font-semibold'>{item.title}</h1>
                                 <p className='scrollbar-hide overflow-scroll max-w-[255px] max-h-[70px] text-sm'>{item.description}</p>

@@ -1,59 +1,85 @@
-import { DateRangePicker, CalendarDate } from "@nextui-org/react";
+import { useState, useEffect } from "react";
+import { DateRangePicker, CalendarDate, Button } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
-import { useCartActions } from "../../zustand/cartStore";
 import { EDateRangeDefaultValue } from "../../types/enums.type";
-import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { getCurrentDate } from "../../utils/convertDateToMilisecond";
 
-const { START_DATE } = EDateRangeDefaultValue
+const { START_DATE } = EDateRangeDefaultValue;
+
 export const CDateRangePicker = () => {
-    const { setStartDate, setEndDate } = useCartActions()
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    const getCurrentDate = () => {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months được đánh số từ 0 -> 11
-        const day = String(date.getDate()).padStart(2, '0');
+  const defaultStartDate = parseDate(START_DATE);
+  const defaultEndDate = parseDate(getCurrentDate());
 
-        return `${year}-${month}-${day}`;
-    };
+  const [dateRange, setDateRange] = useState({
+    start: defaultStartDate,
+    end: defaultEndDate,
+  });
 
-    const handleOnChangeRangeDate = (startDate: CalendarDate, endDate: CalendarDate) => {
-        const { day, month, year } = startDate
-        const { day: endDay, month: endMonth, year: endYear } = endDate
+  const handleOnChangeRangeDate = (
+    startDate: CalendarDate,
+    endDate: CalendarDate,
+  ) => {
+    const { day, month, year } = startDate;
+    const { day: endDay, month: endMonth, year: endYear } = endDate;
 
-        const startDateDestructured = new Date(year, month - 1, day + 1);
-        const endDateDestructured = new Date(endYear, endMonth - 1, endDay + 1);
+    const startDateDestructured = new Date(year, month - 1, day + 1);
+    const endDateDestructured = new Date(endYear, endMonth - 1, endDay + 1);
 
-        const startDateInMiliseconds = startDateDestructured.getTime();
-        const endDateInMiliseconds = endDateDestructured.getTime();
+    const startDateInMilliseconds = startDateDestructured.getTime();
+    const endDateInMilliseconds = endDateDestructured.getTime();
 
-        setStartDate(startDateInMiliseconds)
-        setEndDate(endDateInMiliseconds)
-    }
+    searchParams.set("startDate", String(startDateInMilliseconds));
+    searchParams.set("endDate", String(endDateInMilliseconds));
+    setSearchParams(searchParams);
+  };
 
-    const defaultStartDate = parseDate(START_DATE);
-    const defaultEndDate = parseDate(getCurrentDate());
+  useEffect(() => {
+    handleOnChangeRangeDate(dateRange.start, dateRange.end);
+  }, [dateRange]);
 
-    useEffect(() => {
-        handleOnChangeRangeDate(defaultStartDate, defaultEndDate);
-    }, []);
+  const handleClickReset = () => {
+    const newStartDate = parseDate(START_DATE);
+    const newEndDate = parseDate(getCurrentDate());
 
-    return (
-        <div className="flex w-1/2 flex-col gap-4 items-center justify-center">
-            <div className="flex w-2/3 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <DateRangePicker
-                    label="Order Date filter"
-                    defaultValue={
-                        {
-                            start: parseDate(START_DATE),
-                            end: parseDate(getCurrentDate())
-                        }
-                    }
-                    className="max-w-xs"
-                    onChange={({ start, end }) => handleOnChangeRangeDate(start, end)}
-                    maxValue={parseDate(getCurrentDate())}
-                />
-            </div>
-        </div>
+    setDateRange({ start: newStartDate, end: newEndDate });
+
+    const startDateDestructured = new Date(
+      newStartDate.year,
+      newStartDate.month - 1,
+      newStartDate.day + 1,
     );
-}
+    const endDateDestructured = new Date(
+      newEndDate.year,
+      newEndDate.month - 1,
+      newEndDate.day + 1,
+    );
+
+    const startDateInMilliseconds = startDateDestructured.getTime();
+    const endDateInMilliseconds = endDateDestructured.getTime();
+
+    searchParams.set("startDate", String(startDateInMilliseconds));
+    searchParams.set("endDate", String(endDateInMilliseconds));
+    setSearchParams(searchParams);
+  };
+
+  return (
+    <div className="flex w-1/4 flex-col gap-4 items-center justify-center">
+      <div className="flex justify-center items-center w-2/3 md:flex-nowrap mb-6 md:mb-0 gap-4">
+        <Button radius="sm" className="h-[30px]" onClick={handleClickReset}>
+          Reset date
+        </Button>
+        <DateRangePicker
+          label="Order date"
+          value={dateRange}
+          defaultValue={{ start: dateRange.start, end: dateRange.end }}
+          className="max-w-xs"
+          onChange={({ start, end }) => setDateRange({ start, end })}
+          maxValue={parseDate(getCurrentDate())}
+        />
+      </div>
+    </div>
+  );
+};

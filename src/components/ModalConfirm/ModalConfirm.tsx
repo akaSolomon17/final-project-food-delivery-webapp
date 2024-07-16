@@ -1,13 +1,5 @@
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from '@nextui-org/react';
-
-interface IModalProps {
-    isOpen: boolean;
-    onOpenChange: (open: boolean) => void;
-    title?: string;
-    children: React.ReactNode;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-}
+import { IModalProps } from '../../types/modal.type';
 
 const ModalConfirm: React.FC<IModalProps> = ({ isOpen, onOpenChange, title, children, onConfirm, onCancel }) => {
 

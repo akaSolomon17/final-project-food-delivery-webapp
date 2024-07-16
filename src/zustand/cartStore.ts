@@ -11,8 +11,6 @@ export interface CartStore {
   note: string;
   cartDistance: string;
   cartTimeArrival: number;
-  startDate: number;
-  endDate: number;
   actions: {
     setCart: (item: ICart[]) => void;
     setQuantities: (quantities: IQuantities) => void;
@@ -24,8 +22,6 @@ export interface CartStore {
     setNote: (note: string) => void;
     setCartDistance: (cartDistance: string) => void;
     setCartTimeArrival: (cartTimeArrival: number) => void;
-    setStartDate: (startDate: number) => void;
-    setEndDate: (endDate: number) => void;
   }
 }
 
@@ -39,8 +35,6 @@ const cartStore = create<CartStore>((set) => ({
   note: '',
   cartDistance: '',
   cartTimeArrival: 0,
-  startDate: 0,
-  endDate: 0,
   actions: {
     setCart: (cart) => {
       set({cart});
@@ -66,8 +60,6 @@ const cartStore = create<CartStore>((set) => ({
     setNote: (note) => set({ note }),
     setCartDistance: (cartDistance) => set({ cartDistance }),
     setCartTimeArrival: (cartTimeArrival) => set({ cartTimeArrival }),
-    setStartDate: (startDate) => set({ startDate }),
-    setEndDate: (endDate) => set({ endDate }),
   },
 }));
 
@@ -80,7 +72,5 @@ export const useCartExpand = () => cartStore(state => state.cartExpand);
 export const useNote = () => cartStore(state => state.note);
 export const useCartDistance = () => cartStore(state => state.cartDistance);
 export const useCartTimeArrival = () => cartStore(state => state.cartTimeArrival);
-export const useStartDate = () => cartStore(state => state.startDate);
-export const useEndDate = () => cartStore(state => state.endDate);
 // ACTIONS
 export const useCartActions = () => cartStore((state) => state.actions);

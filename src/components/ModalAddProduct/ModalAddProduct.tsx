@@ -18,16 +18,10 @@ import InputFileValidation from '../InputFileValidation/InputFileValidation';
 import { useGetFoodCategories } from '../../apis/products/getFoodCategories.api';
 import { CTooltip } from '../CTooltip/CTooltip';
 import ImagePreview from './ImagePreview';
+import { IModalAddProps } from '../../types/modal.type';
 
 const { DEFAULT_IS_EXCLUSIVES } = EFood
 const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus
-
-interface IModalAddProps {
-    isOpen: boolean,
-    onOpenChange: () => void,
-    isEdit: boolean,
-    currentFood: Food
-}
 
 const ModalAddProduct: React.FC<IModalAddProps> =
     ({
@@ -54,14 +48,15 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                 price: currentFood.price,
                 description: currentFood.description,
                 category: currentFood.category,
-                priceNumber: currentFood.priceNumber
+                priceNumber: currentFood.priceNumber,
+                img: currentFood.img
             } : emptyFoodValues,
             mode: "onSubmit",
             resolver: yupResolver(modalValidationSchema),
         });
 
 
-        const { handleSubmit, reset, formState: { isDirty } } = methods;
+        const { handleSubmit, reset, formState: { isDirty }, setValue } = methods;
 
         const { data: foodList } = useGetFoodList()
         const currentFoodListData = foodList?.data
@@ -84,16 +79,21 @@ const ModalAddProduct: React.FC<IModalAddProps> =
         const uploadImageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files && e.target.files[0];
             if (file) {
-                setImageFile(file)
+                setImageFile(file);
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => {
                     setImagePreview(reader.result as string);
                 };
+            } else {
+                setValue('img', currentFood?.img as string)
+                setImageFile(null);
+                setImagePreview(currentFood?.img as string);
             }
         }
 
         const submitHandler = async (data: FoodCreate) => {
+
             try {
                 const imageById = isEdit && currentFood ? currentFood : data
                 let imageUrl = imageById?.img as string;
@@ -113,7 +113,7 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                     priceNumber: data.priceNumber as number,
                     img: imageUrl,
                     description: data.description,
-                    category: categoryName,
+                    category: categoryName ?? data.category,
                     avgRate: currentFood.avgRate,
                     isExclusive: DEFAULT_IS_EXCLUSIVES,
                 }
@@ -187,7 +187,7 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                                             <ModalHeader>Edit Product</ModalHeader> :
                                             <ModalHeader>Add Product</ModalHeader>}
 
-                                        <ModalBody className='flex flex-col gap-1'>
+                                        <ModalBody className='flex flex-col'>
                                             <InputValidation
                                                 id='title'
                                                 label='Title'
@@ -210,12 +210,14 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                                                 {imagePreview &&
                                                     <CTooltip
                                                         content={
-                                                            <div>
-                                                                <ImagePreview width={400} imagePreview={imagePreview} />
-                                                            </div>}
+                                                            <ImagePreview
+                                                                width={400}
+                                                                imagePreview={imagePreview}
+                                                            />
+                                                        }
                                                         placement='right'>
                                                         <Image
-                                                            width={70}
+                                                            width={50}
                                                             alt="NextUI hero Image"
                                                             src={imagePreview}
                                                             radius='sm'
@@ -232,6 +234,7 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                                                 variant='bordered'
                                                 startContent={<CurrencySymbol />}
                                                 type="number"
+                                                clearOnFocus={true}
                                             />
 
                                             <InputValidation
@@ -243,10 +246,17 @@ const ModalAddProduct: React.FC<IModalAddProps> =
                                             />
 
                                             <SelectValidation
-                                                label='Choose product category'
                                                 name='category'
-                                                options={foodCategoriesName.map((item: FoodCategory) => ({ value: item.id.toString(), label: item.name }))}
-                                            />
+                                            >
+                                                {foodCategoriesName?.map((category: FoodCategory) => (
+                                                    <option
+                                                        key={category.id}
+                                                        value={category.id}
+                                                    >
+                                                        {category.name}
+                                                    </option>
+                                                ))}
+                                            </SelectValidation>
 
                                             <InputValidation
                                                 type='text'

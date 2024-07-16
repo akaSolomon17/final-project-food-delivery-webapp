@@ -73,7 +73,10 @@ const ProductDetails = () => {
 
     return (
         <div className='flex flex-col gap-20 mt-20'>
-            <ProductContent foodIdData={foodIdData} foodLoading={foodLoading}/>
+            <ProductContent
+                foodIdData={foodIdData}
+                foodLoading={foodLoading}
+            />
             <Reviews
                 selectedValue={selectedValue}
                 isLoading={isLoading}
