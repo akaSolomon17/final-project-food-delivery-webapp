@@ -1,7 +1,7 @@
-import { Spinner } from '@nextui-org/react'
+import { Spinner } from "@nextui-org/react";
 
 const Loading = () => {
-    return (<Spinner size="lg" />)
-}
+  return <Spinner size="lg" />;
+};
 
-export default Loading
+export default Loading;

@@ -1,6 +1,6 @@
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const ToastNotifier = () => {
-    return <ToastContainer />;
+  return <ToastContainer />;
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   useGetVouchersList,
@@ -148,12 +149,25 @@ const OrderVoucher = () => {
                       <p>Promo Code:</p>
                       <p className="font-semibold">{voucher.code}</p>
                     </div>
-                    <button
-                      className="bg-black text-white text-sm w-[70px] h-[30px] rounded-md ms-5"
-                      onClick={() => handleApplyVoucher(voucher.id)}
-                    >
-                      Áp dụng
-                    </button>
+                    {appliedVouchers?.some(
+                      (applied) => applied.id === voucher.id,
+                    ) ? (
+                      <button
+                        type="button"
+                        className="bg-gray-500 text-white text-sm w-[70px] h-[30px] rounded-md ms-5"
+                        onClick={() => handleCancelVoucher()}
+                      >
+                        Cancel
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="bg-black text-white text-sm w-[70px] h-[30px] rounded-md ms-5"
+                        onClick={() => handleApplyVoucher(voucher.id)}
+                      >
+                        Áp dụng
+                      </button>
+                    )}
                   </div>
                 ))
               ) : (

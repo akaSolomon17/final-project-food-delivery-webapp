@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 import { IInputValidationProps } from "../../types/input.type";
