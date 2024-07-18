@@ -8,12 +8,18 @@ import { useGetFoodCategories } from "../../apis/products/getFoodCategories.api"
 import { FoodCategory } from "../../types/foods.type";
 import { FormProvider, useForm } from "react-hook-form";
 import { IFilterSidebarFormProps } from "../../types/filters.type";
+import { useGetFoodFiltered } from "../../apis/products/getFoodFiltered.api";
+import { EFilterSearchParams } from "../../types/enums.type";
+
 import CheckboxValidation from "../CheckboxValidation/CheckboxValidation";
 import InputValidation from "../InputValidation/InputValidation";
 import SliderValidation from "../SliderValidation/SliderValidation";
 import RadioValidation from "../RadioValidation/RadioValidation";
-import "./SidebarFilter.css";
-import { useGetFoodFiltered } from "../../apis/products/getFoodFiltered.api";
+import "./ProductFilter.css";
+
+const { PRICE_MIN, PRICE_MAX, CATEGORIES } = EFilterSearchParams;
+
+const numberFields = [PRICE_MIN, PRICE_MAX];
 
 const sidebarFilterDefaultValues: IFilterSidebarFormProps = {
   priceMin: 30000,
@@ -24,68 +30,59 @@ const sidebarFilterDefaultValues: IFilterSidebarFormProps = {
   sortBy: "newest",
 };
 
-const SideBarFilter = () => {
+const ProductFilter = () => {
   const methods = useForm<IFilterSidebarFormProps>({
     defaultValues: sidebarFilterDefaultValues,
   });
 
-  const { handleSubmit, setValue, watch, reset } = methods;
+  const { handleSubmit, setValue, reset } = methods;
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const { isLoading } = useGetFoodFiltered();
   const { data: foodCategories } = useGetFoodCategories();
   const foodCategoriesList = foodCategories?.data;
 
-  const { isLoading } = useGetFoodFiltered();
-
-  const filterValue = watch(["priceMin", "priceMax"]);
-  const selectedCheckboxes = watch("categories");
-  const selectedRating = watch("rating");
-  const selectSortBy = watch("sortBy");
-
   // setValue from searchParam when reload
   useEffect(() => {
-    const priceMin = searchParams.get("priceMin");
-    const priceMax = searchParams.get("priceMax");
-    const categories = searchParams.get("categories");
-    const rating = searchParams.get("rating");
-    const sortBy = searchParams.get("sortBy");
+    const categories = searchParams.get(CATEGORIES);
+    categories && setValue(CATEGORIES, categories.split(","));
 
-    if (priceMin && priceMax) {
-      setValue("priceMin", Number(priceMin));
-      setValue("priceMax", Number(priceMax));
-      setValue("priceRange", [Number(priceMin), Number(priceMax)]);
-    }
-    if (categories) {
-      setValue("categories", categories.split(","));
-    }
-    if (rating) {
-      setValue("rating", rating);
-    }
-    if (sortBy) {
-      setValue("sortBy", sortBy);
-    }
-  }, [searchParams, setValue]);
+    numberFields.map((field) => {
+      const value = searchParams.get(field);
+      if (value) {
+        setValue(field as EFilterSearchParams, Number(value));
+      }
+    });
+
+    // exclude number fields and set value for the rest
+    searchParams.forEach((value, key) => {
+      if (!numberFields.includes(key as EFilterSearchParams)) {
+        setValue(key as EFilterSearchParams, value);
+      }
+    });
+  }, []);
 
   const handleSliderChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setValue("priceMin", value[0]);
-      setValue("priceMax", value[1]);
+      setValue(PRICE_MIN, value[0]);
+      setValue(PRICE_MAX, value[1]);
       setValue("priceRange", value);
     }
   };
 
   const handleApplyFilters = (data: IFilterSidebarFormProps) => {
-    console.log("data: ", data);
+    const { priceMin, priceMax, categories, rating, sortBy } = data;
 
-    searchParams.set("priceMin", String(filterValue[0]));
-    searchParams.set("priceMax", String(filterValue[1]));
-    searchParams.set("sortBy", selectSortBy);
-    selectedCheckboxes.length > 0
-      ? searchParams.set("categories", selectedCheckboxes.join(","))
+    searchParams.set(PRICE_MIN, String(priceMin));
+    searchParams.set(PRICE_MAX, String(priceMax));
+    searchParams.set("sortBy", sortBy);
+
+    categories.length > 0
+      ? searchParams.set("categories", categories.join(","))
       : searchParams.delete("categories");
 
-    selectedRating !== ""
-      ? searchParams.set("rating", selectedRating)
+    rating !== ""
+      ? searchParams.set("rating", rating)
       : searchParams.delete("rating");
 
     setSearchParams(searchParams);
@@ -106,11 +103,7 @@ const SideBarFilter = () => {
             className="overflow-hidden flex flex-col justify-center border rounded-md shadow-lg bg-white h-[800px] w-[235px]"
           >
             {/* FILTER CATEGORY */}
-            <CheckboxValidation
-              name="categories"
-              className="p-2"
-              value={selectedCheckboxes}
-            >
+            <CheckboxValidation name="categories" className="p-2">
               {foodCategoriesList?.map(
                 (category: FoodCategory, index: number) => (
                   <Checkbox key={index} value={category.name} radius="none">
@@ -123,19 +116,17 @@ const SideBarFilter = () => {
             {/* FILTER PRICE */}
             <div className="flex flex-row items-center justify-between">
               <InputValidation
-                name="priceMin"
+                name={PRICE_MIN}
                 radius="sm"
                 type="number"
-                value={`${filterValue[0]}`}
                 className="max-w-[10rem] w-[100px]"
                 endContent="₫"
               />
               <IoRemoveOutline />
               <InputValidation
-                name="priceMax"
+                name={PRICE_MAX}
                 radius="sm"
                 type="number"
-                value={`${filterValue[1]}`}
                 className="max-w-[10rem] w-[100px]"
                 endContent="₫"
               />
@@ -152,14 +143,13 @@ const SideBarFilter = () => {
                 maxValue={300000}
                 minValue={30000}
                 defaultValue={[30000, 300000]}
-                value={filterValue}
                 onChange={handleSliderChange}
               />
             </div>
 
             {/* FILTER BY RATE */}
             <div className="p-3">
-              <RadioValidation name="rating" value={selectedRating}>
+              <RadioValidation name="rating">
                 <Radio value="">Any Rating</Radio>
                 <Radio value="4" className="radio-btn">
                   <StarIcon size={15} value={4} /> & Up
@@ -173,7 +163,7 @@ const SideBarFilter = () => {
               </RadioValidation>
             </div>
             <div className="p-3">
-              <RadioValidation name="sortBy" value={selectSortBy}>
+              <RadioValidation name="sortBy">
                 <Radio value="newest" className="radio-btn">
                   Newest
                 </Radio>
@@ -220,4 +210,4 @@ const SideBarFilter = () => {
   );
 };
 
-export default SideBarFilter;
+export default ProductFilter;

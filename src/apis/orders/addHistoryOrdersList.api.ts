@@ -10,7 +10,6 @@ export const useAddHistoryOrders = () => {
     // ADD History Orders
     return useMutation({
         mutationFn: ({ newHistoryOrders }: { newHistoryOrders: IHistoryOrders }) => addHistoryOrders(newHistoryOrders),
-
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['historyOrders'] })
     });
 };

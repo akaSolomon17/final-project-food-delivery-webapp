@@ -1,35 +1,34 @@
-import OrderInfo from "../components/Checkout/OrderInfo/OrderInfo";
-import OrderVoucher from "../components/Checkout/OrderVoucher/OrderVoucher";
-import DetailsPayment from "../components/Checkout/DetailsPayment";
-import DeliveryInfo from "../components/Checkout/DeliveryInfo/DeliveryInfo";
-import CheckoutOrder from "../components/Checkout/CheckoutOrder/CheckoutOrder";
-import { useGetFoodByIds } from "../apis/products/getFoodById.api";
-import { ICart } from "../types/carts.type";
 import {
   useCart,
   useCartActions,
   useDiscountInfo,
   useTotalPrice,
 } from "../zustand/cartStore";
+const { TOAST_ERROR } = EToastifyStatus;
+const { COMPLETED, DELIVERING } = EOrderStatus;
+import { Food } from "../types/foods.type";
+import { ICart } from "../types/carts.type";
+import { useNavigate } from "react-router-dom";
+import { notify } from "../hooks/Toastify/notify";
+import { FormProvider, useForm } from "react-hook-form";
+import { ICheckoutProps } from "../types/checkout.type";
+import { useGetFoodList } from "../apis/products/getFoodList.api";
+import { useUpdateOrderStatus } from "../utils/changeOrderStatus";
+import { EOrderStatus, EToastifyStatus } from "../types/enums.type";
+import { useGetFoodByListId } from "../apis/products/getFoodById.api";
+import { IHistoryOrders, IOrderDetails } from "../types/historyOrders.type";
+import { useAddHistoryOrders } from "../apis/orders/addHistoryOrdersList.api";
+import { cardOptions, userProfile } from "../../public/data/checkoutConstants";
+import { useGetHistoryOrdersList } from "../apis/orders/getHistoryOrdersList.api";
+
+import Loading from "../components/Loading/Loading";
 import EmptyOrder from "../components/Checkout/EmptyOrder";
 import CheckoutHeader from "../components/Checkout/CheckoutHeader";
-import Loading from "../components/Loading/Loading";
-import { FormProvider, useForm } from "react-hook-form";
-import { EOrderStatus, EToastifyStatus } from "../types/enums.type";
-import { useNavigate } from "react-router-dom";
-import { useUpdateOrderStatus } from "../utils/changeOrderStatus";
-import { useGetHistoryOrdersList } from "../apis/orders/getHistoryOrdersList.api";
-import { useAddHistoryOrders } from "../apis/orders/addHistoryOrdersList.api";
-import { Food } from "../types/foods.type";
-import { IHistoryOrders, IOrderDetails } from "../types/historyOrders.type";
-import { useGetFoodList } from "../apis/products/getFoodList.api";
-import { notify } from "../hooks/Toastify/notify";
-import { ICheckoutProps } from "../types/checkout.type";
-
-const { COMPLETED, DELIVERING } = EOrderStatus;
-const { TOAST_ERROR } = EToastifyStatus;
-const cardOptions = ["3439", "4987", "1234", "5678"];
-const userProfile = ["Personal", "Huy"];
+import OrderInfo from "../components/Checkout/OrderInfo/OrderInfo";
+import DetailsPayment from "../components/Checkout/DetailsPayment";
+import OrderVoucher from "../components/Checkout/OrderVoucher/OrderVoucher";
+import DeliveryInfo from "../components/Checkout/DeliveryInfo/DeliveryInfo";
+import CheckoutOrder from "../components/Checkout/CheckoutOrder/CheckoutOrder";
 
 const checkoutDefaultValues: ICheckoutProps = {
   address: "132-136 Lê Đình Lý, P.Hoà Thuận Đông, Q.Hải Châu, TP.Đà Nẵng",
@@ -39,23 +38,11 @@ const checkoutDefaultValues: ICheckoutProps = {
 };
 
 const Checkout = () => {
-  const methods = useForm<ICheckoutProps>({
-    defaultValues: checkoutDefaultValues,
-  });
-
-  const { handleSubmit, watch, setValue } = methods;
-
-  const address = watch("address");
-  const note = watch("note");
-  // const payment = watch("payment");
-  // const profile = watch("profile");
-
   const navigate = useNavigate();
+  const cart = useCart();
   const totalPrice = useTotalPrice();
   const discountInfo = useDiscountInfo();
   const discountPrice = discountInfo.totalPriceDiscount;
-
-  const cart = useCart();
   const { setCart, setTotalPrice, setNote } = useCartActions();
   const { updateOrderStatus } = useUpdateOrderStatus();
 
@@ -71,17 +58,20 @@ const Checkout = () => {
     cart.map((item) => item.id).includes(food.id as string),
   );
 
-  const { data: foodsId, isLoading } = useGetFoodByIds(
+  const methods = useForm<ICheckoutProps>({
+    defaultValues: checkoutDefaultValues,
+  });
+  const { handleSubmit } = methods;
+
+  const { data: foodsId, isLoading } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
   );
   const rows = foodsId ?? [];
 
   const handleAddOrder = (data: ICheckoutProps) => {
-    console.log("🚀 ~ data:", data);
-
     const date = Date.now();
     setTotalPrice(0);
-    setNote(note);
+    setNote(data.note);
 
     const detailOrder = getFoodInCart?.map((food: Food): IOrderDetails => {
       return {
@@ -99,7 +89,7 @@ const Checkout = () => {
       orderDate: date,
       totalPrice: totalPrice,
       discountPrice: discountPrice,
-      note: note,
+      note: data.note,
       orderDetails: detailOrder,
     };
 
@@ -134,16 +124,9 @@ const Checkout = () => {
                   onSubmit={handleSubmit(handleAddOrder)}
                   className="h-full"
                 >
-                  <DeliveryInfo
-                    setValue={setValue}
-                    address={address}
-                    note={note}
-                  />
+                  <DeliveryInfo />
                   <OrderInfo />
-                  <DetailsPayment
-                    payments={cardOptions}
-                    profiles={userProfile}
-                  />
+                  <DetailsPayment />
                   <OrderVoucher />
                   <CheckoutOrder />
                 </form>

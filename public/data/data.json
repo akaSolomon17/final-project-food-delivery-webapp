@@ -3,8 +3,8 @@
     {
       "id": "1",
       "title": "Kimbap heo galbibi",
-      "price": "65.000",
-      "priceNumber": 65000,
+      "price": "75.000",
+      "priceNumber": 75000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720752462/Food%20App%20Media/yufxxvtvpsyxsyhjfv8t.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
@@ -25,13 +25,13 @@
     {
       "id": "3",
       "title": "Kimbap Phoo Mai",
-      "price": "65.000",
-      "priceNumber": 65000,
+      "price": "75.000",
+      "priceNumber": 75000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719576534/Food%20App%20Media/shdqwzlfv712hyixtutl.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
       "avgRate": 3,
-      "isExclusive": "exclusive"
+      "isExclusive": "Không"
     },
     {
       "id": "4",
@@ -294,6 +294,39 @@
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777631/Food%20App%20Media/t4qfnsw3lff0mnrwzilt.jpg",
       "description": "Set bánh gạo đầy đủ hơn với Gimmari (Miến cuộn rong biển) & Mandu (Bánh xếp chiên giòn) * Bạn nhớ chấm chung với sốt tokbokki để cảm nhận vị ngon trọn vẹn nhé ^^",
       "category": "Tokbokki",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "28",
+      "title": "asdasd",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721273574/Food%20App%20Media/agoo9adznq5wwbmwd8q2.jpg",
+      "description": "dasdasd",
+      "category": "Box Yummy",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "29",
+      "title": "adasdasd",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721274383/Food%20App%20Media/wejkmruka6ikhgb6bj26.jpg",
+      "description": "ádasdasd",
+      "category": "Gà",
+      "avgRate": 0,
+      "isExclusive": "Không"
+    },
+    {
+      "id": "30",
+      "title": "ádasdasdasd",
+      "price": "65.000",
+      "priceNumber": 65000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721274409/Food%20App%20Media/k3eha0vuqkenmpridbjr.jpg",
+      "description": "ádasdasdasd",
+      "category": "Kimbap",
       "avgRate": 0,
       "isExclusive": "Không"
     }
@@ -1022,6 +1055,300 @@
           "id": "28",
           "title": "asdkjasld",
           "priceNumber": "65000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "status": "Completed",
+      "orderDate": 1721146702907,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "14",
+          "title": "Súp Kim Chi Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "41",
+      "status": "Completed",
+      "orderDate": 1721146732277,
+      "totalPrice": 75000,
+      "discountPrice": 67500,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "42",
+      "status": "Completed",
+      "orderDate": 1721146814328,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "43",
+      "status": "Canceled",
+      "orderDate": 1721146981355,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "44",
+      "status": "Canceled",
+      "orderDate": 1721147100945,
+      "totalPrice": 75000,
+      "discountPrice": 75000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "45",
+      "status": "Completed",
+      "orderDate": 1721147267904,
+      "totalPrice": 95000,
+      "discountPrice": 95000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "12",
+          "title": "Busan Box",
+          "priceNumber": "95000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "46",
+      "status": "Completed",
+      "orderDate": 1721189485349,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "47",
+      "status": "Completed",
+      "orderDate": 1721191210116,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "48",
+      "status": "Completed",
+      "orderDate": 1721191294997,
+      "totalPrice": 75000,
+      "discountPrice": 75000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "49",
+      "status": "Completed",
+      "orderDate": 1721205815758,
+      "totalPrice": 75000,
+      "discountPrice": 75000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "50",
+      "status": "Canceled",
+      "orderDate": 1721206090360,
+      "totalPrice": 1950000,
+      "discountPrice": 1950000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "26"
+        }
+      ]
+    },
+    {
+      "id": "51",
+      "status": "Completed",
+      "orderDate": 1721206090645,
+      "totalPrice": 1800000,
+      "discountPrice": 1800000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "24"
+        }
+      ]
+    },
+    {
+      "id": "52",
+      "status": "Completed",
+      "orderDate": 1721232546876,
+      "totalPrice": 355000,
+      "discountPrice": 355000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "9",
+          "title": "Single Kimbap C",
+          "priceNumber": "55000",
+          "quantity": "1"
+        },
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "4"
+        }
+      ]
+    },
+    {
+      "id": "53",
+      "status": "Canceled",
+      "orderDate": 1721273726819,
+      "totalPrice": 75000,
+      "discountPrice": 75000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "54",
+      "status": "Completed",
+      "orderDate": 1721274109633,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "14",
+          "title": "Súp Kim Chi Bò",
+          "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "55",
+      "status": "Completed",
+      "orderDate": 1721274129840,
+      "totalPrice": 109000,
+      "discountPrice": 109000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "15",
+          "title": " Cơm Bò Mỹ Phô Mai",
+          "priceNumber": "109000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "56",
+      "status": "Completed",
+      "orderDate": 1721274170426,
+      "totalPrice": 69000,
+      "discountPrice": 69000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "16",
+          "title": " Mỳ tương đen Jajangmyeon",
+          "priceNumber": "69000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "57",
+      "status": "Completed",
+      "orderDate": 1721284490554,
+      "totalPrice": 75000,
+      "discountPrice": 60000,
+      "note": "adasdasdasd",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
           "quantity": "1"
         }
       ]

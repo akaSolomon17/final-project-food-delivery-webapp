@@ -1,32 +1,27 @@
-import { Key } from "react";
-import {create} from "zustand";
-import { Food } from "../types/foods.type";
+import { create } from "zustand";
+import { IHistoryOrders } from "../types/historyOrders.type";
 
 interface IProductStore {
-    dataFoodList: Food[];
-    selectedKeys: string | Set<Key> | Selection;
-    page: number;
-    actions: {
-        setDataFoodList: (dataFoodList: Food[]) => void;
-        setPage: (page: number) => void;
-        setSelectedKeys: (selectedKeys: string | Set<Key>) => void;
-    }
+  page: number;
+  orderDetail: IHistoryOrders;
+  actions: {
+    setPage: (page: number) => void;
+    setOrderDetail: (orderDetail: IHistoryOrders) => void;
+  };
 }
 
 const useProductStore = create<IProductStore>((set) => ({
-    dataFoodList: [],
-    selectedKeys: new Set<string>(),
-    page: 1,
-    actions: {
-        setDataFoodList: (dataFoodList) => set({ dataFoodList }),
-        setPage: (page) => set({ page }),
-        setSelectedKeys: (selectedKeys) => set({ selectedKeys })
-    }
-}))
+  page: 1,
+  orderDetail: {} as IHistoryOrders,
+  actions: {
+    setPage: (page) => set({ page }),
+    setOrderDetail: (orderDetail) => set({ orderDetail }),
+  },
+}));
 
-export const useDataFoodList = () => useProductStore((state) => state.dataFoodList);
 export const usePage = () => useProductStore((state) => state.page);
-export const useSelectedKeys = () => useProductStore((state) => state.selectedKeys);
-
+export const useOrderDetail = () =>
+  useProductStore((state) => state.orderDetail);
 // ACTIONS
-export const useProductActions = () => useProductStore((state) => state.actions);
+export const useProductActions = () =>
+  useProductStore((state) => state.actions);

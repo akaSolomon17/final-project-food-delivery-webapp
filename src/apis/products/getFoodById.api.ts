@@ -13,14 +13,14 @@ export const useGetFoodById = (id: string) => {
 }
 
 // Get multiple foods by ids
-export const getFoodByIds = (ids: string[]) => {
+export const getFoodByListId = (ids: string[]) => {
     return Promise.all(ids.map(id => getFoodById(id).then(res => res.data)));
 }
 
-export const useGetFoodByIds = (ids: string[]) => {
+export const useGetFoodByListId = (ids: string[]) => {
     const queryResult = useQuery({
         queryKey: ["foodId", ids],
-        queryFn: () => getFoodByIds(ids),
+        queryFn: () => getFoodByListId(ids),
         enabled: ids.length > 0
     })
 
