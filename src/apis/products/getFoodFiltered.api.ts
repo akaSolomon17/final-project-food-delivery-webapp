@@ -5,27 +5,28 @@ import http from "../../utils/http";
 import { EFilterSort } from "../../types/enums.type";
 
 const {
-  NEWEST, 
-  OLDEST, 
+  NEWEST,
+  OLDEST,
   RATING_UP,
   DESC,
   ACS,
   ID,
   AVG_RATE,
   PRICE_MIN,
-  PRICE_MAX
-} = EFilterSort
+  PRICE_MAX,
+} = EFilterSort;
 
-const getFoodFiltered = ({ 
+const getFoodFiltered = ({
   sort,
   order,
   priceMin,
   priceMax,
   categories,
-  rating
+  rating,
 }: FoodFilterProps) => {
-  
-  let url = `http://localhost:3000/foodList?_sort=${sort || ""}&_order=${order || ""}&priceNumber_gte=${priceMin}&priceNumber_lte=${priceMax}&avgRate_gte=${rating}`;
+  let url = `http://localhost:3000/foodList?_sort=${sort || ""}&_order=${
+    order || ""
+  }&priceNumber_gte=${priceMin}&priceNumber_lte=${priceMax}&avgRate_gte=${rating}`;
 
   if (categories && categories.length > 0) {
     const categoryParams = categories
@@ -38,13 +39,12 @@ const getFoodFiltered = ({
 };
 
 export const useGetFoodFiltered = () => {
-
   const [searchParams] = useSearchParams();
   const priceMin = searchParams.get("priceMin") || PRICE_MIN;
   const priceMax = searchParams.get("priceMax") || PRICE_MAX;
   const categories = searchParams.get("categories")?.split(",");
   const rating = searchParams.get("rating");
-  const sortBy = searchParams.get("sortBy");
+  const sortBy = searchParams.get("sortBy") || NEWEST;
   const sort = String(sortBy === NEWEST || sortBy === OLDEST ? ID : AVG_RATE);
   const order = String(sortBy === NEWEST || sortBy === RATING_UP ? DESC : ACS);
 
@@ -60,13 +60,12 @@ export const useGetFoodFiltered = () => {
     ],
     queryFn: () =>
       getFoodFiltered({
-          sort,
-          order,
-          priceMin: Number(priceMin),
-          priceMax: Number(priceMax),
-          categories,
-          rating: Number(rating),
-        }
-      ),
+        sort,
+        order,
+        priceMin: Number(priceMin),
+        priceMax: Number(priceMax),
+        categories,
+        rating: Number(rating),
+      }),
   });
 };

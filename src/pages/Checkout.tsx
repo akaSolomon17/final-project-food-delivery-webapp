@@ -47,14 +47,10 @@ const Checkout = () => {
   const { updateOrderStatus } = useUpdateOrderStatus();
 
   const { data: historyOrderList } = useGetHistoryOrdersList();
-  const historyOrderListData = historyOrderList?.data;
-
+  const { data: foodList } = useGetFoodList();
   const { mutate: addHistoryOrderMutate } = useAddHistoryOrders();
 
-  const { data: foodList } = useGetFoodList();
-  const foodListData = foodList?.data;
-
-  const getFoodInCart = foodListData?.filter((food: Food) =>
+  const getFoodInCart = foodList?.data?.filter((food: Food) =>
     cart.map((item) => item.id).includes(food.id as string),
   );
 
@@ -66,7 +62,6 @@ const Checkout = () => {
   const { data: foodsId, isLoading } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
   );
-  const rows = foodsId ?? [];
 
   const handleAddOrder = (data: ICheckoutProps) => {
     const date = Date.now();
@@ -84,7 +79,7 @@ const Checkout = () => {
     });
 
     const newHistoryOrders: IHistoryOrders = {
-      id: (historyOrderListData?.length + 1).toString(),
+      id: (historyOrderList?.data?.length + 1).toString(),
       status: DELIVERING,
       orderDate: date,
       totalPrice: totalPrice,
@@ -108,35 +103,36 @@ const Checkout = () => {
     );
   };
 
-  return (
-    <div className="bg-[#F7F7F7] h-full">
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <div className="bg-[#F7F7F7] h-full">
         <div className="h-screen flex items-center justify-center">
           <Loading />
         </div>
-      ) : (
-        <>
-          {rows.length > 0 ? (
-            <>
-              <CheckoutHeader />
-              <FormProvider {...methods}>
-                <form
-                  onSubmit={handleSubmit(handleAddOrder)}
-                  className="h-full"
-                >
-                  <DeliveryInfo />
-                  <OrderInfo />
-                  <DetailsPayment />
-                  <OrderVoucher />
-                  <CheckoutOrder />
-                </form>
-              </FormProvider>
-            </>
-          ) : (
-            <EmptyOrder />
-          )}
-        </>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#F7F7F7] h-full">
+      <>
+        {foodsId && foodsId?.length > 0 ? (
+          <>
+            <CheckoutHeader />
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(handleAddOrder)} className="h-full">
+                <DeliveryInfo />
+                <OrderInfo />
+                <DetailsPayment />
+                <OrderVoucher />
+                <CheckoutOrder />
+              </form>
+            </FormProvider>
+          </>
+        ) : (
+          <EmptyOrder />
+        )}
+      </>
     </div>
   );
 };

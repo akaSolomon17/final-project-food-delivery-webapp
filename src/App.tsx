@@ -1,18 +1,16 @@
-import React from "react";
-import "./App.css";
-
 import { Route, Routes, useLocation } from "react-router-dom";
-
+import { ToastNotifier } from "./hooks/Toastify/Toastify";
 import { Nav } from "./components/Nav/Nav";
+import React from "react";
 import Home from "./pages/Home";
+import Checkout from "./pages/Checkout";
+import YourOrder from "./pages/YourOrder";
+import Loading from "./components/Loading/Loading";
 import ProductsPage from "./pages/Products/ProductsPage";
 import ProductsManagement from "./pages/ProductsManagement";
 import ProductDetails from "./pages/Products/ProductDetails";
 import CartSidebar from "./components/CartSidebar/CartSidebar";
-import Checkout from "./pages/Checkout";
-import { ToastNotifier } from "./hooks/Toastify/Toastify";
-import Loading from "./components/Loading/Loading";
-import YourOrder from "./components/YourOrder/YourOrder";
+import "./App.css";
 
 function App() {
   const location = useLocation();

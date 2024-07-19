@@ -11,15 +11,15 @@ const OrderInfo = () => {
   const { data: foodByListId } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
   );
-  const foodByListIdData = foodByListId ?? [];
 
   return (
     <CCheckoutLayout header="Tóm tắt đơn hàng" footer={<OrderInfoFooter />}>
-      {foodByListIdData.map((item: Food, index: number) => (
-        <div className="pt-4 px-4" key={index}>
-          <CartItem item={item} />
-        </div>
-      ))}
+      {foodByListId?.length &&
+        foodByListId.map((item: Food, index: number) => (
+          <div className="pt-4 px-4" key={index}>
+            <CartItem item={item} />
+          </div>
+        ))}
     </CCheckoutLayout>
   );
 };

@@ -3,6 +3,7 @@ import {
   RadioGroupProps,
   SliderProps,
 } from "@nextui-org/react";
+import { EFilterSort } from "./enums.type";
 
 export interface FilterValuesProps {
   filterValue?: number[];
@@ -24,17 +25,13 @@ export interface IRadioValidationProps extends RadioGroupProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-export interface ISortByProps {
-  selectedValue: string;
-}
-
 export interface IFilterSidebarFormProps {
   priceMin: number;
   priceMax: number;
   priceRange: number | number[];
   categories: string[];
-  rating: string;
-  sortBy: string;
+  rating: EFilterSort;
+  sortBy: EFilterSort;
 }
 
 export interface FoodFilterProps {

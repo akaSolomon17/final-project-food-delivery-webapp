@@ -1,68 +1,56 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import {
-  useGetVouchersList,
-  useGetVouchersListByCode,
-} from "../../../apis/vouchers/getVouchersList.api";
-import { IVouchers } from "../../../types/vouchers.type";
-import VoucherEmpty from "./VoucherEmpty";
-import useVoucher from "../../../hooks/useVouchers";
 import {
   useCartActions,
   useIsVoucherApplied,
   useTotalPrice,
 } from "../../../zustand/cartStore";
-import { debounce } from "../../../utils/debounce";
-import { IoCloseCircleSharp } from "react-icons/io5";
+import VoucherEmpty from "./VoucherEmpty";
 import Loading from "../../Loading/Loading";
+import React, { useEffect, useState } from "react";
+import { debounce } from "../../../utils/debounce";
+import useVoucher from "../../../hooks/useVouchers";
+import { IoCloseCircleSharp } from "react-icons/io5";
 import { EVoucher } from "../../../types/enums.type";
+import { IVouchers } from "../../../types/vouchers.type";
 import CCheckoutLayout from "../../CCheckout/CCheckoutLayout";
+import { useGetVouchersList } from "../../../apis/vouchers/getVouchersList.api";
 
 const { VOUCHER_INVALID } = EVoucher;
 
 const OrderVoucher = () => {
-  const [activeSearch, setActiveSearch] = useState<IVouchers[]>([]);
   const [voucherError, setVoucherError] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [activeSearch, setActiveSearch] = useState<IVouchers[]>([]);
   const totalPrice = useTotalPrice();
   const isAppliedVoucher = useIsVoucherApplied();
+  const { data: vouchersList, isLoading } = useGetVouchersList();
   const { setDiscountInfo, setIsAppliedVoucher } = useCartActions();
-
-  const { data: vouchersList } = useGetVouchersList();
-  const voucherListData = vouchersList?.data;
-
   const { appliedVouchers, applyVoucher, removeVoucher } = useVoucher();
-
-  const { data: searchResult, isLoading } =
-    useGetVouchersListByCode(searchKeyword);
-  const voucherListSearchData = searchResult?.data?.map((item: IVouchers) => ({
-    id: item.id,
-    code: item.code,
-    discount: item.discount,
-    description: item.description,
-  }));
 
   const debouncedSearch = debounce((value: string) => {
     setSearchKeyword(value);
     if (value === "") {
-      setActiveSearch(voucherListData);
+      setActiveSearch(vouchersList?.data);
     } else {
       setActiveSearch(
-        voucherListSearchData &&
-          voucherListSearchData.filter((item: IVouchers) =>
-            item.code.includes(value),
-          ),
+        vouchersList?.data.filter((item: IVouchers) =>
+          item.code.includes(value),
+        ),
       );
     }
   }, 500);
 
   const handleSearchTrigger = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
+    console.log("🚀 ~ value:", value);
     debouncedSearch(value);
   };
 
   const handleApplyVoucher = (id: string) => {
-    const voucher = voucherListData.find((item: IVouchers) => item.id === id);
+    const voucher = vouchersList?.data.find(
+      (item: IVouchers) => item.id === id,
+    );
+
     if (!voucher) return;
 
     const isApplied = applyVoucher(voucher.code);
@@ -97,16 +85,15 @@ const OrderVoucher = () => {
   // Update the active search list when the voucher list data changes
   useEffect(() => {
     if (searchKeyword === "") {
-      setActiveSearch(voucherListData);
+      setActiveSearch(vouchersList?.data);
     } else {
       setActiveSearch(
-        voucherListSearchData &&
-          voucherListSearchData.filter((item: IVouchers) =>
-            item.code.includes(searchKeyword),
-          ),
+        vouchersList?.data.filter((item: IVouchers) =>
+          item.code.includes(searchKeyword),
+        ),
       );
     }
-  }, [searchKeyword, voucherListData]);
+  }, [searchKeyword, vouchersList?.data]);
 
   return (
     <>

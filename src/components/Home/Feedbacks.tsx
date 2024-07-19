@@ -4,9 +4,7 @@ import { Feedback } from "../../types/feedbacks.type";
 import { useGetFeedbacksApprovedList } from "../../apis/feedbacks/getFeedbacksList.api";
 
 const Feedbacks = () => {
-  // Feedbacks approved list data
   const { feedbacksApprovedList } = useGetFeedbacksApprovedList();
-  const feedbacksApprovedListData = feedbacksApprovedList?.data || [];
 
   return (
     <div>
@@ -18,9 +16,12 @@ const Feedbacks = () => {
         </h3>
         <div className="flex flex-col gap-12 justify-start mt-[4rem]">
           <CSwiper slidePerView={1} className=" max-w-[25rem] h-[18rem]">
-            {feedbacksApprovedListData.map((item: Feedback, index: number) => (
-              <TestimonialsCards key={index} feedbacks={item} />
-            ))}
+            {feedbacksApprovedList?.data?.length &&
+              feedbacksApprovedList?.data.map(
+                (item: Feedback, index: number) => (
+                  <TestimonialsCards key={index} feedbacks={item} />
+                ),
+              )}
           </CSwiper>
         </div>
       </div>

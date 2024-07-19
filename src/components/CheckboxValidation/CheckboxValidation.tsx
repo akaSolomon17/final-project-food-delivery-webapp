@@ -17,18 +17,26 @@ const CheckboxValidation: FC<ICheckboxValidationProps> = ({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
-        <>
-          <CheckboxGroup {...field} {...passProps}>
-            {children}
-          </CheckboxGroup>
-          {errors[name] && (
-            <span className="text-danger text-sm ms-2">
-              {errors[name]?.message as string}
-            </span>
-          )}
-        </>
-      )}
+      render={({ field }) => {
+        const { value, ...rest } = field;
+        const checkedValues = Array.isArray(value)
+          ? value
+          : value
+            ? value.split(",")
+            : [];
+        return (
+          <>
+            <CheckboxGroup value={checkedValues} {...rest} {...passProps}>
+              {children}
+            </CheckboxGroup>
+            {errors[name] && (
+              <span className="text-danger text-sm ms-2">
+                {errors[name]?.message as string}
+              </span>
+            )}
+          </>
+        );
+      }}
     />
   );
 };

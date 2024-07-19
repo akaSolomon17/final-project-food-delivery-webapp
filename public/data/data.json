@@ -3,8 +3,8 @@
     {
       "id": "1",
       "title": "Kimbap heo galbibi",
-      "price": "75.000",
-      "priceNumber": 75000,
+      "price": "65.000",
+      "priceNumber": 65000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720752462/Food%20App%20Media/yufxxvtvpsyxsyhjfv8t.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
@@ -25,8 +25,8 @@
     {
       "id": "3",
       "title": "Kimbap Phoo Mai",
-      "price": "75.000",
-      "priceNumber": 75000,
+      "price": "65.000",
+      "priceNumber": 65000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719576534/Food%20App%20Media/shdqwzlfv712hyixtutl.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
@@ -299,33 +299,11 @@
     },
     {
       "id": "28",
-      "title": "asdasd",
+      "title": "asdasdasd",
       "price": "65.000",
       "priceNumber": 65000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721273574/Food%20App%20Media/agoo9adznq5wwbmwd8q2.jpg",
-      "description": "dasdasd",
-      "category": "Box Yummy",
-      "avgRate": 0,
-      "isExclusive": "Không"
-    },
-    {
-      "id": "29",
-      "title": "adasdasd",
-      "price": "65.000",
-      "priceNumber": 65000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721274383/Food%20App%20Media/wejkmruka6ikhgb6bj26.jpg",
-      "description": "ádasdasd",
-      "category": "Gà",
-      "avgRate": 0,
-      "isExclusive": "Không"
-    },
-    {
-      "id": "30",
-      "title": "ádasdasdasd",
-      "price": "65.000",
-      "priceNumber": 65000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721274409/Food%20App%20Media/k3eha0vuqkenmpridbjr.jpg",
-      "description": "ádasdasdasd",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721298458/Food%20App%20Media/pekpcvtuaucbqtky17v1.jpg",
+      "description": "asdasdasd",
       "category": "Kimbap",
       "avgRate": 0,
       "isExclusive": "Không"
@@ -385,12 +363,7 @@
     {
       "id": "7",
       "name": "Tokbokki",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
-    },
-    {
-      "id": "8",
-      "name": "Khác",
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1718012108/Final_PRJ_LIFT/Foods/lau_dxx5ry.jpg"
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721324531/Final_PRJ_LIFT/Foods/tok-cha-ca_pkmcxl.jpg"
     }
   ],
   "bannerList": [
@@ -1349,6 +1322,70 @@
           "id": "13",
           "title": "Canh Rong Biển Bò",
           "priceNumber": "75000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "58",
+      "status": "Canceled",
+      "orderDate": 1721296317225,
+      "totalPrice": 375000,
+      "discountPrice": 300000,
+      "note": "asdalksdjklasjdlkasjdzxc",
+      "orderDetails": [
+        {
+          "id": "13",
+          "title": "Canh Rong Biển Bò",
+          "priceNumber": "75000",
+          "quantity": "5"
+        }
+      ]
+    },
+    {
+      "id": "59",
+      "status": "Completed",
+      "orderDate": 1721358324581,
+      "totalPrice": 55000,
+      "discountPrice": 49500,
+      "note": "them ot",
+      "orderDetails": [
+        {
+          "id": "9",
+          "title": "Single Kimbap C",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "60",
+      "status": "Completed",
+      "orderDate": 1721358462271,
+      "totalPrice": 55000,
+      "discountPrice": 44000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "61",
+      "status": "Completed",
+      "orderDate": 1721358811051,
+      "totalPrice": 65000,
+      "discountPrice": 65000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "5",
+          "title": "Kimbap truyền thống",
+          "priceNumber": "65000",
           "quantity": "1"
         }
       ]

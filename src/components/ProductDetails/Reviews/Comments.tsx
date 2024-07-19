@@ -1,19 +1,57 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   useDataFeedbacks,
   usePage,
   useReviewsActions,
+  useSelectedKeys,
 } from "../../../zustand/reviewsStore.ts";
-import { FC } from "react";
-import { Feedback } from "../../../types/feedbacks.type";
 import { Avatar } from "@nextui-org/react";
-import LoadMore from "../../LoadMore/LoadMore";
+import { useCallback, useEffect } from "react";
 import { StarIcon } from "../../StarRating/Star";
-import { ICommentsProps } from "../../../types/review.type.ts";
+import { Food } from "../../../types/foods.type.ts";
+import { Feedback } from "../../../types/feedbacks.type";
+import { useLoadMoreFetch } from "../../../apis/loadMoreFetch.api.ts";
+import LoadMore from "../../LoadMore/LoadMore";
+import useSelectedValue from "../../../utils/reformatSelection.ts";
 
-const Comments: FC<ICommentsProps> = ({ isLoading, totalPages }) => {
-  const feedBacksData = useDataFeedbacks();
-  const { setPage } = useReviewsActions();
+const Comments = () => {
   const page = usePage();
+  const selectedKeys = useSelectedKeys();
+  const feedBacksData = useDataFeedbacks();
+  const dataFeedbacks = useDataFeedbacks();
+  const selectedValue = useSelectedValue(selectedKeys);
+  const { setPage } = useReviewsActions();
+  const { setDataFeedbacks } = useReviewsActions();
+  const {
+    data: commentLoadMore,
+    totalPages,
+    isLoading,
+    refetch,
+  } = useLoadMoreFetch();
+
+  const updateDataFeedbacks = useCallback(
+    (prevData: Feedback[]): Feedback[] => {
+      if (page === 1) {
+        return commentLoadMore;
+      }
+      const newData = commentLoadMore.filter(
+        (item: Food) => !prevData.some((prevItem) => prevItem.id === item.id),
+      );
+      return [...prevData, ...newData];
+    },
+    [commentLoadMore, page],
+  );
+
+  useEffect(() => {
+    if (commentLoadMore) {
+      setDataFeedbacks(updateDataFeedbacks(dataFeedbacks));
+    }
+  }, [commentLoadMore, updateDataFeedbacks]);
+
+  useEffect(() => {
+    refetch();
+    setPage(1);
+  }, [refetch, selectedValue, setPage]);
 
   return (
     <>

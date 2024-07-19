@@ -31,7 +31,7 @@ export interface FoodCreate {
   title: string;
   price?: string | null;
   img?: string | FileList | File | null;
-  priceNumber?: number;
+  priceNumber?: number | null;
   description?: string | null;
   category: string;
   avgRate?: number | null;
@@ -44,18 +44,9 @@ export interface IActiveSearch {
   img: string;
 }
 
-export interface IProductContent {
-  foodIdData: Food;
-  foodLoading: boolean;
-}
-
 export interface IProductItemProps {
   item: Food;
   index: number;
-}
-
-export interface IAlsoLikeProps {
-  foodListRecommended: Food[];
 }
 
 export type FoodUpdate = Omit<

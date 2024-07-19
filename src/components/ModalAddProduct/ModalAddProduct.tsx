@@ -13,7 +13,6 @@ import { notify } from "../../hooks/Toastify/notify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IModalAddProps } from "../../types/modal.type";
 import { FormProvider, useForm } from "react-hook-form";
-import { isObjectEmpty } from "../../utils/isObjectEmpty";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { EFood, EToastifyStatus } from "../../types/enums.type";
 import { useAddProduct } from "../../apis/products/addProduct.api";
@@ -48,11 +47,9 @@ const ModalAddProduct: FC<IModalAddProps> = ({
   const [imagePreview, setImagePreview] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const isCurrentFoodEmpty = isObjectEmpty(currentFood);
-
   const methods = useForm<FoodCreate>({
     defaultValues: emptyFoodValues,
-    values: !isCurrentFoodEmpty
+    values: currentFood
       ? {
           title: currentFood.title,
           price: currentFood.price,
@@ -74,10 +71,8 @@ const ModalAddProduct: FC<IModalAddProps> = ({
   } = methods;
 
   const { data: foodList } = useGetFoodList();
-  const currentFoodListData = foodList?.data;
 
   const { data: foodCategories } = useGetFoodCategories();
-  const foodCategoriesName = foodCategories?.data;
 
   const { mutate: addProductMutate, isPending: addProductPending } =
     useAddProduct();
@@ -85,7 +80,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
     useUpdateFoodById();
 
   useEffect(() => {
-    if (currentFood && !isCurrentFoodEmpty) {
+    if (currentFood) {
       setImagePreview(currentFood.img as string);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +102,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
 
   const submitHandler = async (data: FoodCreate) => {
     try {
-      const imageById = !isCurrentFoodEmpty ? currentFood : data;
+      const imageById = currentFood ? currentFood : data;
       let imageUrl = imageById?.img as string;
 
       if (imageFile) {
@@ -116,23 +111,24 @@ const ModalAddProduct: FC<IModalAddProps> = ({
       }
 
       const priceFormated = formatCurrency(data.priceNumber as number);
-      const categoryName = foodCategoriesName[Number(data.category) - 1]?.name;
+      const categoryName =
+        foodCategories?.data[Number(data.category) - 1]?.name;
 
       const productData: Food = {
-        id: isCurrentFoodEmpty
-          ? String(Number(currentFoodListData?.length || 0) + 1)
-          : currentFood.id,
+        id: currentFood
+          ? currentFood.id
+          : String(Number(foodList?.data.length || 0) + 1),
         title: data.title,
         price: priceFormated,
         priceNumber: data.priceNumber as number,
         img: imageUrl,
         description: data.description,
         category: categoryName ?? data.category,
-        avgRate: isCurrentFoodEmpty ? 0 : currentFood.avgRate,
+        avgRate: currentFood ? currentFood.avgRate : 0,
         isExclusive: DEFAULT_IS_EXCLUSIVES,
       };
 
-      if (!isCurrentFoodEmpty) {
+      if (currentFood) {
         updateProductByIdMutate(
           { id: currentFood.id as string, foodUpdated: productData },
           {
@@ -180,7 +176,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
             <>
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(submitHandler)}>
-                  {!isCurrentFoodEmpty ? (
+                  {currentFood ? (
                     <ModalHeader>Edit Product</ModalHeader>
                   ) : (
                     <ModalHeader>Add Product</ModalHeader>
@@ -232,7 +228,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
                       variant="bordered"
                       startContent={<CurrencySymbol />}
                       type="number"
-                      clearOnFocus={true}
+                      clearOnFocus={currentFood ? false : true}
                     />
 
                     <InputValidation
@@ -244,7 +240,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
                     />
 
                     <SelectValidation name="category">
-                      {foodCategoriesName?.map((category: FoodCategory) => (
+                      {foodCategories?.data.map((category: FoodCategory) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
@@ -275,7 +271,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
                       isLoading={addProductPending || updateProductPending}
                       disabled={!isDirty}
                     >
-                      {!isCurrentFoodEmpty ? "Update" : "Add"}
+                      {currentFood ? "Update" : "Add"}
                     </Button>
                   </ModalFooter>
                 </form>

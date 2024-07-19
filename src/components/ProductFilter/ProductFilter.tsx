@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { Radio, Checkbox, Button } from "@nextui-org/react";
 import { IoRemoveOutline } from "react-icons/io5";
@@ -9,7 +10,7 @@ import { FoodCategory } from "../../types/foods.type";
 import { FormProvider, useForm } from "react-hook-form";
 import { IFilterSidebarFormProps } from "../../types/filters.type";
 import { useGetFoodFiltered } from "../../apis/products/getFoodFiltered.api";
-import { EFilterSearchParams } from "../../types/enums.type";
+import { EFilterSearchParams, EFilterSort } from "../../types/enums.type";
 
 import CheckboxValidation from "../CheckboxValidation/CheckboxValidation";
 import InputValidation from "../InputValidation/InputValidation";
@@ -17,8 +18,9 @@ import SliderValidation from "../SliderValidation/SliderValidation";
 import RadioValidation from "../RadioValidation/RadioValidation";
 import "./ProductFilter.css";
 
-const { PRICE_MIN, PRICE_MAX, CATEGORIES } = EFilterSearchParams;
-
+const { PRICE_MIN, PRICE_MAX, CATEGORIES, SORT_BY, RATING, PRICE_RANGE } =
+  EFilterSearchParams;
+const { NEWEST, DEFAULT_RATING } = EFilterSort;
 const numberFields = [PRICE_MIN, PRICE_MAX];
 
 const sidebarFilterDefaultValues: IFilterSidebarFormProps = {
@@ -26,8 +28,8 @@ const sidebarFilterDefaultValues: IFilterSidebarFormProps = {
   priceMax: 300000,
   priceRange: [30000, 300000],
   categories: [],
-  rating: "",
-  sortBy: "newest",
+  rating: DEFAULT_RATING,
+  sortBy: NEWEST,
 };
 
 const ProductFilter = () => {
@@ -40,12 +42,14 @@ const ProductFilter = () => {
 
   const { isLoading } = useGetFoodFiltered();
   const { data: foodCategories } = useGetFoodCategories();
-  const foodCategoriesList = foodCategories?.data;
 
   // setValue from searchParam when reload
   useEffect(() => {
     const categories = searchParams.get(CATEGORIES);
     categories && setValue(CATEGORIES, categories.split(","));
+
+    const priceRange = searchParams.get(PRICE_RANGE);
+    priceRange && setValue(PRICE_RANGE, priceRange.split(",").map(Number));
 
     numberFields.map((field) => {
       const value = searchParams.get(field);
@@ -56,11 +60,21 @@ const ProductFilter = () => {
 
     // exclude number fields and set value for the rest
     searchParams.forEach((value, key) => {
-      if (!numberFields.includes(key as EFilterSearchParams)) {
-        setValue(key as EFilterSearchParams, value);
+      if (
+        !numberFields.includes(key as EFilterSearchParams) &&
+        !key.includes(PRICE_RANGE)
+      ) {
+        setValue(key as EFilterSearchParams, value as EFilterSort);
       }
     });
   }, []);
+
+  useEffect(() => {
+    handleSliderChange([
+      methods.getValues(PRICE_MIN),
+      methods.getValues(PRICE_MAX),
+    ]);
+  }, [methods.getValues(PRICE_MIN), methods.getValues(PRICE_MAX)]);
 
   const handleSliderChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
@@ -71,19 +85,23 @@ const ProductFilter = () => {
   };
 
   const handleApplyFilters = (data: IFilterSidebarFormProps) => {
+    console.log("🚀 ~ data:", data);
     const { priceMin, priceMax, categories, rating, sortBy } = data;
 
     searchParams.set(PRICE_MIN, String(priceMin));
     searchParams.set(PRICE_MAX, String(priceMax));
-    searchParams.set("sortBy", sortBy);
+    searchParams.set(SORT_BY, String(sortBy));
+    searchParams.set(PRICE_RANGE, String([priceMin, priceMax]));
 
-    categories.length > 0
-      ? searchParams.set("categories", categories.join(","))
-      : searchParams.delete("categories");
+    if (categories && Array.isArray(categories)) {
+      categories.length > 0
+        ? searchParams.set(CATEGORIES, categories.join(","))
+        : searchParams.delete(CATEGORIES);
+    }
 
     rating !== ""
-      ? searchParams.set("rating", rating)
-      : searchParams.delete("rating");
+      ? searchParams.set(RATING, String(rating))
+      : searchParams.delete(RATING);
 
     setSearchParams(searchParams);
   };
@@ -100,17 +118,18 @@ const ProductFilter = () => {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(handleApplyFilters)}
-            className="overflow-hidden flex flex-col justify-center border rounded-md shadow-lg bg-white h-[800px] w-[235px]"
+            className="overflow-hidden flex flex-col justify-center border rounded-md shadow-lg bg-white h-[760px] w-[235px]"
           >
             {/* FILTER CATEGORY */}
             <CheckboxValidation name="categories" className="p-2">
-              {foodCategoriesList?.map(
-                (category: FoodCategory, index: number) => (
-                  <Checkbox key={index} value={category.name} radius="none">
-                    {category.name}
-                  </Checkbox>
-                ),
-              )}
+              {foodCategories?.data.length &&
+                foodCategories?.data.map(
+                  (category: FoodCategory, index: number) => (
+                    <Checkbox key={index} value={category.name} radius="none">
+                      {category.name}
+                    </Checkbox>
+                  ),
+                )}
             </CheckboxValidation>
 
             {/* FILTER PRICE */}
@@ -142,8 +161,7 @@ const ProductFilter = () => {
                 step={5000}
                 maxValue={300000}
                 minValue={30000}
-                defaultValue={[30000, 300000]}
-                onChange={handleSliderChange}
+                onChange={(e) => handleSliderChange(e)}
               />
             </div>
 
