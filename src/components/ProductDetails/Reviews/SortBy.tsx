@@ -5,13 +5,18 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { FC, Key } from "react";
+import { Key } from "react";
 import { IoIosArrowDropdown } from "react-icons/io";
-import { useReviewsActions } from "../../../zustand/reviewsStore.ts";
-import { ISortByProps } from "../../../types/filters.type.ts";
+import {
+  useReviewsActions,
+  useSelectedKeys,
+} from "../../../zustand/reviewsStore.ts";
+import useSelectedValue from "../../../utils/reformatSelection.ts";
 
-const SortBy: FC<ISortByProps> = ({ selectedValue }) => {
+const SortBy = () => {
   const { setSelectedKeys } = useReviewsActions();
+  const selectedKeys = useSelectedKeys();
+  const selectedValue = useSelectedValue(selectedKeys);
 
   const handleSelectionChange = (keys: string | Set<Key>) => {
     setSelectedKeys(keys);

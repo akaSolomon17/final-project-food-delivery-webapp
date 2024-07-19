@@ -5,7 +5,6 @@ import { Banners } from "../../types/banner.type";
 
 export const Banner = () => {
   const { bannerList } = useGetBannerList();
-  const bannerListed = bannerList?.data || [];
 
   return (
     <div>
@@ -15,15 +14,16 @@ export const Banner = () => {
         isBanner={true}
         isPagination={false}
       >
-        {bannerListed.map((item: Banners, index: number) => (
-          <Image
-            key={index}
-            alt={item.alt}
-            src={item.img}
-            radius="none"
-            className="object-center w-full select-none"
-          />
-        ))}
+        {bannerList?.data?.length &&
+          bannerList?.data.map((item: Banners, index: number) => (
+            <Image
+              key={index}
+              alt={item.alt}
+              src={item.img}
+              radius="none"
+              className="object-center w-full select-none"
+            />
+          ))}
       </CSwiper>
     </div>
   );

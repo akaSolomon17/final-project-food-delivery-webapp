@@ -7,33 +7,38 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
-import { FC, useEffect, useMemo, useState } from "react";
 import { MdCancel } from "react-icons/md";
 import { TbReorder } from "react-icons/tb";
 import { CTooltip } from "../CTooltip/CTooltip";
-import { IHistoryOrders } from "../../types/historyOrders.type";
+import { useEffect, useMemo, useState } from "react";
+import { useCartActions } from "../../zustand/cartStore";
 import { formatVnCurrency } from "../../utils/formatCurrency";
 import { getStatusColor } from "../../utils/getColorByStatus";
-import { EOrderHeaderColumn, EOrderStatus } from "../../types/enums.type";
-import { useGetHistoryOrdersByDate } from "../../apis/orders/getHistoryOrdersList.api";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { IHistoryOrders } from "../../types/historyOrders.type";
 import { useUpdateOrderStatus } from "../../utils/changeOrderStatus";
-import { useCartActions } from "../../zustand/cartStore";
-import { useProductActions } from "../../zustand/productStore";
+import { EOrderHeaderColumn, EOrderStatus } from "../../types/enums.type";
+import { useOrderDetail, useProductActions } from "../../zustand/productStore";
+import { useGetHistoryOrdersByDate } from "../../apis/orders/getHistoryOrdersList.api";
+
 import Loading from "../Loading/Loading";
+import ModalOrderDetails from "../ModalOrderDetails/ModalOrderDetails";
 
 const { CANCELED, DELIVERING } = EOrderStatus;
 const { ORDER_ID, ORDER_DATE, STATUS, TOTAL_PRICE } = EOrderHeaderColumn;
 const columnsHeader = [ORDER_ID, ORDER_DATE, TOTAL_PRICE, STATUS, ""];
 
-const TableOrder: FC<{ onOpenChange: () => void }> = ({ onOpenChange }) => {
+const TableOrder = () => {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: ORDER_ID,
     direction: "descending",
   });
   const [page, setPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const orderDetail = useOrderDetail();
+  const { isOpen, onOpenChange } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const { updateOrderStatus } = useUpdateOrderStatus();
   const { setOrderDetail } = useProductActions();
@@ -43,28 +48,18 @@ const TableOrder: FC<{ onOpenChange: () => void }> = ({ onOpenChange }) => {
   const { data: historyOrderByDate, isLoading: orderLoading } =
     useGetHistoryOrdersByDate();
 
-  const historyOrderByDateData = historyOrderByDate?.data;
-
   const rowsPerPage = 8;
 
   useEffect(() => {
     const page = searchParams.get("page");
-    if (page) {
-      setPage(parseInt(page));
+    if (page && !isNaN(totalPages)) {
+      setPage(Number(page));
     }
   }, [searchParams]);
 
-  // Reset page = 1 when change order status
-  useEffect(() => {
-    setPage(1);
-    searchParams.set("page", "1");
-    setSearchParams(searchParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const items = useMemo(() => {
     const sortedData = [
-      ...((historyOrderByDateData && historyOrderByDateData) || []),
+      ...((historyOrderByDate?.data && historyOrderByDate?.data) || []),
     ].sort((a, b) => {
       const sortColumn = sortDescriptor.column ?? "";
 
@@ -80,10 +75,10 @@ const TableOrder: FC<{ onOpenChange: () => void }> = ({ onOpenChange }) => {
     const end = start + rowsPerPage;
 
     return sortedData.slice(start, end);
-  }, [page, historyOrderByDateData, sortDescriptor]);
+  }, [page, historyOrderByDate?.data, sortDescriptor]);
 
-  const totalPages = historyOrderByDateData
-    ? Math.ceil(historyOrderByDateData?.length / rowsPerPage)
+  const totalPages = historyOrderByDate?.data
+    ? Math.ceil(historyOrderByDate?.data?.length / rowsPerPage)
     : 1;
 
   // HANDLER
@@ -113,105 +108,112 @@ const TableOrder: FC<{ onOpenChange: () => void }> = ({ onOpenChange }) => {
   };
 
   return (
-    <Table
-      bottomContent={
-        items?.length > 0 && (
-          <div className="flex w-full justify-center">
-            <Pagination
-              showShadow
-              color="default"
-              radius="sm"
-              page={page}
-              total={totalPages}
-              onChange={handleActivePage}
-            />
-          </div>
-        )
-      }
-      aria-label="Order history table"
-      className="w-1/2 h-[560px] mt-10"
-      sortDescriptor={sortDescriptor}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader>
-        {columnsHeader.map((column, index: number) => (
-          <TableColumn
-            align="center"
-            key={index}
-            allowsSorting={column === ORDER_ID}
-            className={column === ORDER_ID ? "orderId" : ""}
-          >
-            <p>{column}</p>
-          </TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody
-        emptyContent="Không tìm thấy đơn hàng nào."
-        loadingContent={<Loading />}
-        isLoading={orderLoading}
+    <>
+      <ModalOrderDetails
+        isOpen={isOpen}
+        orderDetail={orderDetail}
+        onOpenChange={onOpenChange}
+      />
+      <Table
+        bottomContent={
+          items?.length > 0 && (
+            <div className="flex w-full justify-center">
+              <Pagination
+                showShadow
+                color="default"
+                radius="sm"
+                page={Number(page)}
+                total={Number(totalPages)}
+                onChange={handleActivePage}
+              />
+            </div>
+          )
+        }
+        aria-label="Order history table"
+        className="w-1/2 h-[560px] mt-10"
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
       >
-        {items.map((row: IHistoryOrders, index: number) => (
-          <TableRow
-            className="items-center hover:bg-gray-100 hover:cursor-pointer"
-            key={index}
-            onClick={() => handleGetDetailOrder(row)}
-            onMouseEnter={() => setHoveredRow(index)}
-            onMouseLeave={() => setHoveredRow(null)}
-          >
-            <TableCell className="font-semibold !outline-none">
-              #{row.id}
-            </TableCell>
-            <TableCell className="!outline-none">
-              {new Date(row.orderDate).toLocaleDateString()}
-            </TableCell>
-            <TableCell className="!outline-none">
-              <p
-                className={`${
-                  row.status === CANCELED && "line-through text-default-400"
-                }`}
-              >
-                {formatVnCurrency(row.discountPrice as number)}
-              </p>
-            </TableCell>
-            <TableCell className="!outline-none">
-              <p
-                className={`flex items-center justify-center ${getStatusColor(
-                  row.status && row.status,
-                )} w-3/5 rounded-lg`}
-              >
-                {row.status}
-              </p>
-            </TableCell>
-            <TableCell className="!outline-none w-[68px]">
-              {hoveredRow === index && (
-                <div className="flex gap-1 text-right">
-                  <CTooltip content="Đặt lại" placement="top">
-                    <span>
-                      <TbReorder
-                        className="cursor-pointer text-default-400 hover:text-default-700"
-                        size={18}
-                        onClick={() => handleReorder(row)}
-                      />
-                    </span>
-                  </CTooltip>
-                  {row.status === DELIVERING && (
-                    <CTooltip content="Hủy đơn" placement="top">
+        <TableHeader>
+          {columnsHeader.map((column, index: number) => (
+            <TableColumn
+              align="center"
+              key={index}
+              allowsSorting={column === ORDER_ID}
+              className={column === ORDER_ID ? "orderId" : ""}
+            >
+              <p>{column}</p>
+            </TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody
+          emptyContent="Không tìm thấy đơn hàng nào."
+          loadingContent={<Loading />}
+          isLoading={orderLoading}
+        >
+          {items.map((row: IHistoryOrders, index: number) => (
+            <TableRow
+              className="items-center hover:bg-gray-100 hover:cursor-pointer"
+              key={index}
+              onClick={() => handleGetDetailOrder(row)}
+              onMouseEnter={() => setHoveredRow(index)}
+              onMouseLeave={() => setHoveredRow(null)}
+            >
+              <TableCell className="font-semibold !outline-none">
+                #{row.id}
+              </TableCell>
+              <TableCell className="!outline-none">
+                {new Date(row.orderDate).toLocaleDateString()}
+              </TableCell>
+              <TableCell className="!outline-none">
+                <p
+                  className={`${
+                    row.status === CANCELED && "line-through text-default-400"
+                  }`}
+                >
+                  {formatVnCurrency(row.discountPrice as number)}
+                </p>
+              </TableCell>
+              <TableCell className="!outline-none">
+                <p
+                  className={`flex items-center justify-center ${getStatusColor(
+                    row.status && row.status,
+                  )} w-3/5 rounded-lg`}
+                >
+                  {row.status}
+                </p>
+              </TableCell>
+              <TableCell className="!outline-none w-[68px]">
+                {hoveredRow === index && (
+                  <div className="flex gap-1 text-right">
+                    <CTooltip content="Đặt lại" placement="top">
                       <span>
-                        <MdCancel
+                        <TbReorder
                           className="cursor-pointer text-default-400 hover:text-default-700"
                           size={18}
-                          onClick={() => handleCancelOrder(row.id)}
+                          onClick={() => handleReorder(row)}
                         />
                       </span>
                     </CTooltip>
-                  )}
-                </div>
-              )}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+                    {row.status === DELIVERING && (
+                      <CTooltip content="Hủy đơn" placement="top">
+                        <span>
+                          <MdCancel
+                            className="cursor-pointer text-default-400 hover:text-default-700"
+                            size={18}
+                            onClick={() => handleCancelOrder(row.id)}
+                          />
+                        </span>
+                      </CTooltip>
+                    )}
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 

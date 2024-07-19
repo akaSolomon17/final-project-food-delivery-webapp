@@ -17,6 +17,7 @@ type SwiperComponentProps = {
 };
 
 const CSwiper: React.FC<SwiperComponentProps> = (props) => {
+  const childrenArray = React.Children.toArray(props.children);
   const modules = props.isPagination ? [Pagination] : [Navigation, Autoplay];
   const swiperProps = {
     slidesPerView: props.slidePerView,
@@ -38,7 +39,7 @@ const CSwiper: React.FC<SwiperComponentProps> = (props) => {
         {!props.isPagination && (
           <NavigateSwiper headerContent={props.headerContent}></NavigateSwiper>
         )}
-        {props.children.map((child, index) => (
+        {childrenArray.map((child, index) => (
           <SwiperSlide
             key={index}
             className="flex items-center justify-center text-center text-sm bg-white "

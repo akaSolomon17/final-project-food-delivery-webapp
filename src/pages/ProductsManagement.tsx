@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Button,
   Image,
@@ -11,45 +10,44 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import { useGetFoodList } from "../apis/products/getFoodList.api";
-import { Food } from "../types/foods.type";
-import ModalAddProduct from "../components/ModalAddProduct/ModalAddProduct";
-import { useDeleteProductById } from "../apis/products/deleteProductById.api";
-import { useSearchParams } from "react-router-dom";
-import { CTooltip } from "../components/CTooltip/CTooltip";
-import { notify } from "../hooks/Toastify/notify";
-import { EToastifyStatus } from "../types/enums.type";
-
 import { IoMdAdd } from "react-icons/io";
-import { IoTrashOutline } from "react-icons/io5";
+import { Food } from "../types/foods.type";
 import { MdOutlineEdit } from "react-icons/md";
+import { IoTrashOutline } from "react-icons/io5";
+import { notify } from "../hooks/Toastify/notify";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { EToastifyStatus } from "../types/enums.type";
+import { CTooltip } from "../components/CTooltip/CTooltip";
+import { useGetFoodList } from "../apis/products/getFoodList.api";
+import { useDeleteProductById } from "../apis/products/deleteProductById.api";
 
+import ModalAddProduct from "../components/ModalAddProduct/ModalAddProduct";
 import EmptyTable from "../components/ProductManagements/EmptyTable";
 import Loading from "../components/Loading/Loading";
 
+const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus;
 const ProductsManagement = () => {
-  const [currentFood, setCurrentFood] = useState<Food>({} as Food);
-  const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus;
+  const [currentFood, setCurrentFood] = useState<Food | null>(null);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: foodList, isLoading: foodListLoading } = useGetFoodList();
-  const foodListData = foodList?.data;
 
   const { mutate: deleteProductMutate } = useDeleteProductById();
 
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
 
-  const items = React.useMemo(() => {
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return foodListData?.slice(start, end);
-  }, [page, foodListData]);
+    return foodList?.data?.slice(start, end);
+  }, [page, foodList?.data]);
 
-  const totalPages = foodListData
-    ? Math.ceil(foodListData.length / rowsPerPage)
+  const totalPages = foodList?.data
+    ? Math.ceil(foodList?.data.length / rowsPerPage)
     : 1;
 
   useEffect(() => {
@@ -65,7 +63,7 @@ const ProductsManagement = () => {
   };
 
   const handleAddProduct = () => {
-    setCurrentFood({} as Food);
+    setCurrentFood(null);
     onOpen();
   };
 

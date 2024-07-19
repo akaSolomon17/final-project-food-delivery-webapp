@@ -29,26 +29,29 @@ const CartSidebar = () => {
     setCartTimeArrival,
     setCartDistance,
   } = useCartActions();
-  const cartDistance = useCartDistance();
-  const [isDistanceAndTimeSet, setIsDistanceAndTimeSet] =
-    useState<boolean>(false);
-  const cartTimeArrival = useCartTimeArrival();
   const cart = useCart();
+  const navigate = useNavigate();
+  const cartDistance = useCartDistance();
+  const cartTimeArrival = useCartTimeArrival();
   const quantities = useQuantities();
   const cartExpand = useCartExpand();
   const totalPrice = useTotalPrice();
-  const { distanceRandom, timeEstimate } = randomDistanceTimeEstimate();
   const cartSidebarRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const {
+    distanceRandom,
+    //  timeEstimate
+  } = randomDistanceTimeEstimate();
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const { data: foodsId, isLoading } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
   );
+  const [isDistanceAndTimeSet, setIsDistanceAndTimeSet] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (cart.length > 0 && !isDistanceAndTimeSet) {
       setCartDistance(distanceRandom);
-      setCartTimeArrival(timeEstimate as number);
+      setCartTimeArrival(1 as number);
       setIsDistanceAndTimeSet(true);
     } else if (cart.length === 0 && isDistanceAndTimeSet) {
       setCartDistance("");

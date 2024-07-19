@@ -1,26 +1,22 @@
-import { CDateRangePicker } from "../CDateInput/CDateInput";
-import { useOrderDetail } from "../../zustand/productStore";
-import { Button, useDisclosure } from "@nextui-org/react";
+import { useEffect } from "react";
+import { Button } from "@nextui-org/react";
+import { useSearchParams } from "react-router-dom";
 import { parseDate } from "@internationalized/date";
 import { FormProvider, useForm } from "react-hook-form";
-import { IYourOrderDefaultValue } from "../../types/order.type";
-import { useSearchParams } from "react-router-dom";
-import { convertDateRange } from "../../utils/convertDateRange";
-import { getCurrentDate } from "../../utils/convertDateToMilisecond";
-import { EDateRangeDefaultValue } from "../../types/enums.type";
-import { useEffect } from "react";
-import { convertMilisecondDate } from "../../utils/convertMilisecondDate";
-import ModalOrderDetails from "../ModalOrderDetails/ModalOrderDetails";
-import FilterOrder from "./FilterOrder";
-import TableOrder from "./TableOrder";
-import "./YourOrder.css";
+import { convertDateRange } from "../../../utils/convertDateRange";
+import { IYourOrderDefaultValue } from "../../../types/order.type";
+import { EDateRangeDefaultValue } from "../../../types/enums.type";
+import { getCurrentDate } from "../../../utils/convertDateToMilisecond";
+import { FilterDate } from "./FilterDate";
+import { convertMilisecondDate } from "../../../utils/convertMilisecondDate";
+import FilterStatus from "./FilterStatus";
 
 const { START_DATE } = EDateRangeDefaultValue;
-const YourOrder = () => {
+
+const FilterOrder = () => {
   const defaultStartDate = parseDate(START_DATE);
   const defaultEndDate = parseDate(getCurrentDate());
-  const orderDetail = useOrderDetail();
-  const { isOpen, onOpenChange } = useDisclosure();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const methods = useForm<IYourOrderDefaultValue>({
     defaultValues: {
@@ -61,6 +57,7 @@ const YourOrder = () => {
 
     searchParams.set("startDate", String(startDateInMilliseconds));
     searchParams.set("endDate", String(endDateInMilliseconds));
+    searchParams.set("page", "1");
 
     setSearchParams(searchParams);
   };
@@ -71,15 +68,14 @@ const YourOrder = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="font-bold text-3xl my-10">Your Orders</h1>
+    <>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(handleSubmitFilterOrder)}
           className="flex w-full justify-center"
         >
-          <CDateRangePicker />
-          <FilterOrder />
+          <FilterStatus />
+          <FilterDate />
           <div className="flex flex-col gap-2 ms-2">
             <Button type="submit" radius="sm" className="h-[30px]">
               Apply filter
@@ -95,14 +91,8 @@ const YourOrder = () => {
           </div>
         </form>
       </FormProvider>
-      <ModalOrderDetails
-        isOpen={isOpen}
-        orderDetail={orderDetail}
-        onOpenChange={onOpenChange}
-      />
-      <TableOrder onOpenChange={onOpenChange} />
-    </div>
+    </>
   );
 };
 
-export default YourOrder;
+export default FilterOrder;

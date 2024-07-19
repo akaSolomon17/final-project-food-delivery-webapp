@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useCartTimeArrival } from "../zustand/cartStore";
 
 export const getTimeEstimateInMs = (timeEstimate: number) => {
-  return timeEstimate * 60 * 1000;
+  return timeEstimate * 30 * 1000;
 };
 
 export const useUpdateOrderStatus = () => {

@@ -12,6 +12,7 @@ export enum EFilterSort {
   AVG_RATE = "avgRate",
   PRICE_MIN = 30000,
   PRICE_MAX = 300000,
+  DEFAULT_RATING = "",
 }
 
 export enum EFood {
@@ -64,4 +65,5 @@ export enum EFilterSearchParams {
   CATEGORIES = "categories",
   RATING = "rating",
   SORT_BY = "sortBy",
+  PRICE_RANGE = "priceRange",
 }

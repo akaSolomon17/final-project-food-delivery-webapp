@@ -4,7 +4,7 @@ import { IHistoryOrders } from "./historyOrders.type";
 export interface IModalAddProps {
   isOpen: boolean;
   onOpenChange: () => void;
-  currentFood: Food;
+  currentFood: Food | null;
 }
 
 export interface IModalProps {

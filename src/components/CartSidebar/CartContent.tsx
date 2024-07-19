@@ -9,15 +9,15 @@ const CartContent = () => {
   const { data: foodsId } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
   );
-  const rows = foodsId ?? [];
 
   return (
     <div className="overflow-scroll max-h-[700px]">
-      {rows?.map((item: Food, index) => (
-        <div className="pt-4 px-4" key={index}>
-          <CartItem item={item} />
-        </div>
-      ))}
+      {foodsId?.length &&
+        foodsId?.map((item: Food, index) => (
+          <div className="pt-4 px-4" key={index}>
+            <CartItem item={item} />
+          </div>
+        ))}
     </div>
   );
 };
