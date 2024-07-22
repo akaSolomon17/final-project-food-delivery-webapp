@@ -1,4 +1,7 @@
-import { formatVnCurrency } from "../../../utils/formatCurrency";
+import {
+  formatCurrency,
+  formatVnCurrency,
+} from "../../../utils/formatCurrency";
 import { useDiscountInfo, useTotalPrice } from "../../../zustand/cartStore";
 
 const TotalPriceOrder = () => {
@@ -15,7 +18,7 @@ const TotalPriceOrder = () => {
         </h2>
         {!(discountPrice === totalPrice) && (
           <h2 className="font-medium text-md text-left line-through">
-            {totalPrice}
+            {formatCurrency(totalPrice)}
           </h2>
         )}
       </div>

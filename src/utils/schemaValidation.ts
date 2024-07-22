@@ -1,16 +1,13 @@
 import * as yup from "yup";
-import { FoodCreate } from "../types/foods.type";
+import { FoodFormValues } from "../types/foods.type";
 
 // YUP SCHEMA
-export const modalValidationSchema: yup.ObjectSchema<FoodCreate> = yup
+export const modalValidationSchema: yup.ObjectSchema<FoodFormValues> = yup
   .object()
   .shape({
-    id: yup.string().nullable(),
-    price: yup.string().nullable(),
-    avgRate: yup.number().nullable(),
-    isExclusive: yup.string().nullable(),
-    description: yup.string().nullable(),
     title: yup.string().required("Title is required!"),
+    price: yup.string().nullable(),
+    description: yup.string().nullable(),
 
     priceNumber: yup
       .number()

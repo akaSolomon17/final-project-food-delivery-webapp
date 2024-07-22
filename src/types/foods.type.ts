@@ -1,9 +1,9 @@
 export interface Food {
-  id?: string | null;
+  id: string | null;
   title: string;
-  price: string;
+  price?: string | null;
   priceNumber: number;
-  img: string | null;
+  img: string | FileList | File | null;
   description?: string | null;
   category: string;
   avgRate: number;
@@ -29,10 +29,10 @@ export interface FoodCategory {
 export interface FoodCreate {
   id?: string | null;
   title: string;
-  price?: string | null;
+  price: string | null;
   img?: string | FileList | File | null;
   priceNumber?: number | null;
-  description?: string | null;
+  description: string | null;
   category: string;
   avgRate?: number | null;
   isExclusive?: string | null;
@@ -48,6 +48,11 @@ export interface IProductItemProps {
   item: Food;
   index: number;
 }
+
+export type FoodFormValues = Pick<
+  Food,
+  "title" | "price" | "priceNumber" | "description" | "category" | "img"
+>;
 
 export type FoodUpdate = Omit<
   FoodCreate,

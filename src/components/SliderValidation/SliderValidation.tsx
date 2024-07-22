@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Slider } from "@nextui-org/react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ISliderValidationProps } from "../../types/filters.type";
+import CErrorMessage from "../CErrorMessage/CErrorMessage";
 
 const SliderValidation: FC<ISliderValidationProps> = ({
   name,
@@ -20,9 +21,7 @@ const SliderValidation: FC<ISliderValidationProps> = ({
         <>
           <Slider {...field} {...passProps} />
           {errors[name] && (
-            <span className="text-danger text-sm ms-2">
-              {errors[name]?.message as string}
-            </span>
+            <CErrorMessage message={errors[name].message as string} />
           )}
         </>
       )}

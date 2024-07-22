@@ -12,8 +12,8 @@ export interface FilterValuesProps {
 }
 
 export interface ICheckboxValidationProps extends CheckboxGroupProps {
-  children: React.ReactNode | React.ReactNode[];
   name: string;
+  children: React.ReactNode | React.ReactNode[];
 }
 
 export interface ISliderValidationProps extends SliderProps {

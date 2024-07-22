@@ -15,13 +15,17 @@ const ModalNotification: FC<IModalProps> = ({
   title,
   children,
 }) => {
+  const handleCloseModal = () => {
+    onOpenChange();
+  };
+
   return (
     <Modal className="z-999" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {title && <ModalHeader>{title}</ModalHeader>}
         <ModalBody>{children}</ModalBody>
         <ModalFooter>
-          <Button color="default" onPress={() => onOpenChange}>
+          <Button color="default" onPress={handleCloseModal}>
             OK
           </Button>
         </ModalFooter>

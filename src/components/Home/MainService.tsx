@@ -1,6 +1,6 @@
 import { Avatar, Badge } from "@nextui-org/react";
-import { useGetFoodCategories } from "../../apis/products/getFoodCategories.api";
 import { FoodCategory } from "../../types/foods.type";
+import { useGetFoodCategories } from "../../apis/products/getFoodCategories.api";
 
 const MainService = () => {
   const { data: foodCategories } = useGetFoodCategories();

@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/image";
 import { useGetBannerList } from "../../apis/banners/getBannerList.api";
-import CSwiper from "../Swiper/CSwiper";
 import { Banners } from "../../types/banner.type";
+import CSwiper from "../Swiper/CSwiper";
 
 export const Banner = () => {
   const { bannerList } = useGetBannerList();

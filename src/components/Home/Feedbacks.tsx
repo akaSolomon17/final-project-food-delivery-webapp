@@ -16,7 +16,7 @@ const Feedbacks = () => {
         </h3>
         <div className="flex flex-col gap-12 justify-start mt-[4rem]">
           <CSwiper slidePerView={1} className=" max-w-[25rem] h-[18rem]">
-            {feedbacksApprovedList?.data?.length &&
+            {feedbacksApprovedList?.data.length &&
               feedbacksApprovedList?.data.map(
                 (item: Feedback, index: number) => (
                   <TestimonialsCards key={index} feedbacks={item} />

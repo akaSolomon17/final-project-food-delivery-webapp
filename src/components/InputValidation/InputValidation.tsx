@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 import { IInputValidationProps } from "../../types/input.type";
+import CErrorMessage from "../CErrorMessage/CErrorMessage";
 
 const InputValidation: FC<IInputValidationProps> = ({
   name,
@@ -18,16 +19,14 @@ const InputValidation: FC<IInputValidationProps> = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <div className="h-[80px] flex items-center">
+        <div className="h-[80px] flex flex-col justify-center">
           <Input
             onFocus={() => clearOnFocus && field.onChange("")}
             {...field}
             {...passProps}
           />
           {errors[name] && (
-            <span className="text-danger text-sm ms-2">
-              {errors[name]?.message as string}
-            </span>
+            <CErrorMessage message={errors[name].message as string} />
           )}
         </div>
       )}

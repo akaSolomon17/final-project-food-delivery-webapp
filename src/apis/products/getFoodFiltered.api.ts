@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { EFilterSort } from "../../types/enums.type";
 import { FoodFilterProps } from "../../types/filters.type";
 import http from "../../utils/http";
-import { EFilterSort } from "../../types/enums.type";
 
 const {
   NEWEST,
