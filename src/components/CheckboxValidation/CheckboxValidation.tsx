@@ -2,10 +2,11 @@ import { CheckboxGroup } from "@nextui-org/react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FC } from "react";
 import { ICheckboxValidationProps } from "../../types/filters.type";
+import CErrorMessage from "../CErrorMessage/CErrorMessage";
 
 const CheckboxValidation: FC<ICheckboxValidationProps> = ({
-  children,
   name,
+  children,
   ...passProps
 }) => {
   const {
@@ -30,9 +31,7 @@ const CheckboxValidation: FC<ICheckboxValidationProps> = ({
               {children}
             </CheckboxGroup>
             {errors[name] && (
-              <span className="text-danger text-sm ms-2">
-                {errors[name]?.message as string}
-              </span>
+              <CErrorMessage message={errors[name].message as string} />
             )}
           </>
         );

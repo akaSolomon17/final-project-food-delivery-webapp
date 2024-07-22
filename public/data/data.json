@@ -25,8 +25,8 @@
     {
       "id": "3",
       "title": "Kimbap Phoo Mai",
-      "price": "65.000",
-      "priceNumber": 65000,
+      "price": "75.000",
+      "priceNumber": 75000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1719576534/Food%20App%20Media/shdqwzlfv712hyixtutl.jpg",
       "description": "Sản phẩm được đựng vào hộp giấy xinh xắn.",
       "category": "Kimbap",
@@ -267,8 +267,8 @@
     {
       "id": "25",
       "title": "Tokbokki Chả cá",
-      "price": "50.000",
-      "priceNumber": 50000,
+      "price": "70.000",
+      "priceNumber": 70000,
       "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777568/Food%20App%20Media/yxjx18qyvencxubdkhvk.jpg",
       "description": "",
       "category": "Tokbokki",
@@ -277,34 +277,23 @@
     },
     {
       "id": "26",
-      "title": "Tokbokki Rose",
-      "price": "85.000",
-      "priceNumber": 85000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777605/Food%20App%20Media/cu66j9fwwpiaj7ccor8e.jpg",
-      "description": "Tokbokki full topping: chả viên, chả Hàn, trứng, thanh cua và phô mai mozza phủ",
-      "category": "Tokbokki",
-      "avgRate": 0,
-      "isExclusive": "Không"
-    },
-    {
-      "id": "27",
       "title": "Set Tokbokki",
       "price": "95.000",
       "priceNumber": 95000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1720777631/Food%20App%20Media/t4qfnsw3lff0mnrwzilt.jpg",
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721613049/Food%20App%20Media/nwomskvqa5p7u111z1by.jpg",
       "description": "Set bánh gạo đầy đủ hơn với Gimmari (Miến cuộn rong biển) & Mandu (Bánh xếp chiên giòn) * Bạn nhớ chấm chung với sốt tokbokki để cảm nhận vị ngon trọn vẹn nhé ^^",
       "category": "Tokbokki",
       "avgRate": 0,
       "isExclusive": "Không"
     },
     {
-      "id": "28",
-      "title": "asdasdasd",
-      "price": "65.000",
-      "priceNumber": 65000,
-      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721298458/Food%20App%20Media/pekpcvtuaucbqtky17v1.jpg",
-      "description": "asdasdasd",
-      "category": "Kimbap",
+      "id": "27",
+      "title": "Tokbokki Rose",
+      "price": "85.000",
+      "priceNumber": 85000,
+      "img": "https://res.cloudinary.com/dooge27kv/image/upload/v1721613084/Food%20App%20Media/xikye10xehyimaypomxw.jpg",
+      "description": "Tokbokki Rose: Bánh gạo, chả chiên, chả lát, trứng, nước sốt béo thơm",
+      "category": "Tokbokki",
       "avgRate": 0,
       "isExclusive": "Không"
     }
@@ -1385,6 +1374,162 @@
         {
           "id": "5",
           "title": "Kimbap truyền thống",
+          "priceNumber": "65000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "62",
+      "status": "Completed",
+      "orderDate": 1721361077461,
+      "totalPrice": 65000,
+      "discountPrice": 52000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "5",
+          "title": "Kimbap truyền thống",
+          "priceNumber": "65000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "63",
+      "status": "Completed",
+      "orderDate": 1721612122526,
+      "totalPrice": 1950000,
+      "discountPrice": 1950000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "1",
+          "title": "Kimbap heo galbibi",
+          "priceNumber": "65000",
+          "quantity": "7"
+        },
+        {
+          "id": "2",
+          "title": "Kimbap bò cay sốt BBQ",
+          "priceNumber": "65000",
+          "quantity": "6"
+        },
+        {
+          "id": "5",
+          "title": "Kimbap truyền thống",
+          "priceNumber": "65000",
+          "quantity": "17"
+        }
+      ]
+    },
+    {
+      "id": "64",
+      "status": "Completed",
+      "orderDate": 1721613455817,
+      "totalPrice": 45000,
+      "discountPrice": 45000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "4",
+          "title": "Kimbap chiên giòn",
+          "priceNumber": "45000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "65",
+      "status": "Completed",
+      "orderDate": 1721613500143,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "66",
+      "status": "Completed",
+      "orderDate": 1721613683712,
+      "totalPrice": 55000,
+      "discountPrice": 44000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "67",
+      "status": "Completed",
+      "orderDate": 1721613828777,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "68",
+      "status": "Completed",
+      "orderDate": 1721613943392,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "69",
+      "status": "Completed",
+      "orderDate": 1721614076484,
+      "totalPrice": 55000,
+      "discountPrice": 55000,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "8",
+          "title": "Single Kimbap B",
+          "priceNumber": "55000",
+          "quantity": "1"
+        }
+      ]
+    },
+    {
+      "id": "70",
+      "status": "Completed",
+      "orderDate": 1721614122785,
+      "totalPrice": 65000,
+      "discountPrice": 58500,
+      "note": "",
+      "orderDetails": [
+        {
+          "id": "6",
+          "title": "Kimbap Gà Giòn",
           "priceNumber": "65000",
           "quantity": "1"
         }

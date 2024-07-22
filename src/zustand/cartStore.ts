@@ -11,6 +11,7 @@ export interface CartStore {
   note: string;
   cartDistance: string;
   cartTimeArrival: number;
+  isExceedLimit: boolean;
   actions: {
     setCart: (item: ICart[]) => void;
     setQuantities: (quantities: IQuantities) => void;
@@ -25,6 +26,7 @@ export interface CartStore {
     setNote: (note: string) => void;
     setCartDistance: (cartDistance: string) => void;
     setCartTimeArrival: (cartTimeArrival: number) => void;
+    setIsExceedLimit: (isExceedLimit: boolean) => void;
   };
 }
 
@@ -38,6 +40,7 @@ const cartStore = create<CartStore>((set) => ({
   note: "",
   cartDistance: "",
   cartTimeArrival: 0,
+  isExceedLimit: false,
   actions: {
     setCart: (cart) => {
       set({ cart });
@@ -71,6 +74,7 @@ const cartStore = create<CartStore>((set) => ({
     setNote: (note) => set({ note }),
     setCartDistance: (cartDistance) => set({ cartDistance }),
     setCartTimeArrival: (cartTimeArrival) => set({ cartTimeArrival }),
+    setIsExceedLimit: (isExceedLimit) => set({ isExceedLimit }),
   },
 }));
 
@@ -85,5 +89,6 @@ export const useNote = () => cartStore((state) => state.note);
 export const useCartDistance = () => cartStore((state) => state.cartDistance);
 export const useCartTimeArrival = () =>
   cartStore((state) => state.cartTimeArrival);
+export const useIsExceedLimit = () => cartStore((state) => state.isExceedLimit);
 // ACTIONS
 export const useCartActions = () => cartStore((state) => state.actions);

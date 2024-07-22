@@ -7,7 +7,7 @@ import {
   useProductDetailsActions,
   useQuantity,
 } from "../../../zustand/productDetailStore";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { BiSolidCart } from "react-icons/bi";
 import { notify } from "../../../hooks/Toastify/notify";
@@ -28,6 +28,11 @@ const ProductContentButton = () => {
   const { setQuantity } = useProductDetailsActions();
   const { setCart, setQuantities } = useCartActions();
   const [isOrderNow, setIsOrderNow] = useState<boolean>(false);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [productId]);
+
   const handleIncrementQuantity = () => {
     setQuantity(quantity + 1);
   };

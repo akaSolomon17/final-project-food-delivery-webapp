@@ -2,6 +2,7 @@ import { RadioGroup } from "@nextui-org/react";
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IRadioValidationProps } from "../../types/filters.type";
+import CErrorMessage from "../CErrorMessage/CErrorMessage";
 
 const RadioValidation: FC<IRadioValidationProps> = ({
   name,
@@ -23,9 +24,7 @@ const RadioValidation: FC<IRadioValidationProps> = ({
             {children}
           </RadioGroup>
           {errors[name] && (
-            <span className="text-danger text-sm ms-2">
-              {errors[name]?.message as string}
-            </span>
+            <CErrorMessage message={errors[name].message as string} />
           )}
         </>
       )}

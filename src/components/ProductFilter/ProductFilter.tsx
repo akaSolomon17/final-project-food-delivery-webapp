@@ -85,7 +85,6 @@ const ProductFilter = () => {
   };
 
   const handleApplyFilters = (data: IFilterSidebarFormProps) => {
-    console.log("🚀 ~ data:", data);
     const { priceMin, priceMax, categories, rating, sortBy } = data;
 
     searchParams.set(PRICE_MIN, String(priceMin));
@@ -133,7 +132,7 @@ const ProductFilter = () => {
             </CheckboxValidation>
 
             {/* FILTER PRICE */}
-            <div className="flex flex-row items-center justify-between">
+            <div className="flex flex-row items-center justify-center">
               <InputValidation
                 name={PRICE_MIN}
                 radius="sm"

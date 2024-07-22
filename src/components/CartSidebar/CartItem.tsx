@@ -17,12 +17,17 @@ import { calcTotalPriceEachItem } from "../../utils/calcTotalPriceItem";
 const { MAX_QUANTITY_PER_BILL } = ECartOrder;
 
 const CartItem: FC<{ item: Food }> = ({ item }) => {
+  const cart = useCart();
   const quantities = useQuantities();
   const totalPrice = useTotalPrice();
-  const cart = useCart();
   const [isRemove, setIsRemove] = useState<string | null>(null);
-  const { setQuantities, setCart, setTotalPrice, loadFromLocalStorage } =
-    useCartActions();
+  const {
+    setQuantities,
+    setCart,
+    setTotalPrice,
+    loadFromLocalStorage,
+    setIsExceedLimit,
+  } = useCartActions();
 
   const { data: foodsId } = useGetFoodByListId(
     cart.map((item: ICart) => item.id),
@@ -42,7 +47,7 @@ const CartItem: FC<{ item: Food }> = ({ item }) => {
 
       setQuantities(initialQuantities);
     }
-  }, [foodsId, cart]);
+  }, [foodsId]);
 
   const handleCartChange = (itemId: string, change: number) => {
     const foodItem = foodsId?.find((item) => item.id === itemId);
@@ -58,11 +63,12 @@ const CartItem: FC<{ item: Food }> = ({ item }) => {
         setIsRemove(itemId);
       } else if (newQuantity > MAX_QUANTITY_PER_BILL) {
         newQuantities[itemId] = MAX_QUANTITY_PER_BILL;
-      } else if (potentialTotal <= 2000000) {
+      } else if (potentialTotal < 2000000) {
         newQuantities[itemId] = newQuantity;
-
+        setIsExceedLimit(false);
         setIsRemove(null);
       } else {
+        setIsExceedLimit(true);
         return prevQuantities;
       }
       const updatedCart: ICart[] = cart.map((item: ICart) =>

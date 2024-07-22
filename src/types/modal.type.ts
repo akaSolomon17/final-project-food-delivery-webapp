@@ -9,7 +9,7 @@ export interface IModalAddProps {
 
 export interface IModalProps {
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: () => void;
   title?: string;
   children: React.ReactNode;
   onConfirm?: () => void;

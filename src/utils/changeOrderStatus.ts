@@ -1,11 +1,10 @@
-import { EOrderStatus, EToastifyStatus } from "../types/enums.type";
-import { useUpdateHistoryOrderStatus } from "../apis/orders/updateHistoryOrderStatus.api";
-import { notify } from "../hooks/Toastify/notify";
 import { useRef } from "react";
+import { EOrderStatus } from "../types/enums.type";
 import { useCartTimeArrival } from "../zustand/cartStore";
+import { useUpdateHistoryOrderStatus } from "../apis/orders/updateHistoryOrderStatus.api";
 
 export const getTimeEstimateInMs = (timeEstimate: number) => {
-  return timeEstimate * 30 * 1000;
+  return timeEstimate * 10 * 1000; //10s
 };
 
 export const useUpdateOrderStatus = () => {
@@ -24,20 +23,8 @@ export const useUpdateOrderStatus = () => {
     }
 
     const newTimeoutId = setTimeout(() => {
-      updateOrderMutate(
-        { id: orderId, status },
-        {
-          onSuccess: () => {
-            if (timeoutIdRef.current !== null) {
-              clearTimeout(timeoutIdRef.current);
-              timeoutIdRef.current = null;
-            }
-          },
-          onError: (e) => {
-            notify(`Failed to update order: ${e}`, EToastifyStatus.TOAST_ERROR);
-          },
-        },
-      );
+      updateOrderMutate({ id: orderId, status });
+      return true;
     }, deliveryTimeInMs) as unknown as number;
 
     timeoutIdRef.current = newTimeoutId;

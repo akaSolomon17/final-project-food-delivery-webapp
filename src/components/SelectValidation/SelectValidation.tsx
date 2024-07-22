@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ISelectValidationProps } from "../../types/input.type";
+import CErrorMessage from "../CErrorMessage/CErrorMessage";
 
 const SelectValidation: FC<ISelectValidationProps> = ({
   name,
@@ -31,12 +32,13 @@ const SelectValidation: FC<ISelectValidationProps> = ({
               {...field}
               {...passProps}
             >
+              <option value="" disabled>
+                Choose food category
+              </option>
               {children}
             </select>
             {errors[name] && (
-              <p className="text-danger text-sm ms-2">
-                {errors[name]?.message as string}
-              </p>
+              <CErrorMessage message={errors[name].message as string} />
             )}
           </div>
         )}

@@ -18,7 +18,7 @@ import { EFood, EToastifyStatus } from "../../types/enums.type";
 import { useAddProduct } from "../../apis/products/addProduct.api";
 import { useGetFoodList } from "../../apis/products/getFoodList.api";
 import { modalValidationSchema } from "../../utils/schemaValidation";
-import { Food, FoodCategory, FoodCreate } from "../../types/foods.type";
+import { Food, FoodCategory, FoodFormValues } from "../../types/foods.type";
 import { uploadImageCloud } from "../../apis/cloudinary/uploadImageCloud.api";
 import { useUpdateFoodById } from "../../apis/products/updateProductById.api";
 import { useGetFoodCategories } from "../../apis/products/getFoodCategories.api";
@@ -31,12 +31,14 @@ import InputFileValidation from "../InputFileValidation/InputFileValidation";
 
 const { DEFAULT_IS_EXCLUSIVES } = EFood;
 const { TOAST_SUCCESS, TOAST_ERROR } = EToastifyStatus;
-const emptyFoodValues: FoodCreate = {
+
+const emptyFoodValues: FoodFormValues = {
   title: "",
   price: "",
   priceNumber: 0,
   description: "",
   category: "",
+  img: null,
 };
 
 const ModalAddProduct: FC<IModalAddProps> = ({
@@ -46,19 +48,25 @@ const ModalAddProduct: FC<IModalAddProps> = ({
 }) => {
   const [imagePreview, setImagePreview] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const { data: foodList } = useGetFoodList();
+  const { data: foodCategories } = useGetFoodCategories();
+  const { mutate: addProductMutate, isPending: addProductPending } =
+    useAddProduct();
+  const { mutate: updateProductByIdMutate, isPending: updateProductPending } =
+    useUpdateFoodById();
 
-  const methods = useForm<FoodCreate>({
+  const initialValues = currentFood && {
+    title: currentFood.title,
+    price: currentFood.price,
+    priceNumber: currentFood.priceNumber,
+    description: currentFood.description,
+    category: currentFood.category,
+    img: currentFood.img,
+  };
+
+  const methods = useForm<FoodFormValues>({
     defaultValues: emptyFoodValues,
-    values: currentFood
-      ? {
-          title: currentFood.title,
-          price: currentFood.price,
-          description: currentFood.description,
-          category: currentFood.category,
-          priceNumber: currentFood.priceNumber,
-          img: currentFood.img,
-        }
-      : emptyFoodValues,
+    values: currentFood ? (initialValues as FoodFormValues) : emptyFoodValues,
     mode: "onSubmit",
     resolver: yupResolver(modalValidationSchema),
   });
@@ -69,15 +77,6 @@ const ModalAddProduct: FC<IModalAddProps> = ({
     formState: { isDirty },
     setValue,
   } = methods;
-
-  const { data: foodList } = useGetFoodList();
-
-  const { data: foodCategories } = useGetFoodCategories();
-
-  const { mutate: addProductMutate, isPending: addProductPending } =
-    useAddProduct();
-  const { mutate: updateProductByIdMutate, isPending: updateProductPending } =
-    useUpdateFoodById();
 
   useEffect(() => {
     if (currentFood) {
@@ -100,7 +99,7 @@ const ModalAddProduct: FC<IModalAddProps> = ({
     }
   };
 
-  const submitHandler = async (data: FoodCreate) => {
+  const submitHandler = async (data: FoodFormValues) => {
     try {
       const imageById = currentFood ? currentFood : data;
       let imageUrl = imageById?.img as string;
@@ -224,10 +223,10 @@ const ModalAddProduct: FC<IModalAddProps> = ({
                       label="Price"
                       id="price"
                       name="priceNumber"
+                      type="number"
                       labelPlacement="inside"
                       variant="bordered"
                       startContent={<CurrencySymbol />}
-                      type="number"
                       clearOnFocus={currentFood ? false : true}
                     />
 
@@ -247,14 +246,14 @@ const ModalAddProduct: FC<IModalAddProps> = ({
                       ))}
                     </SelectValidation>
 
-                    <InputValidation
+                    {/* <InputValidation
                       type="text"
                       name="isExclusive"
                       label="Exclusives"
                       variant="flat"
                       value={DEFAULT_IS_EXCLUSIVES}
                       isReadOnly
-                    />
+                    /> */}
                   </ModalBody>
 
                   <ModalFooter>

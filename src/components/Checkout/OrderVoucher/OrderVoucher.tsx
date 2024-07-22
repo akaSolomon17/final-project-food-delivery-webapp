@@ -42,7 +42,6 @@ const OrderVoucher = () => {
 
   const handleSearchTrigger = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    console.log("🚀 ~ value:", value);
     debouncedSearch(value);
   };
 
